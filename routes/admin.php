@@ -94,6 +94,8 @@ Route::prefix('administrator')->group(function () {
             Route::post('/update/{id}', [CatalogController::class, 'update'])->name('catalog.update');
             Route::delete('/{id}', [CatalogController::class, 'destroy'])->name('catalog.destroy');
             Route::post('/bulk-delete', [CatalogController::class, 'bulkDelete'])->name('catalog.bulk.delete');
+            /* This commented out code block is a route definition in Laravel that redirects the root URL to the
+   localized version based on the current application locale. */
             Route::post('image/{id}', [CatalogController::class, 'deleteImage'])->name('catalog.delete.image');
             Route::post('file/{id}', [CatalogController::class, 'deleteFile'])->name('catalog.delete.file');
         });
@@ -183,7 +185,7 @@ Route::prefix('administrator')->group(function () {
             Route::delete('/{id}', [RoleController::class, 'destroy'])->name('roles.destroy');
             Route::post('/bulk-delete', [RoleController::class, 'bulkDelete'])->name('roles.bulk.delete');
         });
-        
+
         Route::group(['prefix' => 'permissions', 'as' => 'administrator.'], function () {
             Route::get('/', [PermissionController::class, 'index'])->name('permissions');
             Route::get('/edit', [PermissionController::class, 'edit'])->name('permissions.edit');
@@ -198,7 +200,7 @@ Route::prefix('administrator')->group(function () {
             Route::post('/update/{id}', [ProductController::class, 'update'])->name('product.update');
             Route::delete('/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
             Route::post('/bulk-delete', [ProductController::class, 'bulkDelete'])->name('product.bulk.delete');
-            
+
             Route::get('/import', [ProductController::class, 'importPage'])->name('product.import');
             Route::get('/export', [ProductController::class, 'exportPage'])->name('product.export');
             Route::post('/import/submit', [ProductController::class, 'import'])->name('product.import.submit');

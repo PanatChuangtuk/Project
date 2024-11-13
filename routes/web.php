@@ -94,6 +94,6 @@ Route::prefix('{lang}')->group(function () {
     Route::get('change-password', [ChangePasswordController::class, 'changePasswordIndex'])->name('change.password')->middleware('auth:member');
 });
 
-Route::get('/', function () {
-    return redirect(app()->getLocale() . '/ ');
-})->where('any', '.*');
+// Route::get('/', function () {
+//     return redirect(app()->getLocale() . '/ ');
+// })->where('any', '.*');
