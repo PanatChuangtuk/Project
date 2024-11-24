@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+
+<!-- =========================================================
+* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
+==============================================================
+
+* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
+* Created by: ThemeSelection
+* License: You must have a valid license purchased in order to legally use the theme for your project.
+* Copyright ThemeSelection (https://themeselection.com)
+
+=========================================================
+-->
+<!-- beautify ignore:start -->
+<html
+lang="en"
+class="light-style layout-menu-fixed"
+dir="ltr"
+data-theme="theme-default"
+data-assets-path="{{ URL::asset('administrator') }}/assets/"
+data-template="vertical-menu-template-free"
+>
+<head>
+    <meta charset="utf-8" />
+    <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
+
+    @yield('title')
+
+    <meta name="description" content="" />
+
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ URL::asset('administrator') }}/assets/img/gas_logo.png" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    
+    
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/fonts/boxicons.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css" crossorigin="anonymous">
+    
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/css/demo.css" />
+    
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/libs/apex-charts/apex-charts.css" />
+    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/libs/datatables/datatables.min.css" rel="stylesheet">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- File Input -->
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+   
+    
+    <!-- Select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/libs/select2/select2.css" />
+    
+    <!-- Full Calendar -->
+    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/libs/fullcalendar/fullcalendar.css" />
+    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/css/pages/app-calendar.css" />
+    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/libs/flatpickr/flatpickr.css" />
+    
+    <!-- Form Validation -->
+    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css" />
+    
+    <!-- Star Ratings -->
+    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/libs/rateyo/rateyo.css" />
+    
+    <!-- SweetAlert2 -->
+    {{-- <link rel="stylesheet" href="{{ URL::asset('vendor') }}/sweetalert2/sweetalert2.min.css" /> --}}
+    
+    @yield('stylesheet')
+    <style>
+        body {
+            font-family: "Prompt", sans-serif;
+            --sb-track-color: #ffffff;
+            --sb-thumb-color: #a1acb8;
+            --sb-size: 8px;
+        }
+        .file-preview .fileinput-remove{
+            display: none;
+        }
+
+        .btn-outline-spacial:hover {
+            background-color: #ffffff !important;
+        }
+
+        .dataTables_info {
+            display: none;
+        }
+
+        /* scroll bar */
+
+        body::-webkit-scrollbar {
+            width: var(--sb-size)
+        }
+
+        body::-webkit-scrollbar-track {
+            background: var(--sb-track-color);
+            border-radius: 3px;
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background: var(--sb-thumb-color);
+            border-radius: 3px;
+        
+        }
+
+        @supports not selector(::-webkit-scrollbar) {
+        body {
+                scrollbar-color: var(--sb-thumb-color)
+                                var(--sb-track-color);
+            }
+        }
+
+        .flatpickr-day.selected , .flatpickr-day.selected:hover{
+            border-color: #009b48 !important;
+        }
+
+        .tablesort tbody tr {
+            cursor: move;
+        }
+    </style>
+    <style>  
+      .ck-editor__editable_inline{
+            min-height: 200px;
+            }
+            </style>
+    <!-- Page CSS -->
+
+    <!-- Helpers -->
+    <script src="{{ URL::asset('administrator') }}/assets/vendor/js/helpers.js"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="{{ URL::asset('administrator') }}/assets/js/config.js"></script>
+    {{-- <script src="{{ URL::asset('vendor') }}/sweetalert2/sweetalert2.min.js"></script> --}}
+</head>
+
+<body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+
+        @include('administrator.layouts.menu')
+
+        <!-- Layout container -->
+        <div class="layout-page">
+        <!-- Navbar -->
+
+        
+        <nav
+        class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+        id="layout-navbar">
+        <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none">
+          <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
+            <i class="bx bx-menu bx-md"></i>
+          </a>
+        </div>
+
+        <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+          <!-- Search -->
+          <div class="navbar-nav align-items-center">
+            <div class="nav-item d-flex align-items-center">
+              <i class="bx bx-search bx-md"></i>
+              <input
+                type="text"
+                class="form-control border-0 shadow-none ps-1 ps-sm-2"
+                placeholder="Search..."
+                aria-label="Search..." />
+            </div>
+          </div>
+          <!-- /Search -->
+
+          <ul class="navbar-nav flex-row align-items-center ms-auto">
+            <!-- User -->
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+              <a
+                class="nav-link dropdown-toggle hide-arrow p-0"
+                href="javascript:void(0);"
+                data-bs-toggle="dropdown">
+                <div class="avatar avatar-online">
+                  <img src="{{ URL::asset('') }}administrator/assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                </div>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <div class="d-flex">
+                      <div class="flex-shrink-0 me-3">
+                        <div class="avatar avatar-online">
+                          {{-- <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" /> --}}
+                        </div>
+                      </div>
+                      <div class="flex-grow-1">
+                        <h6 class="mb-0">John Doe</h6>
+                        <small class="text-muted">Admin</small>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <div class="dropdown-divider my-1"></div>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="bx bx-user bx-md me-3"></i><span>My Profile</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#"> <i class="bx bx-cog bx-md me-3"></i><span>Settings</span> </a>
+                </li>
+                <li>
+                  <div class="dropdown-divider my-1"></div>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="javascript:void(0);">
+                    <i class="bx bx-power-off bx-md me-3"></i><span>Log Out</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!--/ User -->
+          </ul>
+        </div>
+      </nav>
+
+        <!-- / Navbar -->
+
+        <!-- Content wrapper -->
+        <div class="content-wrapper">
+            <!-- Content -->
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+
+                @yield('content')
+
+            </div>
+            <!-- / Content -->
+
+            <!-- Footer -->
+            <footer class="content-footer footer bg-footer-theme">
+                <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                    <div class="mb-2 mb-md-0">
+                        ©
+                        <script>
+                            document.write(new Date().getFullYear() + 543);
+                        </script>
+                        , UAV Online All Rights Reserved.
+                         {{-- Powered by --}}
+                        {{-- <a href="https://gramickhouse.com/" target="_blank" class="footer-link fw-bolder"> GRAMICK HOUSE </a> --}}
+                        </div>
+                    <div>
+                    {{-- <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a>
+                    <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More Themes</a>
+
+                    <a
+                        href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
+                        target="_blank"
+                        class="footer-link me-4"
+                        >Documentation</a
+                    >
+
+                    <a
+                        href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
+                        target="_blank"
+                        class="footer-link me-4"
+                        >Support</a
+                    > --}}
+                    </div>
+                </div>
+            </footer>
+            <!-- / Footer -->
+
+            <div class="content-backdrop fade"></div>
+        </div>
+        <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+    </div>
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <!-- / Layout wrapper -->
+   
+ 
+    <!-- Core JS -->
+    <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+    <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/popper/popper.js"></script>
+    <script src="{{ URL::asset('administrator') }}/assets/vendor/js/bootstrap.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="{{ URL::asset('administrator') }}/assets/vendor/js/menu.js"></script>
+    
+    <!-- Vendors JS -->
+    <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+    <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/datatables/datatables.min.js"></script>
+    <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
+    
+    <!-- File Input -->
+    <script src="{{ URL::asset('administrator') }}/vendor-admin/bootstrap-fileinput/js/plugins/piexif.min.js"></script>
+    <script src="{{ URL::asset('administrator') }}/vendor-admin/bootstrap-fileinput/js/plugins/sortable.min.js"></script>
+    <script src="{{ URL::asset('administrator') }}/vendor-admin/bootstrap-fileinput/js/fileinput.min.js"></script>
+    <script src="{{ URL::asset('administrator') }}/vendor-admin/bootstrap-fileinput/themes/fas/theme.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/js/fileinput.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/js/locales/LANG.js"></script>
+    
+    <!-- Resumable.js (optional) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/resumable.js/1.0.3/resumable.min.js"></script>
+    
+    <!-- CKEditor -->
+    {{-- <script src="{{ URL::asset('administrator') }}/vendor-admin/ckeditor4/ckeditor.js"></script>
+    <script src="{{ URL::asset('administrator') }}/vendor-admin/ckeditor/build/ckeditor.js"></script> --}}
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+    
+    <!-- Full Calendar -->
+    <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/fullcalendar/fullcalendar.js"></script>
+    <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/flatpickr/flatpickr.js"></script>
+    
+    <!-- Moment -->
+    <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/moment/moment.js"></script>
+    
+    <!-- Form Validation -->
+    <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js"></script>
+    <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js"></script>
+    <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js"></script>
+    
+    <!-- Select2 -->
+    <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/select2/select2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
+    <!-- Star Ratings -->
+    <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/rateyo/rateyo.js"></script>
+    
+    <!-- Main JS -->
+    <script src="{{ URL::asset('administrator') }}/assets/js/main.js"></script>
+    <script src="{{ URL::asset('administrator') }}/assets/js/dashboards-analytics.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="{{ URL::asset('administrator') }}/js/function.js?{{ <?= time(); ?> }}"></script>
+    <script src="{{ URL::asset('administrator') }}/js/custom-alert.js"></script>
+    
+    <!-- GitHub Buttons -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    @yield('script')
+
+    <script>
+        initialDatatable()
+        function initialDatatable(){
+            try
+            {                
+                var table = $('#dataTable').DataTable({
+                    searching: false,
+                    paging: false,
+                    order: [[ 0, '' ]],
+                });
+
+                if ($('#dataTableSort').length > 0) {
+                    table = $('#dataTableSort').DataTable({
+                        searching: false,
+                        paging: false,
+                        rowReorder: {
+                            selector: 'tr td:not(.no-sort)',
+                            update: true
+                        },
+                        columnDefs: [
+                            { visible: false, targets: [0] }
+                        ],
+                        order: [[ 1, 'asc' ]],
+                    });
+                }
+                
+                // table.order([0,'']).draw();
+                //sort columns
+                var reqColumn = "{{request('column')}}"
+                var reqColumnName = "{{request('columnName')}}"
+                var reqDirection = "{{request('direction')}}"
+                var reqPage = "{{request('page')}}"
+                var reqPerPage = "{{request('perPage')}}"
+
+                if(reqColumn && reqDirection){
+                    table.order([reqColumn, reqDirection]).draw();
+                }
+
+                table.on('order.dt', function(t) {
+                    var currentRoute = '{{ Request::url() }}'
+                    var columnNames = table.columns().header().map(function(th) {
+                        return {
+                            name: $(th).text(),
+                            dataName: $(th).attr('data-name')
+                        };
+                    }).toArray();
+
+                    var column = table.order()[0][0]; // Get the index of the sorted column
+                    var direction = table.order()[0][1]; // 'asc' or 'desc'
+
+                    //parameter in forms
+                    var formData = $("form").serialize();
+
+                    if(column) {
+                        swal.showLoading();
+                        // Construct the URL with parameters
+                        var url = `${currentRoute}?column=${column}&columnName=${columnNames[column].dataName}&direction=${direction}&page=${reqPage}&perPage=${reqPerPage}&${formData}#dataTable`;
+
+                        window.location.href = url;
+                    }
+                });
+
+                table.on('row-reorder', function(e, diff, edit) {
+                    // console.log(e)
+                    console.log(diff)
+                    // console.log(edit)
+                    if(diff.length > 0) {
+                        var formdata   = new FormData();
+                        formdata.append('_token','{{ csrf_token() }}');
+                        formdata.append('sort_order_list',JSON.stringify(diff));
+                        
+                        //formid,urlSave,urlRedirect
+                        callEditAlert(formdata,'{{ url("administrator/".str_replace("administrator.","",Route::currentRouteName())."/update/") }}/0?mode={{ request("mode") }}','{{ url("administrator/".str_replace("administrator.","",Route::currentRouteName())) }}?mode={{ request("mode") }}')
+                    }
+                });
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+
+        // var date = document.querySelector(".date-flatpick");
+        // var dateTime = document.querySelector(".date-flatpick-time");
+
+        $(".date-flatpick").flatpickr({
+            monthSelectorType: "static"
+        });
+
+        $(".date-flatpick-time").flatpickr({
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+            time_24hr: true,
+        });
+    </script>
+</body>
+</html>
