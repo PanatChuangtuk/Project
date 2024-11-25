@@ -117,7 +117,10 @@ return [
     | Supported drivers: "file", "cache"
     |
     */
-
+    'nocaptcha' => [
+        'sitekey' => env('NOCAPTCHA_SITEKEY', 'default_site_key'),
+        'secret' => env('NOCAPTCHA_SECRET', 'default_secret_key'),
+    ],
     'maintenance' => [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),

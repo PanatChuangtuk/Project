@@ -9,7 +9,7 @@ use App\Observers\Observer;
 class NewsContent extends Model
 {
     use HasFactory;
-    public $timestamps = false; 
+    public $timestamps = false;
     protected $table = 'news_content';
     protected $fillable = [
         'news_id',
@@ -29,9 +29,9 @@ class NewsContent extends Model
         return $this->belongsTo(Language::class, 'language_id');
     }
 
-    protected static function boot():void
-    {  
-        parent::boot(); 
+    protected static function boot(): void
+    {
+        parent::boot();
         static::observe(Observer::class);
     }
- }
+}

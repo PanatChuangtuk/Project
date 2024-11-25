@@ -3,21 +3,36 @@
 namespace App\Http\Controllers\Administrator;
 
 use App\Http\Controllers\Controller;
-use App\Models\Language;
-use App\Models\NewsContent;
-use App\Models\News;
-use App\Models\NewsImage;
+use App\Models\{Language, PromotionContent, Promotion};
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\{Auth, Validator, Storage};
+
 
 class PromotionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('administrator.promotion.index');
+        $query = $request->input('query');
+        $status = $request->input('status');
+
+        $promotionQuery = Promotion::with('content');
+
+        if ($query) {
+            $promotionQuery->where('name', 'LIKE', "%{$query}%");
+        }
+
+        if ($status) {
+            $statusValue = ($status === 'active') ? 1 : 0;
+            $promotionQuery->where('status', $statusValue);
+        }
+
+        $promotion = $promotionQuery->paginate(10)->appends([
+            'query' => $query,
+            'status' => $status,
+        ]);
+
+        return view('administrator.promotion.index', compact('promotion', 'query', 'status'));
     }
 
     public function add()
@@ -29,11 +44,9 @@ class PromotionController extends Controller
     public function edit($id)
     {
         $languages = Language::all();
-        $promotion = News::find($id);
-        $promotionContents = NewsContent::where('promotion_id', $promotion->id)->get()->keyBy('language_id');
-        $promotionImage = NewsImage::where('promotion_id', $promotion->id)->first();
-
-        return view('administrator.promotion.edit', compact('promotion', 'promotionContents', 'promotionImage', 'languages'));
+        $promotion = Promotion::find($id);
+        $promotionContents = PromotionContent::where('promotion_id', $promotion->id)->get()->keyBy('language_id');
+        return view('administrator.promotion.edit', compact('promotion', 'promotionContents', 'languages'));
     }
 
     public function submit(Request $request)
@@ -42,46 +55,50 @@ class PromotionController extends Controller
         $nameArray = $request->input('name');
         $contentArray = $request->input('content');
         $descriptionArray = $request->input('description');
-        $slug = $request->input('slug');
         $status = $request->input('status', 0);
         $createdAt = Carbon::now();
         $createdBy = Auth::user()->id;
+        $promotionImageNames = null;
 
-        $promotion = News::create([
-            'name' => $nameArray[1],
-            'slug' => $slug,
+        $rules = [];
+        $messages = [];
+        foreach ($languages as $language) {
+            $rules['name.' . $language->id] = 'required_without_all:name.' . implode(',', $languages->pluck('id')->toArray());
+            $messages['name.' . $language->id . '.required_without_all'] = "กรุณากรอกชื่อสำหรับภาษา " . $language->name;
+        }
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+
+
+        if ($request->hasFile('image')) {
+            $promotionImageNames = $this->uploadsImage($request->file('image'), 'promotion');
+        }
+
+
+        $promotion = Promotion::create([
+            'name' => $nameArray[1] ?? $nameArray[2],
+            'image' => $promotionImageNames,
             'status' => $status,
             'created_at' => $createdAt,
             'created_by' => $createdBy
         ]);
 
         foreach ($languages as $language) {
-            $newData = [
+            PromotionContent::create([
                 'promotion_id' => $promotion->id,
                 'language_id' => $language->id,
                 'name' => $nameArray[$language->id] ?? null,
                 'content' => $contentArray[$language->id] ?? null,
                 'description' => $descriptionArray[$language->id] ?? null,
-            ];
-            NewsContent::create($newData);
+            ]);
         }
-
-        $filename = null;
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filenames = substr(Str::uuid(), 0, 5) . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('file/promotion', $filenames, 'public');
-            $filename = asset($filenames);
-        }
-        
-        NewsImage::create([
-            'promotion_id' => $promotion->id,
-            'language_id' => $language->id,
-            'image' => $filename,
-            'sort' => 1
-        ]);
-
-        return redirect('/administrator/promotion/add');
+        return redirect()->route('administrator.promotion');
     }
 
     public function update(Request $request, $id)
@@ -90,90 +107,98 @@ class PromotionController extends Controller
         $nameArray = $request->input('name');
         $contentArray = $request->input('content');
         $descriptionArray = $request->input('description');
-        $slug = $request->input('slug');
         $status = $request->input('status', 0);
         $updatedBy = Auth::user()->id;
-        $promotion = News::find($id);
+        $promotion = Promotion::find($id);
 
-        $promotion->update([
-            'name' => $nameArray[1],
-            'slug' => $slug,
-            'status' => $status,
-            'updated_at' => now(),
-            'update_by' => $updatedBy
-        ]);
+        $promotionImageName = $promotion->image;
+        if ($request->hasFile('image')) {
+            $filename = $this->uploadsImage($request->file('image'), 'promotion');
 
+            if (isset($promotion) && $promotion->image !== $filename) {
+                $oldImagePath = str_replace(asset('public'), 'file/promotion/', $promotion->image);
+                $relativeUrl = ltrim(str_replace(url(''), '', $oldImagePath), '/');
+                Storage::disk('public')->delete('file/promotion/' . $relativeUrl);
+
+
+                $promotion->update([
+                    'name' => $nameArray[1] ?? $nameArray[2],
+                    'image' => $filename,
+                    'status' => $status,
+                    'updated_at' => now(),
+                    'update_by' => $updatedBy
+                ]);
+            }
+        } else {
+            $promotion->update([
+                'name' => $nameArray[1] ?? $nameArray[2],
+                'image' => $promotionImageName,
+                'status' => $status,
+                'updated_by' => $updatedBy
+            ]);
+        }
         foreach ($languages as $language) {
-            $name = $nameArray[$language->id] ?? null;
-            $description = $descriptionArray[$language->id] ?? null;
-            $content = $contentArray[$language->id] ?? null;
-
-            $promotionContent = NewsContent::where('promotion_id', $promotion->id)
+            $promotionContent = PromotionContent::where('promotion_id', $promotion->id)
                 ->where('language_id', $language->id)
                 ->first();
 
             if ($promotionContent) {
                 $promotionContent->update([
-                    'name' => $name,
-                    'description' => $description,
-                    'content' => $content,
-                ]);
-            } else {
-                NewsContent::create([
-                    'promotion_id' => $promotion->id,
-                    'language_id' => $language->id,
-                    'name' => $name,
-                    'description' => $description,
-                    'content' => $content,
+                    'name' => $nameArray[$language->id] ?? null,
+                    'description' => $descriptionArray[$language->id] ?? null,
+                    'content' => $contentArray[$language->id] ?? null,
                 ]);
             }
         }
+        return redirect()->route('administrator.promotion');
+    }
 
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = substr(Str::uuid(), 0, 5) . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('file/promotion', $filename, 'public');
-            $url = asset($filename);
-            $promotionImage = NewsImage::where('promotion_id', $promotion->id)
-                ->where('language_id', $languages->first()->id)
-                ->first();
+    public function destroy($id, Request $request)
+    {
+        $promotion = Promotion::findOrFail($id);
+        $promotion->delete();
 
-            if (isset($promotionImage) && $promotionImage->image !== $url) {
-                $oldImagePath = str_replace(asset('public'), 'file/promotion/', $promotionImage->image);
-                $relativeUrl = ltrim(str_replace(url(''), '', $oldImagePath), '/');
-                Storage::disk('public')->delete('file/promotion/' . $relativeUrl);
-                $promotionImage->update([
-                    'image' => $url,
-                    'sort' => 1
-                ]);
-            } else {
-                NewsImage::create([
-                    'promotion_id' => $promotion->id,
-                    'language_id' => $languages->first()->id,
-                    'image' => $url,
-                    'sort' => 1
-                ]);
-            }
+        $currentPage = $request->query('page', 1);
+
+        return redirect()->route('administrator.promotion', ['page' => $currentPage])->with([
+            'success' => 'Promotion deleted successfully!',
+            'id' => $id
+        ]);
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (is_array($ids) && count($ids) > 0) {
+            Promotion::whereIn('id', $ids)->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Selected promotion have been deleted successfully.',
+                'deleted_ids' => $ids
+            ]);
         }
 
-        return redirect('/administrator/promotion');
+        return response()->json([
+            'status' => 'error',
+            'message' => 'No promotion selected for deletion.'
+        ], 400);
     }
 
     public function deleteImage($id)
     {
-        $promotion = News::find($id);
-        $promotionImage = NewsImage::where('promotion_id', $promotion->id)->first();
+        $promotion = Promotion::find($id);
 
-        if ($promotionImage) {
-            $oldImagePath = str_replace(asset('public'), 'file/promotion/', $promotionImage->image);
+        if ($promotion) {
+            $oldImagePath = str_replace(asset('public'), 'file/promotion/', $promotion->image);
             $relativeUrl = ltrim(str_replace(url(''), '', $oldImagePath), '/');
 
             if (Storage::disk('public')->exists('file/promotion/' . $relativeUrl)) {
                 Storage::disk('public')->delete('file/promotion/' . $relativeUrl);
             }
 
-            $promotion->update(['updated_at' => now(), 'updated_by' => Auth::user()->id]);
-            $promotionImage->delete();
+            $promotion->update(['image' => null, 'updated_at' => now(), 'updated_by' => Auth::user()->id]);
 
             return response()->json(['success' => 'Image deleted successfully']);
         }

@@ -2,25 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use App\Observers\Observer;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Catalog extends Model
+class Catalog extends CoreModel
 {
-    use HasFactory;
-    public $timestamps = false; 
+    use SoftDeletes;
     protected $table = 'catalog';
     protected $fillable = [
-        'news_id',
-        'language_id',
         'name',
-        'description',
-        'content'
+        'image',
+        'status',
+        'created_by',
+        'updated_by',
+        'deleted_by'
     ];
-    protected static function boot():void
-    {  
-        parent::boot(); 
-        static::observe(Observer::class);
+    protected $dates = ['deleted_at'];
+
+    public function content()
+    {
+        return $this->hasOne(CatalogContent::class, 'catalog_id', 'id');
     }
- }
+}

@@ -56,11 +56,111 @@
         </li>
 
         <li class="menu-item">
-            <a href="{{ route('administrator.news') }}" class="menu-link">
+          <a href="{{ route('administrator.about') }}" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-blanket"></i>
+              <div data-i18n="Basic"> About </div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="{{ route('administrator.banner') }}" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-blanket"></i>
+              <div data-i18n="Basic"> Banner </div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="{{ route('administrator.brand') }}" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-blanket"></i>
+              <div data-i18n="Basic"> Brand </div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="{{ route('administrator.catalog') }}" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-blanket"></i>
+              <div data-i18n="Basic"> Catalog </div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="{{ route('administrator.common') }}" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-blanket"></i>
+              <div data-i18n="Basic"> Common </div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="{{ route('administrator.contact') }}" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-blanket"></i>
+              <div data-i18n="Basic"> Contact </div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+            <a href="{{ route('administrator.faq') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-blanket"></i>
-                <div data-i18n="Basic"> News </div>
+                <div data-i18n="Basic"> FAQ </div>
             </a>
         </li>
+
+        <li class="menu-item">
+          <a href="{{ route('administrator.news') }}" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-blanket"></i>
+              <div data-i18n="Basic"> News </div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="{{ route('administrator.product') }}" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-blanket"></i>
+              <div data-i18n="Basic"> Product </div>
+          </a>
+        </li>
+        
+        <li class="menu-item">
+          <a href="{{ route('administrator.promotion') }}" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-blanket"></i>
+              <div data-i18n="Basic"> Promotion </div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+            <a href="{{ route('administrator.social') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-blanket"></i>
+                <div data-i18n="Basic"> Social </div>
+            </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="{{ route('administrator.testimonial') }}" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-blanket"></i>
+              <div data-i18n="Basic"> Testimonial </div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="{{ route('administrator.users') }}" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-blanket"></i>
+              <div data-i18n="Basic"> User </div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="{{ route('administrator.roles') }}" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-blanket"></i>
+              <div data-i18n="Basic"> Role </div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="{{ route('administrator.permissions') }}" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-blanket"></i>
+              <div data-i18n="Basic"> Permission </div>
+          </a>
+        </li>
+
+        
     </ul>
 </aside>
 <!-- / Menu -->

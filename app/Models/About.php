@@ -1,24 +1,31 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Observers\Observer;
+
 class About extends Model
 {
     use SoftDeletes;
     protected $table = 'about';
     protected $fillable = [
-        'name', 
-        'type', 
-        'icon', 
-        'status', 
-        'created_by', 
-        'updated_by', 
+        'name',
+        'type',
+        'icon',
+        'status',
+        'created_by',
+        'updated_by',
         'deleted_by'
     ];
 
     protected $dates = ['deleted_at'];
+
+    public function content()
+    {
+        return $this->hasOne(AboutContent::class, 'about_id', 'id');
+    }
 
     public function creator()
     {
@@ -37,8 +44,7 @@ class About extends Model
 
     protected static function boot(): void
     {
-        parent::boot(); 
+        parent::boot();
         static::observe(Observer::class);
-  
     }
 }

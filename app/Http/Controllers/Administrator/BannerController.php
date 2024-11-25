@@ -2,19 +2,38 @@
 
 namespace App\Http\Controllers\Administrator;
 
+
+use App\Models\{Language, Banner};
 use App\Http\Controllers\Controller;
-use App\Models\Banner;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\{Auth, Validator, Storage};
+
 
 class BannerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('administrator.banner.index');
+        $query = $request->input('query');
+
+        $status = $request->input('status');
+
+        $bannerQuery = Banner::query();
+
+        if ($query) {
+            $bannerQuery->where('name', 'LIKE', "%{$query}%");
+        }
+
+        if ($status) {
+            $statusValue = ($status === 'active') ? 1 : 0;
+            $bannerQuery->where('status', $statusValue);
+        }
+
+        $banner = $bannerQuery->paginate(10)->appends([
+            'query' => $query,
+            'status' => $status,
+        ]);
+        return view('administrator.banner.index', compact('banner', 'query', 'status'));
     }
 
     public function add()
@@ -35,10 +54,21 @@ class BannerController extends Controller
         $status = $request->input('status', 0);
         $filename = null;
 
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+        ], [
+            'name.required' => 'กรุณากรอกชื่อ',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = substr(Str::uuid(), 0, 5) . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('file/banner', $filename, 'public');
+            $filename = $this->uploadsImage($request->file('image'), 'banner');
         }
 
         Banner::create([
@@ -50,7 +80,7 @@ class BannerController extends Controller
             'created_by' => Auth::user()->id
         ]);
 
-        return redirect('/administrator/banner/add');
+        return redirect()->route('administrator.banner');
     }
 
     public function update(Request $request, $id)
@@ -62,9 +92,7 @@ class BannerController extends Controller
         $filename = $banner->image;
 
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = substr(Str::uuid(), 0, 5) . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('file/banner', $filename, 'public');
+            $filename = $this->uploadsImage($request->file('image'), 'banner');
 
             if ($banner->image) {
                 Storage::disk('public')->delete('file/banner/' . $banner->image);
@@ -79,7 +107,40 @@ class BannerController extends Controller
             'updated_by' => Auth::user()->id,
         ]);
 
-        return redirect('/administrator/banner');
+        return redirect()->route('administrator.banner');
+    }
+
+    public function destroy($id, Request $request)
+    {
+        $banner = Banner::findOrFail($id);
+        $banner->delete();
+
+        $currentPage = $request->query('page', 1);
+
+        return redirect()->route('administrator.banner', ['page' => $currentPage])->with([
+            'success' => 'Banner deleted successfully!',
+            'id' => $id
+        ]);
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (is_array($ids) && count($ids) > 0) {
+            Banner::whereIn('id', $ids)->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Selected banner have been deleted successfully.',
+                'deleted_ids' => $ids
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'No banner selected for deletion.'
+        ], 400);
     }
 
     public function deleteImage($id)

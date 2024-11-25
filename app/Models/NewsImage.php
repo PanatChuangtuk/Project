@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Observers\Observer;
+
 class NewsImage extends Model
 {
     use HasFactory;
-    public $timestamps = false; 
+    public $timestamps = false;
     protected $table = 'news_image';
     protected $fillable = [
         'news_id',
@@ -26,10 +27,9 @@ class NewsImage extends Model
         return $this->belongsTo(Language::class, 'language_id');
     }
 
-     protected static function boot(): void
+    protected static function boot(): void
     {
-        parent::boot(); 
+        parent::boot();
         static::observe(Observer::class);
-       
     }
 }

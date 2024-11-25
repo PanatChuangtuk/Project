@@ -3,150 +3,154 @@
 namespace App\Http\Controllers\Administrator;
 
 use App\Http\Controllers\Controller;
-use App\Models\Language;
-use App\Models\Service;
-use App\Models\ServiceContent;
+use App\Models\{Language, FaqContent, Faq};
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\{Auth, Validator};
 
-class FAQController extends Controller
+class FaqController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('administrator.FAQ.index');
+        $query = $request->input('query');
+        $status = $request->input('status');
+
+        $faqQuery = Faq::with('content');
+
+        if ($query) {
+            $faqQuery->where('name', 'LIKE', "%{$query}%");
+        }
+
+        if ($status) {
+            $statusValue = ($status === 'active') ? 1 : 0;
+            $faqQuery->where('status', $statusValue);
+        }
+
+        $faq = $faqQuery->paginate(10)->appends([
+            'query' => $query,
+            'status' => $status,
+        ]);
+
+        return view('administrator.faq.index', compact('faq', 'query', 'status'));
     }
 
     public function add()
     {
         $language = Language::get();
-        return view('administrator.FAQ.add', compact('language'));
+        return view('administrator.faq.add', compact('language'));
     }
 
     public function edit($id)
     {
-        $languages = Language::all();
-        $service = Service::find($id);
-        $serviceContent = ServiceContent::where('service_id', $service->id)->get()->keyBy('language_id');
+        $language = Language::all();
+        $faq = Faq::find($id);
+        $faqContent = FaqContent::where('faq_id', $faq->id)->get()->keyBy('language_id');
 
-        return view('administrator.FAQ.edit', compact('service', 'serviceContent', 'languages'));
+        return view('administrator.faq.edit', compact('faq', 'faqContent', 'language'));
     }
 
     public function submit(Request $request)
     {
         $languages = Language::all();
         $nameArray = $request->input('name');
-        $descriptionArray = $request->input('description');
+        $contentArray = $request->input('content');
+        $status = $request->input('status');
         $createdAt = Carbon::now();
         $createdBy = Auth::user()->id;
 
-        $imageName = null;
-        if ($request->hasFile('image')) {
-            $imageName = $request->file('image');
-            $imageNames = substr(Str::uuid(), 0, 5) . '.' . $imageName->getClientOriginalExtension();
-            $imageName->storeAs('file/service', $imageNames, 'public');
-            $imageName = asset($imageNames);
+        $rules = [];
+        $messages = [];
+        foreach ($languages as $language) {
+            $rules['name.' . $language->id] = 'required_without_all:name.' . implode(',', $languages->pluck('id')->toArray());
+            $messages['name.' . $language->id . '.required_without_all'] = "กรุณากรอกชื่อสำหรับภาษา " . $language->name;
+        }
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        $about = Service::create([
-            'name' => $nameArray[1],
-            'image' => $imageName,
+        $about = Faq::create([
+            'name' => $nameArray[1] ?? $nameArray[2],
+            'status' => $status,
             'created_at' => $createdAt,
             'created_by' => $createdBy
         ]);
 
         foreach ($languages as $language) {
-            ServiceContent::create([
-                'service_id' => $about->id,
+            FaqContent::create([
+                'faq_id' => $about->id,
                 'language_id' => $language->id,
                 'name' => $nameArray[$language->id] ?? null,
-                'description' => $descriptionArray[$language->id] ?? null,
+                'content' => $contentArray[$language->id] ?? null,
             ]);
         }
 
-        return redirect('/administrator/service/add');
+        return redirect()->route('administrator.faq');
     }
 
     public function update(Request $request, $id)
     {
         $languages = Language::all();
         $nameArray = $request->input('name');
-        $descriptionArray = $request->input('description');
+        $contentArray = $request->input('content');
+        $status = $request->input('status');
         $updatedBy = Auth::user()->id;
-        $service = Service::find($id);
+        $faq = Faq::find($id);
 
-        $imageName = $service->image;
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = substr(Str::uuid(), 0, 5) . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('file/service', $filename, 'public');
-            $url = asset($filename);
-
-            if (isset($service) && $service->image !== $url) {
-                $oldImagePath = str_replace(asset('public'), 'file/service/', $service->image);
-                $relativeUrl = ltrim(str_replace(url(''), '', $oldImagePath), '/');
-                Storage::disk('public')->delete('file/service/' . $relativeUrl);
-                
-                $service->update([
-                    'name' => $nameArray[1],
-                    'image' => $url,
-                    'updated_at' => now(),
-                    'updated_by' => $updatedBy
-                ]);
-            }
-        } else {
-            $service->update([
-                'name' => $nameArray[1],
-                'image' => $imageName,
-                'updated_at' => now(),
-                'updated_by' => $updatedBy
-            ]);
-        }
-
+        $faq->update([
+            'name' => $nameArray[1] ?? $nameArray[2],
+            'status' => $status,
+            'updated_at' => now(),
+            'updated_by' => $updatedBy
+        ]);
         foreach ($languages as $language) {
-            $serviceContent = ServiceContent::where('service_id', $service->id)
+            $faqContent = FaqContent::where('faq_id', $faq->id)
                 ->where('language_id', $language->id)
                 ->first();
-
-            if ($serviceContent) {
-                $serviceContent->update([
+            if ($faqContent) {
+                $faqContent->update([
                     'name' => $nameArray[$language->id] ?? null,
-                    'description' => $descriptionArray[$language->id] ?? null,
-                ]);
-            } else {
-                ServiceContent::create([
-                    'service_id' => $service->id,
-                    'language_id' => $language->id,
-                    'name' => $nameArray[$language->id] ?? null,
-                    'description' => $descriptionArray[$language->id] ?? null,
+                    'content' => $contentArray[$language->id] ?? null,
                 ]);
             }
         }
 
-        return redirect('/administrator/service/add');
+        return redirect()->route('administrator.faq');
     }
 
-    public function deleteImage($id)
+    public function destroy($id, Request $request)
     {
-        $service = Service::find($id);
+        $faq = Faq::findOrFail($id);
+        $faq->delete();
 
-        if ($service) {
-            $oldImagePath = str_replace(asset('public'), 'file/service/', $service->image);
-            $relativeUrl = ltrim(str_replace(url(''), '', $oldImagePath), '/');
+        $currentPage = $request->query('page', 1);
 
-            if (Storage::disk('public')->exists('file/service/' . $relativeUrl)) {
-                Storage::disk('public')->delete('file/service/' . $relativeUrl);
-            }
+        return redirect()->route('administrator.faq', ['page' => $currentPage])->with([
+            'success' => 'FAQ deleted successfully!',
+            'id' => $id
+        ]);
+    }
 
-            $service->update([
-                'image' => null,
-                'updated_at' => now(),
-                'updated_by' => Auth::user()->id
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (is_array($ids) && count($ids) > 0) {
+            Faq::whereIn('id', $ids)->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Selected FAQ have been deleted successfully.',
+                'deleted_ids' => $ids
             ]);
-
-            return response()->json(['success' => 'Image deleted successfully']);
         }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'No FAQ selected for deletion.'
+        ], 400);
     }
 }

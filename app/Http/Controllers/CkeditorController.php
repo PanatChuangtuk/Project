@@ -1,11 +1,10 @@
 <?php
-    
+
 namespace App\Http\Controllers;
-    
-use Illuminate\Http\Request;
+
+use Illuminate\Http\{Request, JsonResponse};
 use Illuminate\View\View;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Storage;
+
 class CkeditorController extends Controller
 {
     /**
@@ -17,7 +16,7 @@ class CkeditorController extends Controller
     {
         return view('ckeditor');
     }
-    
+
     /**
      * Write code on Method
      *
@@ -31,11 +30,11 @@ class CkeditorController extends Controller
             $extension =  $originName->getClientOriginalExtension();
             $newFileName  = $fileName . '_' . time() . '.' . $extension;
 
-            $originName->storeAs('upload/', $newFileName, 'public');
-            
-            $url = asset('storage/upload/' . $newFileName );
-  
-            return response()->json(['fileName' => $newFileName , 'uploaded'=> 1, 'url' => $url]);
+            $originName->storeAs('ckupload/', $newFileName, 'public');
+
+            $url = asset('upload/ckupload/' . $newFileName);
+
+            return response()->json(['fileName' => $newFileName, 'uploaded' => 1, 'url' => $url]);
         }
     }
 }

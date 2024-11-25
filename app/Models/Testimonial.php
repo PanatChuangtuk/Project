@@ -1,43 +1,30 @@
 <?php
-namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Observers\Observer;
-class Testimonial extends Model
+
+class Testimonial extends CoreModel
 {
     use SoftDeletes;
     protected $table = 'testimonial';
     protected $fillable = [
-        'name', 
-        'positon_name', 
-        'image',
-        'created_by', 
-        'updated_by', 
+        'name',
+        'profile_image',
+        'status',
+        'created_by',
+        'updated_by',
+        'name',
+        'profile_image',
+        'status',
+        'created_by',
+        'updated_by',
         'deleted_by'
     ];
 
     protected $dates = ['deleted_at'];
 
-    public function creator()
+    public function content()
     {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
-    public function updater()
-    {
-        return $this->belongsTo(User::class, 'updated_by');
-    }
-
-    public function deleter()
-    {
-        return $this->belongsTo(User::class, 'deleted_by');
-    }
-
-    protected static function boot(): void
-    {
-        parent::boot(); 
-        static::observe(Observer::class);
-  
+        return $this->hasOne(TestimonialContent::class);
     }
 }

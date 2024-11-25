@@ -1,11 +1,13 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Observers\Observer;
+
 class AboutContent extends Model
 {
-    public $timestamps = false; 
+    public $timestamps = false;
     protected $table = 'about_content';
     protected $fillable = [
         'about_id',
@@ -15,7 +17,7 @@ class AboutContent extends Model
         'content'
     ];
 
-    public function about()
+    public function content()
     {
         return $this->belongsTo(About::class, 'about_id');
     }
@@ -26,8 +28,7 @@ class AboutContent extends Model
 
     protected static function boot(): void
     {
-        parent::boot(); 
+        parent::boot();
         static::observe(Observer::class);
-  
     }
 }

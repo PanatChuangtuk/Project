@@ -2,23 +2,42 @@
 
 namespace App\Http\Controllers\Administrator;
 
+use App\Models\Language;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\{Auth, Validator, Storage};
+
 
 class BrandController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('administrator.brand.index');
+        $query = $request->input('query');
+        $status = $request->input('status');
+
+        $brandQuery = Brand::query();
+
+        if ($query) {
+            $brandQuery->where('name', 'LIKE', "%{$query}%");
+        }
+
+        if ($status) {
+            $statusValue = ($status === 'active') ? 1 : 0;
+            $brandQuery->where('status', $statusValue);
+        }
+
+        $brand = $brandQuery->paginate(10)->appends([
+            'query' => $query,
+            'status' => $status,
+        ]);
+        return view('administrator.brand.index', compact('brand', 'query', 'status'));
     }
 
     public function add()
     {
+
         return view('administrator.brand.add');
     }
 
@@ -35,10 +54,21 @@ class BrandController extends Controller
         $status = $request->input('status', 0);
         $filename = null;
 
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+        ], [
+            'name.required' => 'กรุณากรอกชื่อ',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = substr(Str::uuid(), 0, 5) . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('file/brand', $filename, 'public');
+            $filename = $this->uploadsImage($request->file('image'), 'brand');
         }
 
         Brand::create([
@@ -50,7 +80,7 @@ class BrandController extends Controller
             'created_by' => Auth::user()->id
         ]);
 
-        return redirect('/administrator/brand/add');
+        return redirect()->route('administrator.brand');
     }
 
     public function update(Request $request, $id)
@@ -62,9 +92,7 @@ class BrandController extends Controller
         $filename = $brand->image;
 
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = substr(Str::uuid(), 0, 5) . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('file/brand', $filename, 'public');
+            $filename = $this->uploadsImage($request->file('image'), 'brand');
 
             if ($brand->image) {
                 Storage::disk('public')->delete('file/brand/' . $brand->image);
@@ -79,7 +107,40 @@ class BrandController extends Controller
             'updated_by' => Auth::user()->id,
         ]);
 
-        return redirect('/administrator/brand');
+        return redirect()->route('administrator.brand');
+    }
+
+    public function destroy($id, Request $request)
+    {
+        $brand = Brand::findOrFail($id);
+        $brand->delete();
+
+        $currentPage = $request->query('page', 1);
+
+        return redirect()->route('administrator.brand', ['page' => $currentPage])->with([
+            'success' => 'Brand deleted successfully!',
+            'id' => $id
+        ]);
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (is_array($ids) && count($ids) > 0) {
+            Brand::whereIn('id', $ids)->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Selected brand have been deleted successfully.',
+                'deleted_ids' => $ids
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'No brand selected for deletion.'
+        ], 400);
     }
 
     public function deleteImage($id)

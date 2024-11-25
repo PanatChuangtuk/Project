@@ -1,33 +1,32 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Observers\Observer;
+
 class TestimonialContent extends Model
-{ 
-    public $timestamps = false; 
+{
+    public $timestamps = false;
     protected $table = 'testimonial_content';
     protected $fillable = [
-        'testimonial_id', 
-        'language_id', 
-        'name', 
-        'description', 
+        'testimonial_id',
+        'language_id',
+        'name',
+        'profile_name',
+        'profile_position',
+        'content',
+        'testimonial_id',
+        'language_id',
+        'name',
+        'profile_name',
+        'profile_position',
+        'content',
     ];
 
-    public function testimonial()
-    {
-        return $this->belongsTo(Testimonial::class, 'testimonial_id');
-    }
-
-    public function language()
-    {
-        return $this->belongsTo(Language::class, 'language_id');
-    }
-    
     protected static function boot(): void
     {
-        parent::boot(); 
+        parent::boot();
         static::observe(Observer::class);
-  
     }
 }

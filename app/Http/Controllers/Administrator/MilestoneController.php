@@ -8,13 +8,18 @@ use App\Models\AboutContent;
 use App\Models\About;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\{Auth, Validator};
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
-use App\AboutEnum;
+use App\Enum\AboutEnum;
 
 class MilestoneController extends Controller
 {
+    public function index()
+    {
+        return view('administrator.milestone.index');
+    }
+
     public function add()
     {
         $language = Language::get();
@@ -43,17 +48,27 @@ class MilestoneController extends Controller
         $descriptionArray = $request->input('description');
         $createdAt = Carbon::now();
         $createdBy = Auth::user()->id;
+        $rules = [];
+        $messages = [];
+
+        foreach ($languages as $language) {
+            $rules['name.' . $language->id] = 'required_without_all:name.' . implode(',', $languages->pluck('id')->toArray());
+            $messages['name.' . $language->id . '.required_without_all'] = "กรุณากรอกชื่อสำหรับภาษา " . $language->name;
+        }
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         $iconName = null;
         if ($request->hasFile('icon')) {
-            $iconName = $request->file('icon');
-            $iconNames = substr(Str::uuid(), 0, 5) . '.' . $iconName->getClientOriginalExtension();
-            $iconName->storeAs('file/milestone', $iconNames, 'public');
-            $iconName = asset($iconNames);
+            $iconName = $this->uploadsImage($request->file('icon'), 'milestone');
         }
-
         $about = About::create([
-            'name' => $nameArray[1],
+            'name' => $nameArray[1] ?? $nameArray[2],
             'type' => $type,
             'icon' => $iconName,
             'status' => $status,
@@ -70,8 +85,7 @@ class MilestoneController extends Controller
                 'description' => $descriptionArray[$language->id] ?? null,
             ]);
         }
-
-        return redirect('/administrator/milestone/add');
+        return redirect()->route('administrator.milestone');
     }
 
     public function update(Request $request, $id)
@@ -87,25 +101,22 @@ class MilestoneController extends Controller
         $iconName = $about->icon;
 
         if ($request->hasFile('icon')) {
-            $file = $request->file('icon');
-            $filename = substr(Str::uuid(), 0, 5) . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('file/milestone', $filename, 'public');
-            $url = asset($filename);
-            if (isset($about) && $about->icon !== $url) {
+            $filename = $this->uploadsImage($request->file('icon'), 'milestone');
+            if (isset($about) && $about->icon !== $filename) {
                 $oldImagePath = str_replace(asset('public'), 'file/milestone/', $about->icon);
                 $relativeUrl = ltrim(str_replace(url(''), '', $oldImagePath), '/');
                 Storage::disk('public')->delete('file/milestone/' . $relativeUrl);
                 $about->update([
-                    'name' => $nameArray[1],
+                    'name' => $nameArray[1] ?? $nameArray[2],
                     'type' => $type,
-                    'icon' => $url,
+                    'icon' => $filename,
                     'status' => $status,
                     'updated_by' => $updatedBy
                 ]);
             }
         } else {
             $about->update([
-                'name' => $nameArray[1],
+                'name' => $nameArray[1] ?? $nameArray[2],
                 'type' => $type,
                 'icon' => $iconName,
                 'status' => $status,
@@ -134,7 +145,7 @@ class MilestoneController extends Controller
             }
         }
 
-        return redirect('/administrator/milestone/add');
+        return redirect()->route('administrator.milestone');
     }
 
     public function deleteImage($id)

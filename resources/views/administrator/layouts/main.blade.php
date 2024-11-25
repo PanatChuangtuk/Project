@@ -41,7 +41,7 @@ data-template="vertical-menu-template-free"
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.3.1/ckeditor5.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     
@@ -53,42 +53,23 @@ data-template="vertical-menu-template-free"
     <!-- Icons -->
     <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/fonts/boxicons.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css" crossorigin="anonymous">
-    
+    <!-- Krajee -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css" rel="stylesheet"
+    type="text/css" />
     <!-- Core CSS -->
     <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/css/core.css" class="template-customizer-core-css" />
     <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/css/demo.css" />
     
-    <!-- Vendors CSS -->
-    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/libs/apex-charts/apex-charts.css" />
-    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/libs/datatables/datatables.min.css" rel="stylesheet">
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- File Input -->
-    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
-   
-    
     <!-- Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/libs/select2/select2.css" />
     
-    <!-- Full Calendar -->
-    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/libs/fullcalendar/fullcalendar.css" />
-    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/css/pages/app-calendar.css" />
-    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/libs/flatpickr/flatpickr.css" />
-    
-    <!-- Form Validation -->
-    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css" />
-    
-    <!-- Star Ratings -->
-    <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/libs/rateyo/rateyo.css" />
-    
-    <!-- SweetAlert2 -->
-    {{-- <link rel="stylesheet" href="{{ URL::asset('vendor') }}/sweetalert2/sweetalert2.min.css" /> --}}
+    <!-- File Input -->
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
     
     @yield('stylesheet')
-    <style>
+    {{-- <style>
         body {
             font-family: "Prompt", sans-serif;
             --sb-track-color: #ffffff;
@@ -138,13 +119,73 @@ data-template="vertical-menu-template-free"
         .tablesort tbody tr {
             cursor: move;
         }
-    </style>
+    </style> --}}
     <style>  
       .ck-editor__editable_inline{
             min-height: 200px;
             }
+            /* .ck.ck-content .image img {
+
+              width:600px;
+              height: 510px;
+
+          } */
             </style>
     <!-- Page CSS -->
+
+<style>/* ---- Cross-editor content styles. --------------------------------------------------------------- */
+ 
+  
+  /* Make sure all content containers are distinguishable on a web page even of not focused. */
+  .ck.ck-content:not(:focus) {
+    border: 1px solid var(--ck-color-base-border);
+  }
+  
+  /* Fix for editor styles overflowing into comment reply fields */
+  .ck-comment__input .ck.ck-content {
+    min-height: unset;
+    border: 0;
+    padding: 0;
+  }
+  
+  /* Font sizes and vertical rhythm for common elements (headings, lists, paragraphs, etc.) */
+  .ck-content h1 {
+    font-size: 2.3em;
+  }
+  .ck-content h2 {
+    font-size: 1.84em;
+  }
+  .ck-content h3 {
+    font-size: 1.48em;
+  }
+  .ck-content h4 {
+    font-size: 1.22em;
+  }
+  .ck-content h5 {
+    font-size: 1.06em;
+  }
+  .ck-content h6 {
+    font-size: 1em;
+  }
+  .ck-content h1,
+  .ck-content h2,
+  .ck-content h3,
+  .ck-content h4,
+  .ck-content h5,
+  .ck-content h6 {
+    line-height: 1.2em;
+    padding-top: 0.8em;
+    margin-bottom: 0.4em;
+  }
+  .ck-content blockquote,
+  .ck-content ol,
+  .ck-content p,
+  .ck-content ul {
+    font-size: 1em;
+    line-height: 1.6em;
+    padding-top: 0.2em;
+    margin-bottom: var(--ck-spacing-large);
+  }</style>
 
     <!-- Helpers -->
     <script src="{{ URL::asset('administrator') }}/assets/vendor/js/helpers.js"></script>
@@ -152,7 +193,7 @@ data-template="vertical-menu-template-free"
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{ URL::asset('administrator') }}/assets/js/config.js"></script>
-    {{-- <script src="{{ URL::asset('vendor') }}/sweetalert2/sweetalert2.min.js"></script> --}}
+   
 </head>
 
 <body>
@@ -327,12 +368,21 @@ data-template="vertical-menu-template-free"
     
     <!-- Resumable.js (optional) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/resumable.js/1.0.3/resumable.min.js"></script>
-    
+  
+    <!-- Krajee -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <!-- CKEditor -->
     {{-- <script src="{{ URL::asset('administrator') }}/vendor-admin/ckeditor4/ckeditor.js"></script>
     <script src="{{ URL::asset('administrator') }}/vendor-admin/ckeditor/build/ckeditor.js"></script> --}}
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
     
+    <script type="importmap">
+      {
+          "imports": {
+              "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.3.1/ckeditor5.js",
+              "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.3.1/"
+          }
+      }
+  </script>
     <!-- Full Calendar -->
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/fullcalendar/fullcalendar.js"></script>
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/flatpickr/flatpickr.js"></script>
@@ -361,89 +411,89 @@ data-template="vertical-menu-template-free"
     <script src="{{ URL::asset('administrator') }}/js/custom-alert.js"></script>
     
     <!-- GitHub Buttons -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    {{-- <script async defer src="https://buttons.github.io/buttons.js"></script> --}}
     @yield('script')
 
     <script>
-        initialDatatable()
-        function initialDatatable(){
-            try
-            {                
-                var table = $('#dataTable').DataTable({
-                    searching: false,
-                    paging: false,
-                    order: [[ 0, '' ]],
-                });
+        // initialDatatable()
+        // function initialDatatable(){
+        //     try
+        //     {                
+        //         var table = $('#dataTable').DataTable({
+        //             searching: false,
+        //             paging: false,
+        //             order: [[ 0, '' ]],
+        //         });
 
-                if ($('#dataTableSort').length > 0) {
-                    table = $('#dataTableSort').DataTable({
-                        searching: false,
-                        paging: false,
-                        rowReorder: {
-                            selector: 'tr td:not(.no-sort)',
-                            update: true
-                        },
-                        columnDefs: [
-                            { visible: false, targets: [0] }
-                        ],
-                        order: [[ 1, 'asc' ]],
-                    });
-                }
+        //         if ($('#dataTableSort').length > 0) {
+        //             table = $('#dataTableSort').DataTable({
+        //                 searching: false,
+        //                 paging: false,
+        //                 rowReorder: {
+        //                     selector: 'tr td:not(.no-sort)',
+        //                     update: true
+        //                 },
+        //                 columnDefs: [
+        //                     { visible: false, targets: [0] }
+        //                 ],
+        //                 order: [[ 1, 'asc' ]],
+        //             });
+        //         }
                 
-                // table.order([0,'']).draw();
-                //sort columns
-                var reqColumn = "{{request('column')}}"
-                var reqColumnName = "{{request('columnName')}}"
-                var reqDirection = "{{request('direction')}}"
-                var reqPage = "{{request('page')}}"
-                var reqPerPage = "{{request('perPage')}}"
+        //         // table.order([0,'']).draw();
+        //         //sort columns
+        //         var reqColumn = "{{request('column')}}"
+        //         var reqColumnName = "{{request('columnName')}}"
+        //         var reqDirection = "{{request('direction')}}"
+        //         var reqPage = "{{request('page')}}"
+        //         var reqPerPage = "{{request('perPage')}}"
 
-                if(reqColumn && reqDirection){
-                    table.order([reqColumn, reqDirection]).draw();
-                }
+        //         if(reqColumn && reqDirection){
+        //             table.order([reqColumn, reqDirection]).draw();
+        //         }
 
-                table.on('order.dt', function(t) {
-                    var currentRoute = '{{ Request::url() }}'
-                    var columnNames = table.columns().header().map(function(th) {
-                        return {
-                            name: $(th).text(),
-                            dataName: $(th).attr('data-name')
-                        };
-                    }).toArray();
+        //         table.on('order.dt', function(t) {
+        //             var currentRoute = '{{ Request::url() }}'
+        //             var columnNames = table.columns().header().map(function(th) {
+        //                 return {
+        //                     name: $(th).text(),
+        //                     dataName: $(th).attr('data-name')
+        //                 };
+        //             }).toArray();
 
-                    var column = table.order()[0][0]; // Get the index of the sorted column
-                    var direction = table.order()[0][1]; // 'asc' or 'desc'
+        //             var column = table.order()[0][0]; // Get the index of the sorted column
+        //             var direction = table.order()[0][1]; // 'asc' or 'desc'
 
-                    //parameter in forms
-                    var formData = $("form").serialize();
+        //             //parameter in forms
+        //             var formData = $("form").serialize();
 
-                    if(column) {
-                        swal.showLoading();
-                        // Construct the URL with parameters
-                        var url = `${currentRoute}?column=${column}&columnName=${columnNames[column].dataName}&direction=${direction}&page=${reqPage}&perPage=${reqPerPage}&${formData}#dataTable`;
+        //             if(column) {
+        //                 swal.showLoading();
+        //                 // Construct the URL with parameters
+        //                 var url = `${currentRoute}?column=${column}&columnName=${columnNames[column].dataName}&direction=${direction}&page=${reqPage}&perPage=${reqPerPage}&${formData}#dataTable`;
 
-                        window.location.href = url;
-                    }
-                });
+        //                 window.location.href = url;
+        //             }
+        //         });
 
-                table.on('row-reorder', function(e, diff, edit) {
-                    // console.log(e)
-                    console.log(diff)
-                    // console.log(edit)
-                    if(diff.length > 0) {
-                        var formdata   = new FormData();
-                        formdata.append('_token','{{ csrf_token() }}');
-                        formdata.append('sort_order_list',JSON.stringify(diff));
+        //         table.on('row-reorder', function(e, diff, edit) {
+        //             // console.log(e)
+        //             console.log(diff)
+        //             // console.log(edit)
+        //             if(diff.length > 0) {
+        //                 var formdata   = new FormData();
+        //                 formdata.append('_token','{{ csrf_token() }}');
+        //                 formdata.append('sort_order_list',JSON.stringify(diff));
                         
-                        //formid,urlSave,urlRedirect
-                        callEditAlert(formdata,'{{ url("administrator/".str_replace("administrator.","",Route::currentRouteName())."/update/") }}/0?mode={{ request("mode") }}','{{ url("administrator/".str_replace("administrator.","",Route::currentRouteName())) }}?mode={{ request("mode") }}')
-                    }
-                });
-            }
-            catch (err) {
-                console.log(err)
-            }
-        }
+        //                 //formid,urlSave,urlRedirect
+        //                 callEditAlert(formdata,'{{ url("administrator/".str_replace("administrator.","",Route::currentRouteName())."/update/") }}/0?mode={{ request("mode") }}','{{ url("administrator/".str_replace("administrator.","",Route::currentRouteName())) }}?mode={{ request("mode") }}')
+        //             }
+        //         });
+        //     }
+        //     catch (err) {
+        //         console.log(err)
+        //     }
+        // }
 
         // var date = document.querySelector(".date-flatpick");
         // var dateTime = document.querySelector(".date-flatpick-time");

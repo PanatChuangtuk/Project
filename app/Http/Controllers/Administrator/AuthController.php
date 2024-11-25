@@ -19,8 +19,8 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => $request->password,
         ];
-      
-        if (Auth::attempt($credetials)) {
+
+        if (Auth::guard('web')->attempt($credetials)) {
             return redirect('/administrator/dashboard')->with('success', 'Login berhasil');
         }
         return back()->with('error', 'Email or Password salah');
@@ -28,7 +28,7 @@ class AuthController extends Controller
 
     public function logout()
     {
-        Auth::logout();
+        Auth::guard('web')->logout();
         return redirect()->route('administrator.login');
     }
 }
