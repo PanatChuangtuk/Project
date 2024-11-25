@@ -28,9 +28,9 @@ class UserController extends Controller
             'query' => $query,
         ]);
 
-        $roles = Role::all();
+        // $roles = Role::all();
 
-        return view('administrator.users.index', compact('users', 'roles', 'query'));
+        return view('administrator.users.index', compact('users', 'query'));
     }
 
 

@@ -48,7 +48,7 @@ maximum-scale=1.0, user-scalable=no" />
                             <span></span>
                         </span>
                     </button>
-                    <ul class="nav nav-general left member">
+                    {{-- <ul class="nav nav-general left member">
                         @foreach ($social as $socialItem)
                             <li>
                                 <div class="followus">
@@ -107,7 +107,7 @@ maximum-scale=1.0, user-scalable=no" />
                                 </li>
                             </div>
                         @endauth
-                        {{-- @if (!Session::has('cart')) --}}
+                    
                         <li>
                             <a class="cart-mini" href="{{ route('cart.index', ['lang' => app()->getLocale()]) }}">
                                 <div class="btn btn-outline">
@@ -118,10 +118,10 @@ maximum-scale=1.0, user-scalable=no" />
                                 {{-- @foreach ($cart as $item)
                                     - {{ number_format($item['price'] * $item['quantity'], 2) }} ฿
                                 @endforeach --}}
-                            </a>
-                        </li>
-                        {{-- @endif --}}
-                    </ul>
+                    {{-- </a> --}}
+                    {{-- </li> --}}
+                    {{-- @endif --}}
+                    {{-- </ul>  --}}
                     <ul class="nav nav-general right">
                         {{-- <li class="nav-search">
                             <a href="#" class="btn btn-outline d-desktop-none" data-bs-toggle="dropdown"
@@ -138,13 +138,12 @@ maximum-scale=1.0, user-scalable=no" />
 
                         {{-- </li> --}}
 
-                        <li class="d-desktop-none">
-                            <a class="btn btn-outline"
-                                href="{{ route('cart.index', ['lang' => app()->getLocale()]) }}">
+                        {{-- <li class="d-desktop-none">
+                            <a class="btn btn-outline" href="{{ route('cart.index', ['lang' => app()->getLocale()]) }}">
                                 <img class="icons cart svg-js" src="{{ asset('img/icons/icon-cart.svg') }}"
                                     alt="">
                             </a>
-                        </li>
+                        </li> --}}
                         @guest('member')
                             <li class="dropdown d-desktop-none">
                                 <a class="btn btn-outline" href="#" data-bs-toggle="dropdown"
@@ -332,10 +331,10 @@ maximum-scale=1.0, user-scalable=no" />
 
                 <ul class="nav nav-general left">
                     <li>
-                        <div class="followus">
+                        {{-- <div class="followus">
                             <a href="{{ $socialItem->url }}" target="_blank"><img class="svg-js icons"
                                     src="{{ asset('upload/file/social/' . $socialItem->image) }}" alt=""></a>
-                        </div>
+                        </div> --}}
                     </li>
 
                     <div class="followus">
@@ -439,12 +438,12 @@ maximum-scale=1.0, user-scalable=no" />
                     <div class="group">
 
                         <div class="followus">
-                            @foreach ($social as $socialItem)
+                            {{-- @foreach ($social as $socialItem)
                                 <a href="{{ strip_tags($socialItem->html) }}" target="_blank"><img
                                         class="svg-js icons"
                                         src="{{ asset('upload/file/social/' . $socialItem->image) }}"
                                         alt=""></a>
-                            @endforeach
+                            @endforeach --}}
                         </div>
 
                         <ul class="nav nav-contact in-content" style="margin-top: -30px;">

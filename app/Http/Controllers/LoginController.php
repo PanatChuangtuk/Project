@@ -13,7 +13,7 @@ class LoginController extends MainController
     public function loginIndex()
     {
         if (Auth::guard('member')->check()) {
-            return redirect()->route('profile', ['lang' => app()->getLocale()]);
+            return redirect()->route('profile');
         }
         return view('login');
     }
@@ -21,7 +21,7 @@ class LoginController extends MainController
     public function dataForgotPassword()
     {
         if (Auth::guard('member')->check()) {
-            return redirect()->route('profile', ['lang' => app()->getLocale()]);
+            return redirect()->route('profile');
         }
 
         return view('otp-forgot-password-login');
@@ -31,7 +31,7 @@ class LoginController extends MainController
     public function dataForgotPasswordSubmit(Request $request)
     {
         if (Auth::guard('member')->check()) {
-            return redirect()->route('profile', ['lang' => app()->getLocale()]);
+            return redirect()->route('profile');
         }
         $validator = Validator::make($request->all(), [
             'email_or_phone' => 'required|string',
@@ -85,7 +85,7 @@ class LoginController extends MainController
     public function resetPasswordIndex($lang, Request $request)
     {
         if (Auth::guard('member')->check()) {
-            return redirect()->route('profile', ['lang' => app()->getLocale()]);
+            return redirect()->route('profile');
         }
         return view('set-new-password');
     }
@@ -118,7 +118,7 @@ class LoginController extends MainController
         ]);
         session()->forget('reset_token');
 
-        return redirect()->route('login', ['lang' => app()->getLocale()]);
+        return redirect()->route('login');
     }
 
     public function submit(Request $request)
@@ -151,11 +151,11 @@ class LoginController extends MainController
         }
 
         if ($user->is_source === IsSourceEnum::Admin->value) {
-            return redirect()->route('login.forgot.password', ['lang' => app()->getLocale()]);
+            return redirect()->route('login.forgot.password');
         }
 
         Auth::guard('member')->login($user);
 
-        return redirect()->route('profile', ['lang' => app()->getLocale()])->with('success', __('messages.login_success'));
+        return redirect()->route('profile')->with('success', __('messages.login_success'));
     }
 }

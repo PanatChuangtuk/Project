@@ -16,7 +16,7 @@ class RegisterController extends MainController
     function registerIndex()
     {
         if (Auth::guard('member')->check()) {
-            return redirect()->route('profile', ['lang' => app()->getLocale()]);
+            return redirect()->route('profile');
         }
         return view('register');
     }
@@ -92,6 +92,6 @@ class RegisterController extends MainController
             'account_type' => $request->account_type,
             'newsletter' => $request->newsletter,
         ]);
-        return redirect()->route('login', ['lang' => app()->getLocale()]);
+        return redirect()->route('login');
     }
 }
