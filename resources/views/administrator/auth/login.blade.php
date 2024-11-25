@@ -65,7 +65,8 @@
                                 <span class="app-brand-logo demo">
                                     {{-- <img src="{{ URL::asset('administrator') }}/assets/img/logo.png" width="40" alt=""> --}}
                                 </span>
-                                <span class="app-brand-text demo text-body fw-bolder text-capitalize"> UAV </span>
+                                <span class="app-brand-text demo text-body fw-bolder text-capitalize"> Login System
+                                </span>
                             </a>
                         </div>
                         <!-- /Logo -->

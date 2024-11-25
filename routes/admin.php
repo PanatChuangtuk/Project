@@ -214,6 +214,6 @@ Route::prefix('administrator')->group(function () {
         });
     });
 });
-Route::get('/dashboard', function () {
+Route::get('/', function () {
     return redirect()->route('administrator.dashboard');
 })->where('any', '.*');
