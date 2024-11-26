@@ -46,10 +46,9 @@
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
-
-                                        <label class="title mb-0"><a
-                                                href="{{ url('/otp-forgot-password-login') }}">@lang('messages.forgot_password')</a></label>
-
+                                        <label class="title mb-0">
+                                            <a href="{{ url('/otp-forgot-password-login') }}">@lang('messages.forgot_password')</a>
+                                        </label>
                                     </div>
                                 </div>
 
