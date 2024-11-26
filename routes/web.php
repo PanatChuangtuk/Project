@@ -43,6 +43,9 @@ Route::post('login', [LoginController::class, 'submit'])->name('login.submit');
 Route::get('register', [RegisterController::class, 'registerIndex'])->name('register');
 Route::post('register/submit', [RegisterController::class, 'submit'])->name('register.submit');
 
+// Route::get('profile', [ProfileController::class, 'profileIndex'])->name('profile')->middleware('auth:member');
+// Route::post('profile', [ProfileController::class, 'submit'])->name('profile.submit')->middleware('auth:member');
+Route::post('logout', [ProfileController::class, 'logout'])->name('logout')->middleware('auth:member');
 
 // Route::get('/', function () {
 //     return redirect(app()->getLocale() . '/ ');

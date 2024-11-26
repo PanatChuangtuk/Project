@@ -9,7 +9,7 @@
         <div class="container">
             <div class="row row-main">
                 <div class="cols col-photo" data-aos="fade-in">
-                    <img src="{{ asset('img/thumb/photo-1000x965--1.jpg') }}" alt="" />
+                    <img src="{{ asset('img/thumb/images.jpg') }}" alt="" />
                 </div>
                 <!--cols-->
                 <div class="cols col-form" data-aos="fade-in">
@@ -21,8 +21,7 @@
                                 @lang('messages.login_area_info')
                             </p>
                         </div>
-                        <form class="form" method="POST"
-                            action="{{ route('login.submit', ['lang' => app()->getLocale()]) }}">
+                        <form class="form" method="POST" action="{{ route('login.submit') }}">
                             @csrf
                             <div class="row g-4">
                                 <div class="col-12">
@@ -49,9 +48,8 @@
                                         </div>
 
                                         <label class="title mb-0"><a
-                                                href="{{ url(app()->getLocale() . '/otp-forgot-password-login') }}">@lang('messages.forgot_password')</a></label>
-                                        <label class="title mb-0"><a
-                                                href="{{ url(app()->getLocale() . '/ ') }}">@lang('messages.return_to_store')</a></label>
+                                                href="{{ url('/otp-forgot-password-login') }}">@lang('messages.forgot_password')</a></label>
+
                                     </div>
                                 </div>
 
@@ -64,8 +62,7 @@
                                 <div class="col-12 py-4">
                                     <div class="form-note">
                                         <h6>@lang('messages.dont_have_account')</h6>
-                                        <a href="{{ url(app()->getLocale() . '/register') }}"
-                                            class="btn btn-32 btn-light rounded-14">
+                                        <a href="{{ url('/register') }}" class="btn btn-32 btn-light rounded-14">
                                             <span class="fs-14 px-2">@lang('messages.register')</span>
                                         </a>
                                     </div>

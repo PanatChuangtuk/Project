@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale = 1.0, 
 maximum-scale=1.0, user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <title>@yield('title', 'Default') - U&V HOLDING</title>
+    <title>@yield('title', 'Default') - KMUTNB</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -48,8 +48,8 @@ maximum-scale=1.0, user-scalable=no" />
                             <span></span>
                         </span>
                     </button>
-                    {{-- <ul class="nav nav-general left member">
-                        @foreach ($social as $socialItem)
+                    <ul class="nav nav-general right member">
+                        {{-- @foreach ($social as $socialItem)
                             <li>
                                 <div class="followus">
                                     <a href="{{ strip_tags($socialItem->html) }}" target="_blank"><img
@@ -58,14 +58,14 @@ maximum-scale=1.0, user-scalable=no" />
                                             alt=""></a>
                                 </div>
                             </li>
-                        @endforeach
+                        @endforeach --}}
 
 
                         @guest('member')
                             <div class="member-links">
                                 @if (Route::has('login'))
                                     <li>
-                                        <a href="{{ url(app()->getLocale() . '/login') }}" class="link">
+                                        <a href="{{ url('/login') }}" class="link">
                                             @lang('messages.login')
                                         </a>
                                     </li>
@@ -75,7 +75,7 @@ maximum-scale=1.0, user-scalable=no" />
 
                                 @if (Route::has('register'))
                                     <li>
-                                        <a href="{{ url(app()->getLocale() . '/register') }}" class="link">
+                                        <a href="{{ url('/register') }}" class="link">
                                             @lang('messages.register')
                                         </a>
                                     </li>
@@ -89,16 +89,20 @@ maximum-scale=1.0, user-scalable=no" />
                                     <a href="#" data-bs-toggle="dropdown" data-bs-display="static" class="link">
                                         <img class="icons avatar" src="{{ asset('img/thumb/avatar-1.png') }}"
                                             alt="">
-                                        <span
-                                            class="username">{{ $profileUser->first_name . ' ' . $profileUser->last_name }}</span>
+                                        {{-- <span
+                                            class="username">{{ $profileUser->first_name . ' ' . $profileUser->last_name }}</span> --}}
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a href="{{ url(app()->getLocale() . '/profile') }}"> @lang('messages.my_account')</a>
+                                            <a href="{{ url('/profile') }}"> @lang('messages.my_account')</a>
                                         </li>
-                                        <li><a href="{{ url(app()->getLocale() . '/my-purchase') }}">@lang('messages.my_purchase')</a>
+                                        <li><a href="{{ url('/my-purchase') }}">@lang('messages.my_purchase')</a>
                                         </li>
                                         <li>
+                                            <form id="logout-form" action="{{ url('/logout') }}" method="POST"
+                                                style="display: none;">
+                                                @csrf
+                                            </form>
                                             <a href="#" class="logout" onclick="confirmLogout(event)">
                                                 @lang('messages.sign_out')
                                             </a>
@@ -107,21 +111,21 @@ maximum-scale=1.0, user-scalable=no" />
                                 </li>
                             </div>
                         @endauth
-                    
-                        <li>
-                            <a class="cart-mini" href="{{ route('cart.index', ['lang' => app()->getLocale()]) }}">
+
+                        {{-- <li>
+                            <a class="cart-mini" href="{{ route('cart.index') }}">
                                 <div class="btn btn-outline">
                                     <img class="svg-js icons" src="{{ asset('img/icons/icon-cart.svg') }}"
                                         alt="">
                                 </div>
-                                {{ sizeof($cart) }} @lang('messages.item') (s)
-                                {{-- @foreach ($cart as $item)
+                                {{ sizeof($cart) }} @lang('messages.item') (s) --}}
+                        {{-- @foreach ($cart as $item)
                                     - {{ number_format($item['price'] * $item['quantity'], 2) }} ฿
                                 @endforeach --}}
-                    {{-- </a> --}}
-                    {{-- </li> --}}
-                    {{-- @endif --}}
-                    {{-- </ul>  --}}
+                        {{-- </a>
+                    </li>
+                    @endif
+                    </ul> 
                     <ul class="nav nav-general right">
                         {{-- <li class="nav-search">
                             <a href="#" class="btn btn-outline d-desktop-none" data-bs-toggle="dropdown"
@@ -139,7 +143,7 @@ maximum-scale=1.0, user-scalable=no" />
                         {{-- </li> --}}
 
                         {{-- <li class="d-desktop-none">
-                            <a class="btn btn-outline" href="{{ route('cart.index', ['lang' => app()->getLocale()]) }}">
+                            <a class="btn btn-outline" href="{{ route('cart.index') }}">
                                 <img class="icons cart svg-js" src="{{ asset('img/icons/icon-cart.svg') }}"
                                     alt="">
                             </a>
@@ -153,13 +157,11 @@ maximum-scale=1.0, user-scalable=no" />
                                 </a>
                                 <ul class="dropdown-menu right" style="--width:96px">
                                     @if (Route::has('login'))
-                                        <li><a
-                                                href="{{ route('login', ['lang' => app()->getLocale()]) }}">@lang('messages.login')</a>
+                                        <li><a href="{{ route('login') }}">@lang('messages.login')</a>
                                         </li>
                                     @endif
                                     @if (Route::has('register'))
-                                        <li><a
-                                                href="{{ route('register', ['lang' => app()->getLocale()]) }}">@lang('messages.register')</a>
+                                        <li><a href="{{ route('register') }}">@lang('messages.register')</a>
                                         </li>
                                     @endif
                                 </ul>
@@ -175,11 +177,15 @@ maximum-scale=1.0, user-scalable=no" />
                                 </a>
                                 <ul class="dropdown-menu right" style="--width:96px">
                                     <li>
-                                        <a href="{{ url(app()->getLocale() . '/profile') }}"> @lang('messages.my_account')</a>
+                                        <a href="{{ url('/profile') }}"> @lang('messages.my_account')</a>
                                     </li>
-                                    <li><a href="{{ url(app()->getLocale() . '/my-purchase') }}">@lang('messages.my_purchase')</a>
+                                    <li><a href="{{ url('/my-purchase') }}">@lang('messages.my_purchase')</a>
                                     </li>
                                     <li>
+                                        <form id="logout-form" action="{{ url('/logout') }}" method="POST"
+                                            style="display: none;">
+                                            @csrf
+                                        </form>
                                         <a href="#" class="logout" onclick="confirmLogout(event)">
                                             @lang('messages.sign_out')
                                         </a>
@@ -197,7 +203,7 @@ maximum-scale=1.0, user-scalable=no" />
 
 
 
-                        <li class="dropdown notify">
+                        {{-- <li class="dropdown notify">
                             <a href="#" data-bs-toggle="dropdown" data-bs-display="static">
                                 <img class="svg-js icons icon-bell" src="{{ asset('img/icons/icon-bell.svg') }}"
                                     alt="">
@@ -238,9 +244,9 @@ maximum-scale=1.0, user-scalable=no" />
                                     <a href="notification">@lang('messages.view_all')</a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> --}}
 
-                        <li class="dropdown lang">
+                        {{-- <li class="dropdown lang">
                             <a class="btn btn-outline" href="#" data-bs-toggle="dropdown"
                                 data-bs-display="static">
                                 {{ strtoupper(app()->getLocale()) }}
@@ -255,7 +261,7 @@ maximum-scale=1.0, user-scalable=no" />
                                         href="{{ url('lang/th/') }}"class="{{ app()->getLocale() == 'th' ? 'active' : '' }}">TH</a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> --}}
 
                     </ul>
                 </div>
@@ -264,55 +270,50 @@ maximum-scale=1.0, user-scalable=no" />
             <div class="navbar-main">
                 <div class="container">
                     <div class="navbar-brand">
-                        <a href="{{ url(app()->getLocale() . '/ ') }}">
+                        <a href="{{ url('/ ') }}">
                             <img src="{{ asset('img/logo.png') }}" alt="">
                         </a>
                     </div>
 
                     <ul class="nav nav-main">
                         <li class="{{ request()->path() === app()->getLocale() ? 'active' : '' }}">
-                            <a href="{{ url(app()->getLocale() . '/ ') }}"
-                                style="text-transform: uppercase;">@lang('messages.home')</a>
+                            <a href="{{ url('/ ') }}" style="text-transform: uppercase;">@lang('messages.home')</a>
                         </li>
-                        <li class="{{ request()->is(app()->getLocale() . '/about') ? 'active' : '' }}">
-                            <a href="{{ url(app()->getLocale() . '/about') }}"
-                                style="text-transform: uppercase;">@lang('messages.about')</a>
+                        <li class="{{ request()->is('/about') ? 'active' : '' }}">
+                            <a href="{{ url('/about') }}" style="text-transform: uppercase;">@lang('messages.about')</a>
                         </li>
                         <li
-                            class="dropdown {{ request()->is(app()->getLocale() . '/product') || request()->is(app()->getLocale() . '/download') || request()->is(app()->getLocale() . '/track-trace') ? 'active' : '' }}">
+                            class="dropdown {{ request()->is('/product') || request()->is('/download') || request()->is('/track-trace') ? 'active' : '' }}">
                             <a href="#" data-bs-toggle="dropdown" data-bs-display="static"
                                 style="text-transform: uppercase;">@lang('messages.products')</a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{ url(app()->getLocale() . '/product') }}"
+                                <li><a href="{{ url('/product') }}"
                                         style="text-transform: uppercase;">@lang('messages.products')</a></li>
-                                <li><a href="{{ url(app()->getLocale() . '/download') }}"
+                                <li><a href="{{ url('/download') }}"
                                         style="text-transform: uppercase;">@lang('messages.download')</a></li>
-                                <li><a href="{{ url(app()->getLocale() . '/track-trace') }}"
+                                <li><a href="{{ url('/track-trace') }}"
                                         style="text-transform: uppercase;">@lang('messages.track_and_trace')</a></li>
                             </ul>
                         </li>
-                        <li
-                            class="dropdown {{ request()->is(app()->getLocale() . '/service') || request()->is(app()->getLocale() . '/faq') ? 'active' : '' }}">
-                            <a href="{{ url(app()->getLocale() . '/service') }}" data-bs-toggle="dropdown"
+                        <li class="dropdown {{ request()->is('/service') || request()->is('/faq') ? 'active' : '' }}">
+                            <a href="{{ url('/service') }}" data-bs-toggle="dropdown"
                                 data-bs-display="static">@lang('messages.service')</a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{ url(app()->getLocale() . '/service') }}"
+                                <li><a href="{{ url('/service') }}"
                                         style="text-transform: uppercase;">@lang('messages.service')</a></li>
-                                <li><a href="{{ url(app()->getLocale() . '/faq') }}"
+                                <li><a href="{{ url('/faq') }}"
                                         style="text-transform: uppercase;">@lang('messages.qa')</a></li>
                             </ul>
                         </li>
-                        <li class="{{ request()->is(app()->getLocale() . '/promotion') ? 'active' : '' }}">
-                            <a href="{{ url(app()->getLocale() . '/promotion') }}"
+                        <li class="{{ request()->is('/promotion') ? 'active' : '' }}">
+                            <a href="{{ url('/promotion') }}"
                                 style="text-transform: uppercase;">@lang('messages.promotion')</a>
                         </li>
-                        <li class="{{ request()->is(app()->getLocale() . '/news') ? 'active' : '' }}">
-                            <a href="{{ url(app()->getLocale() . '/news') }}"
-                                style="text-transform: uppercase;">@lang('messages.news')</a>
+                        <li class="{{ request()->is('/news') ? 'active' : '' }}">
+                            <a href="{{ url('/news') }}" style="text-transform: uppercase;">@lang('messages.news')</a>
                         </li>
-                        <li class="{{ request()->is(app()->getLocale() . '/contact') ? 'active' : '' }}">
-                            <a href="{{ url(app()->getLocale() . '/contact') }}"
-                                style="text-transform: uppercase;">@lang('messages.contact')</a>
+                        <li class="{{ request()->is('/contact') ? 'active' : '' }}">
+                            <a href="{{ url('/contact') }}" style="text-transform: uppercase;">@lang('messages.contact')</a>
                         </li>
                     </ul>
                 </div>
@@ -349,10 +350,10 @@ maximum-scale=1.0, user-scalable=no" />
 
             <ul class="nav nav-accordion">
                 <li>
-                    <h5><a href="{{ url(app()->getLocale() . '/ ') }}">@lang('messages.home')</a></h5>
+                    <h5><a href="{{ url('/ ') }}">@lang('messages.home')</a></h5>
                 </li>
                 <li>
-                    <h5><a href="{{ url(app()->getLocale() . '/about') }}">@lang('messages.about')</a></h5>
+                    <h5><a href="{{ url('/about') }}">@lang('messages.about')</a></h5>
                 </li>
                 <li>
                     <h5 data-bs-toggle="collapse" data-bs-target="#product-sub"><a
@@ -361,7 +362,7 @@ maximum-scale=1.0, user-scalable=no" />
                     <div id="product-sub" class="accordion-collapse collapse" data-bs-parent=".nav-accordion">
                         <ul class="nav">
                             <li><a href="product">@lang('messages.products')</a></li>
-                            <li><a href="{{ url(app()->getLocale() . '/download') }}">@lang('messages.download')</a>
+                            <li><a href="{{ url('/download') }}">@lang('messages.download')</a>
                             </li>
                             <li><a href="track-trace">@lang('messages.track_and_trace')</a></li>
                         </ul>
@@ -369,23 +370,23 @@ maximum-scale=1.0, user-scalable=no" />
                 </li>
                 <li>
                     <h5 data-bs-toggle="collapse" data-bs-target="#service-sub"><a
-                            href="{{ url(app()->getLocale() . '/service') }}">@lang('messages.service')</a></h5>
+                            href="{{ url('/service') }}">@lang('messages.service')</a></h5>
                     <div id="service-sub" class="accordion-collapse collapse" data-bs-parent=".nav-accordion">
                         <ul class="nav">
-                            <li><a href="{{ url(app()->getLocale() . '/service') }}">@lang('messages.service')</a>
+                            <li><a href="{{ url('/service') }}">@lang('messages.service')</a>
                             </li>
-                            <li><a href="{{ url(app()->getLocale() . '/faq') }}">@lang('messages.qa')</a></li>
+                            <li><a href="{{ url('/faq') }}">@lang('messages.qa')</a></li>
                         </ul>
                     </div>
                 </li>
                 <li>
-                    <h5><a href="{{ url(app()->getLocale() . '/promotion') }}">@lang('messages.promotion')</a></h5>
+                    <h5><a href="{{ url('/promotion') }}">@lang('messages.promotion')</a></h5>
                 </li>
                 <li>
-                    <h5><a href="{{ url(app()->getLocale() . '/news') }}">@lang('messages.news')</a></h5>
+                    <h5><a href="{{ url('/news') }}">@lang('messages.news')</a></h5>
                 </li>
                 <li>
-                    <h5><a href="{{ url(app()->getLocale() . '/contact') }}">@lang('messages.contact')</a></h5>
+                    <h5><a href="{{ url('/contact') }}">@lang('messages.contact')</a></h5>
                 </li>
             </ul>
         </div>
@@ -403,7 +404,7 @@ maximum-scale=1.0, user-scalable=no" />
                         </p>
                         <hr>
                         <p>
-                            U&V HOLDING<br class="d-none d-lg-block">
+                            KMUTNB<br class="d-none d-lg-block">
                             THAILAND
                         </p>
                     </div>
@@ -411,25 +412,25 @@ maximum-scale=1.0, user-scalable=no" />
                 <div class="cols footer-links">
                     <div class="group">
                         <ul class="nav">
-                            <li><a href="{{ url(app()->getLocale() . '/about') }}">@lang('messages.about')</a></li>
-                            <li><a href="{{ url(app()->getLocale() . '/products') }}">@lang('messages.products')</a>
+                            <li><a href="{{ url('/about') }}">@lang('messages.about')</a></li>
+                            <li><a href="{{ url('/products') }}">@lang('messages.products')</a>
                             </li>
-                            <li><a href="{{ url(app()->getLocale() . '/service') }}">@lang('messages.service')</a>
-                            </li>
-                        </ul>
-
-                        <ul class="nav">
-                            <li><a href="{{ url(app()->getLocale() . '/promotion') }}">@lang('messages.promotion')</a>
-                            </li>
-                            <li><a href="{{ url(app()->getLocale() . '/news') }}">@lang('messages.news')</a></li>
-                            <li><a href="{{ url(app()->getLocale() . '/contact') }}">@lang('messages.contact')</a>
+                            <li><a href="{{ url('/service') }}">@lang('messages.service')</a>
                             </li>
                         </ul>
 
                         <ul class="nav">
-                            <li><a href="{{ url(app()->getLocale() . '/term-condition') }}">@lang('messages.term_and_condition')</a>
+                            <li><a href="{{ url('/promotion') }}">@lang('messages.promotion')</a>
                             </li>
-                            <li><a href="{{ url(app()->getLocale() . '/privacy-policy') }}">@lang('messages.privacy_policy')</a>
+                            <li><a href="{{ url('/news') }}">@lang('messages.news')</a></li>
+                            <li><a href="{{ url('/contact') }}">@lang('messages.contact')</a>
+                            </li>
+                        </ul>
+
+                        <ul class="nav">
+                            <li><a href="{{ url('/term-condition') }}">@lang('messages.term_and_condition')</a>
+                            </li>
+                            <li><a href="{{ url('/privacy-policy') }}">@lang('messages.privacy_policy')</a>
                             </li>
                         </ul>
                     </div>

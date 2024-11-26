@@ -119,6 +119,6 @@ class ProfileController extends MainController
     {
         Auth::guard('member')->logout();
         $request->session()->regenerateToken();
-        return redirect(app()->getLocale() . '/ ');
+        return redirect('/ ');
     }
 }

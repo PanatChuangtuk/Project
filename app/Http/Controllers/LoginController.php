@@ -12,9 +12,9 @@ class LoginController extends MainController
 {
     public function loginIndex()
     {
-        if (Auth::guard('member')->check()) {
-            return redirect()->route('profile');
-        }
+        // if (Auth::guard('member')->check()) {
+        //     return redirect()->route('profile');
+        // }
         return view('login');
     }
 
