@@ -57,21 +57,72 @@
         <div class="authentication-wrapper authentication-basic container-p-y">
             <div class="authentication-inner">
                 <!-- Register -->
-                <div class="card">
+                <div class="card shadow-lg rounded">
                     <div class="card-body">
                         <!-- Logo -->
-                        <div class="app-brand justify-content-center">
-                            <a href="" class="app-brand-link gap-2">
-                                <span class="app-brand-logo demo">
-                                    {{-- <img src="{{ URL::asset('administrator') }}/assets/img/logo.png" width="40" alt=""> --}}
-                                </span>
-                                <span class="app-brand-text demo text-body fw-bolder text-capitalize"> Login System
+                        <div class="app-brand justify-content-center text-center mb-4">
+                            <a href="#" class="app-brand-link gap-2">
+                                <style>
+                                    .brand-text span {
+                                        font-size: 40px;
+                                        /* ขนาดตัวอักษร */
+                                        font-weight: bold;
+                                        display: inline-block;
+                                        transition: transform 0.5s ease, color 0.5s ease, letter-spacing 0.3s ease;
+                                    }
+
+                                    .brand-text span:hover {
+                                        transform: scale(1.3) rotate(10deg) translateY(-5px);
+                                        /* ขยายตัว, หมุน, เคลื่อนที่ขึ้น */
+                                        letter-spacing: 2px;
+                                        /* เพิ่มระยะห่างระหว่างตัวอักษร */
+                                        color: #ffffff;
+                                        /* เปลี่ยนเป็นขาวเมื่อ hover */
+                                    }
+
+                                    .K {
+                                        color: #6cace4;
+                                    }
+
+                                    /* ฟ้าอ่อน */
+                                    .M {
+                                        color: #a1d3a5;
+                                    }
+
+                                    /* เขียวอ่อน */
+                                    .U {
+                                        color: #b7c9db;
+                                    }
+
+                                    /* สีฟ้าอมเทา */
+                                    .T {
+                                        color: #f1c7e2;
+                                    }
+
+                                    /* ชมพูอ่อน */
+                                    .N {
+                                        color: #d6e2b1;
+                                    }
+
+                                    /* เขียวมะนาวอ่อน */
+                                    .B {
+                                        color: #c9d8d5;
+                                    }
+
+                                    /* เทาเขียว */
+                                </style>
+
+                                <span class="app-brand-text brand-text">
+                                    <span class="K">K</span>
+                                    <span class="M">M</span>
+                                    <span class="U">U</span>
+                                    <span class="T">T</span>
+                                    <span class="N">N</span>
+                                    <span class="B">B</span>
                                 </span>
                             </a>
                         </div>
-                        <!-- /Logo -->
-                        <h4 class="mb-2">Administrator! 👋</h4>
-                        <p class="mb-4">Please sign-in to your account.</p>
+                        <p class="text-center mb-4 text-muted">Please sign-in to your account.</p>
                         @if (Session::has('error'))
                             <div class="alert alert-danger" role="alert">
                                 {{ Session::get('error') }}
@@ -90,13 +141,10 @@
                                 </div>
                                 <div class="input-group input-group-merge">
                                     <input type="password" id="password" class="form-control" name="password"
-                                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                                         aria-describedby="password" />
                                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                                 </div>
-                                <a href="auth-forgot-password-basic.html">
-                                    <small>Forgot Password?</small>
-                                </a>
                             </div>
                             <div class="mb-3">
                                 <div class="form-check">
@@ -105,23 +153,18 @@
                                     <label class="form-check-label" for="remember-me"> Remember Me </label>
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <button class="btn btn-primary d-grid w-100" type="submit"> Log in </button>
+                            <div class="mb-4">
+                                <button class="btn btn-primary d-grid w-100" type="submit">Login</button>
                             </div>
-                        </form>
 
-                        {{-- <p class="text-center">
-                <span>New on our platform?</span>
-                <a href="auth-register-basic.html">
-                <span>Create an account</span>
-                </a>
-            </p> --}}
+                        </form>
                     </div>
                 </div>
                 <!-- /Register -->
             </div>
         </div>
     </div>
+
 
     <!-- / Content -->
 
