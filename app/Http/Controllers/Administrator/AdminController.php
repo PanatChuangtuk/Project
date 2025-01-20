@@ -7,16 +7,16 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Models\Member;
-use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\UsersImport;
+use App\Exports\UsersExport;
 
-class UserController extends Controller
+class AdminController extends Controller
 {
     public function index(Request $request)
     {
         $query = $request->input('query');
 
-        $userQuery = Member::query();
+        $userQuery = User::query();
 
         if ($query) {
             $userQuery->where('name', 'LIKE', "%{$query}%");
@@ -27,20 +27,20 @@ class UserController extends Controller
         ]);
 
 
-        return view('administrator.users.index', compact('users', 'query'));
+        return view('administrator.admin.index', compact('users', 'query'));
     }
 
 
 
     public function add()
     {
-        return view('administrator.users.add');
+        return view('administrator.admin.add');
     }
 
     public function edit($id)
     {
-        $user = Member::find($id);
-        return view('administrator.users.edit', compact('user'));
+        $user = User::find($id);
+        return view('administrator.admin.edit', compact('user'));
     }
 
     public function submit(Request $request)
@@ -56,19 +56,19 @@ class UserController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        Member::create([
+        User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role_id' => $request->role_id,
         ]);
 
-        return redirect()->route('administrator.users');
+        return redirect()->route('administrator.admin');
     }
 
     public function update(Request $request, $id)
     {
-        $user = Member::find($id);
+        $user = User::find($id);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
@@ -87,12 +87,12 @@ class UserController extends Controller
             'password' => $request->password ? Hash::make($request->password) : $user->password,
         ]);
 
-        return redirect()->route('administrator.users');
+        return redirect()->route('administrator.admin');
     }
 
     public function destroy($id, Request $request)
     {
-        $user = Member::findOrFail($id);
+        $user = User::findOrFail($id);
 
         $role = $user->role;
         $user->delete();
@@ -114,7 +114,7 @@ class UserController extends Controller
         $ids = $request->input('ids');
 
         if (is_array($ids) && count($ids) > 0) {
-            $users = Member::whereIn('id', $ids)->with('role')->get();
+            $users = User::whereIn('id', $ids)->with('role')->get();
 
             foreach ($users as $user) {
                 $role = $user->role;

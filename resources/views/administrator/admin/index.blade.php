@@ -29,13 +29,13 @@
                 <div class="card-body">
                     {{-- Head --}}
                     <div class="d-flex justify-content-between align-items-center p-3">
-                        <form action="{{ route('administrator.users') }}" method="GET"
+                        <form action="{{ route('administrator.admin') }}" method="GET"
                             class="d-flex justify-content-between align-items-center w-100">
                             <x-search />
 
                             <div class="d-flex align-items-center ms-2">
                                 {{-- <x-status-filter /> --}}
-                                <a href="{{ route('administrator.users.add') }}"
+                                <a href="{{ route('administrator.admin.add') }}"
                                     class="btn btn-primary d-flex align-items-center" style="white-space: nowrap;">Add
                                 </a>
                             </div>
@@ -70,13 +70,13 @@
                                             </div>
                                         </td>
                                         <td>{{ $item->id }}</td>
-                                        <td>{{ $item->username }}</td>
+                                        <td>{{ $item->name }}</td>
                                         <td>{{ $item->email }}</td>
                                         {{-- <td class="text-center">
                                             @if (Auth::user()->role->name == 'Super Admin')
                                                 @if (Auth::user()->id != $item->id)
                                                     <form method="POST"
-                                                        action="{{ route('administrator.users.change-role', ['id' => $item->id]) }}"
+                                                        action="{{ route('administrator.admin.change-role', ['id' => $item->id]) }}"
                                                         id="roleForm-{{ $item->id }}">
                                                         @csrf
                                                         <select name="role_id" class="form-control"
@@ -100,12 +100,12 @@
                                             <div class="d-flex justify-content-center">
                                                 <div class="d-inline-block text-nowrap">
                                                     <a class="btn btn-icon btn-outline-primary border-0"
-                                                        href="{{ route('administrator.users.edit', ['id' => $item->id]) }}">
+                                                        href="{{ route('administrator.admin.edit', ['id' => $item->id]) }}">
                                                         <i class="bx bx-edit bx"></i>
                                                     </a>
 
                                                     <form id="deleteForm{{ $item->id }}"
-                                                        action="{{ route('administrator.users.destroy', ['id' => $item->id, 'page' => request()->get('page')]) }}"
+                                                        action="{{ route('administrator.admin.destroy', ['id' => $item->id, 'page' => request()->get('page')]) }}"
                                                         method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')

@@ -21,7 +21,8 @@ use App\Http\Controllers\Administrator\{
     SocialController,
     TestimonialController,
     UserController,
-    ProductModelController
+    ProductModelController,
+    AdminController
 };
 
 Route::prefix('administrator')->group(function () {
@@ -171,9 +172,17 @@ Route::prefix('administrator')->group(function () {
             Route::post('/submit', [UserController::class, 'submit'])->name('users.submit');
             Route::get('/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
             Route::post('/update/{id}', [UserController::class, 'update'])->name('users.update');
-            Route::post('/users/{id}/change-role', [UserController::class, 'changeRole'])->name('users.change-role');
             Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.destroy');
             Route::post('/bulk-delete', [UserController::class, 'bulkDelete'])->name('users.bulk.delete');
+        });
+        Route::group(['prefix' => 'admin', 'as' => 'administrator.'], function () {
+            Route::get('/', [AdminController::class, 'index'])->name('admin');
+            Route::get('/add', [AdminController::class, 'add'])->name('admin.add');
+            Route::post('/submit', [AdminController::class, 'submit'])->name('admin.submit');
+            Route::get('/edit/{id}', [AdminController::class, 'edit'])->name('admin.edit');
+            Route::post('/update/{id}', [AdminController::class, 'update'])->name('admin.update');
+            Route::delete('/{id}', [AdminController::class, 'destroy'])->name('admin.destroy');
+            Route::post('/bulk-delete', [AdminController::class, 'bulkDelete'])->name('admin.bulk.delete');
         });
 
         Route::group(['prefix' => 'roles', 'as' => 'administrator.'], function () {
