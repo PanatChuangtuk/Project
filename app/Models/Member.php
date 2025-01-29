@@ -14,16 +14,7 @@ class Member extends Authenticatable
 
     protected $table = 'member';
 
-    protected $fillable = [
-        'username',
-        'password',
-        'email',
-        'mobile_phone',
-        'is_source',
-        'created_by',
-        'updated_by',
-        'deleted_by'
-    ];
+
 
     protected $dates = ['deleted_at'];
 }

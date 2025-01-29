@@ -6,7 +6,8 @@ use App\Http\Controllers\Administrator\{
     AboutController,
     AuthController,
     UserController,
-    AdminController
+    AdminController,
+    DashboardController
 };
 
 Route::prefix('administrator')->group(function () {
@@ -16,7 +17,7 @@ Route::prefix('administrator')->group(function () {
     });
 
     Route::group(['middleware' => 'auth:web'], function () {
-        // Route::get('/dashboard', [DashboardController::class, 'index'])->name('administrator.dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('administrator.dashboard');
         Route::get('/logout', [AuthController::class, 'logout'])->name('administrator.logout');
         Route::post('ckeditor/upload', [CkeditorController::class, 'upload'])->name('administrator.ckeditor.upload');
 
