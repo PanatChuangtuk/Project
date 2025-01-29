@@ -13,8 +13,5 @@ class Member extends Authenticatable
     use SoftDeletes, Notifiable;
 
     protected $table = 'member';
-
-
-
     protected $dates = ['deleted_at'];
 }

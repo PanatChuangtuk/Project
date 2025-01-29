@@ -118,10 +118,10 @@ maximum-scale=1.0, user-scalable=no" />
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="title">@lang('messages.mobile_phone')</label>
-                                <input type="text" class="form-control" placeholder="@lang('messages.input_phone')"
-                                    name="mobile_phone" maxlength="10" value="{{ old('mobile_phone') }}" />
-                                @error('mobile_phone')
+                                <label class="title">StudentID</label>
+                                <input type="text" class="form-control" placeholder="Enter StudentID"
+                                    name="student_id" maxlength="10" value="{{ old('student_id') }}" />
+                                @error('student_id')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -129,16 +129,16 @@ maximum-scale=1.0, user-scalable=no" />
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="title">@lang('messages.company')</label>
-                                <input type="text" class="form-control" placeholder="@lang('messages.input_company')"
-                                    name="company" value="{{ old('company') }}" />
-                                @error('company')
+                                <label class="title">Adviser</label>
+                                <input type="text" class="form-control" placeholder="Enter Adviser"
+                                    name="adviser_id" value="{{ old('adviser_id') }}" />
+                                @error('adviser_id')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        {{-- <div class="col-md-6">
                             <div class="form-group">
                                 <label class="title">Line ID</label>
                                 <input type="text" class="form-control" placeholder="Line ID" name="line_id"
@@ -147,9 +147,9 @@ maximum-scale=1.0, user-scalable=no" />
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                        </div>
+                        </div> --}}
 
-                        <div class="col-md-6">
+                        {{-- <div class="col-md-6">
                             <div class="form-group">
                                 <label class="title">@lang('messages.vat_register_number')</label>
                                 <input type="text" class="form-control" placeholder="@lang('messages.input_vat_number')"
@@ -159,9 +159,9 @@ maximum-scale=1.0, user-scalable=no" />
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                        </div>
+                        </div> --}}
 
-                        <div class="col-12">
+                        {{-- <div class="col-12">
                             <div class="form-group my-4">
                                 <label class="title pb-3">@lang('messages.account_type')<span class="star">*</span></label>
 
@@ -202,11 +202,11 @@ maximum-scale=1.0, user-scalable=no" />
                             @error('newsletter')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
-                        </div>
+                        </div> --}}
 
-                        <div class="alert alert-danger" id="error-message" style="display: none;">
+                        {{-- <div class="alert alert-danger" id="error-message" style="display: none;">
                             @lang('messages.select_yes_newsletter')
-                        </div>
+                        </div> --}}
 
                         <div class="col-12 d-flex py-3">
                             <button class="btn mx-auto" type="submit" onclick="return validateForm();">

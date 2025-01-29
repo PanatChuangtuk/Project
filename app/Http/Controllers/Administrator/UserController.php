@@ -26,7 +26,7 @@ class UserController extends Controller
             'query' => $query,
         ]);
 
-
+        dd($users);
         return view('administrator.users.index', compact('users', 'query'));
     }
 

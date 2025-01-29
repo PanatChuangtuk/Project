@@ -62,23 +62,11 @@ class RegisterController extends MainController
                 ->withInput($request->except('password', 'password_confirmation'));
         }
 
-        $verificationResponse = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => config('app.nocaptcha.secret'),
-            'response' => $request->input('g-recaptcha-response'),
-            'remoteip' => $request->ip(),
-        ]);
-        $result = $verificationResponse->json();
-
-        if (!$result['success']) {
-            return redirect()->back()->withErrors(['g-recaptcha-response' => __('messages.recaptcha_verification_failed')]);
-        }
-
         $user = Member::create([
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'mobile_phone' => $request->mobile_phone,
-            'is_source' => IsSourceEnum::Register->value,
+            'mobile_phone' => $request->student_id,
             'created_at' => Carbon::now(),
             'created_by' => Auth::check() ? Auth::user()->id : null
         ]);
@@ -86,11 +74,8 @@ class RegisterController extends MainController
             'member_id' => $user->id,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
-            'company' => $request->company,
-            'line_id' => $request->line_id,
-            'vat_register_number' => $request->vat_register_number,
-            'account_type' => $request->account_type,
-            'newsletter' => $request->newsletter,
+            // 'adviser_id' => $request->company,
+
         ]);
         return redirect()->route('login');
     }
