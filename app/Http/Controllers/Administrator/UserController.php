@@ -26,7 +26,7 @@ class UserController extends Controller
             'query' => $query,
         ]);
 
-        dd($users);
+
         return view('administrator.users.index', compact('users', 'query'));
     }
 
@@ -88,53 +88,5 @@ class UserController extends Controller
         ]);
 
         return redirect()->route('administrator.users');
-    }
-
-    public function destroy($id, Request $request)
-    {
-        $user = Member::findOrFail($id);
-
-        $role = $user->role;
-        $user->delete();
-
-        if ($role) {
-            $role->decrement('user_count');
-        }
-
-        $currentPage = $request->query('page', 1);
-
-        return redirect()->route('administrator.users', ['page' => $currentPage])->with([
-            'success' => 'User deleted successfully!',
-            'id' => $id
-        ]);
-    }
-
-    public function bulkDelete(Request $request)
-    {
-        $ids = $request->input('ids');
-
-        if (is_array($ids) && count($ids) > 0) {
-            $users = Member::whereIn('id', $ids)->with('role')->get();
-
-            foreach ($users as $user) {
-                $role = $user->role;
-                $user->delete();
-
-                if ($role) {
-                    $role->decrement('user_count');
-                }
-            }
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Selected users have been deleted successfully.',
-                'deleted_ids' => $ids
-            ]);
-        }
-
-        return response()->json([
-            'status' => 'error',
-            'message' => 'No users selected for deletion.'
-        ], 400);
     }
 }
