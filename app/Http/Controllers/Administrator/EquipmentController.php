@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Administrator;
 
+use App\Models\About;
 use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\Service;

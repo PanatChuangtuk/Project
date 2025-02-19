@@ -13,7 +13,7 @@ class RoleMiddleware
 
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::guard('member')->check()->role !== 'admin') {
+        if (Auth::guard('web')->check() !== 'admin') {
             return redirect()->route('profile');
         }
 
