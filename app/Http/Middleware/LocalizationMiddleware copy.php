@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Support\Facades\{Session, App};
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\{Auth, Validator, Hash};
 
 class LocalizationMiddleware
 {

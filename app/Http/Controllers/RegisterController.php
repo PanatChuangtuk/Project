@@ -28,13 +28,6 @@ class RegisterController extends MainController
             'password' => 'required|string|min:8|confirmed',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'mobile_phone' => 'required|digits:10|unique:member,mobile_phone',
-            'company' => 'nullable|string|max:255',
-            'line_id' => 'nullable|string|max:50',
-            'vat_register_number' => 'nullable|string|max:13',
-            'account_type' => 'required|in:government,private',
-            'newsletter' => 'nullable|boolean',
-            'g-recaptcha-response' => 'required',
         ], [
             'username.required' =>  __('messages.please_enter_username'),
             'username.max' =>  __('messages.username_must_not_exceed_255_characters'),
@@ -46,13 +39,6 @@ class RegisterController extends MainController
             'password.confirmed' => __('messages.passwords_do_not_match'),
             'first_name.required' =>  __('messages.please_enter_firstname'),
             'last_name.required' => __('messages.please_enter_lastname'),
-            'account_type.required' => __('messages.please_select_account_type'),
-            'mobile_phone.required' =>  __('messages.please_enter_mobile_number'),
-            'mobile_phone.unique' =>  __('messages.phone_exists'),
-            'mobile_phone.digits' =>  __('messages.mobile_number_must_be_10_digits'),
-            'account_type.in' => __('messages.invalid_account_type_selected'),
-            'vat_register_number.max' => __('messages.tax_id_must_not_exceed_13_digits'),
-            'g-recaptcha-response.required' => __('messages.captcha_is_required'),
         ]);
 
         if ($validator->fails()) {
