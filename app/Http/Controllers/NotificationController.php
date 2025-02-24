@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\MainController;
 
-class NotificationController extends MainController
+class MemberController extends Controller
 {
-    public function notificationIndex()
+    public function studentDashboard()
     {
-        return view('notification');
+        return view('student.dashboard');
     }
 }

@@ -14,4 +14,13 @@ class Member extends Authenticatable
 
     protected $table = 'member';
     protected $dates = ['deleted_at'];
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isStudent()
+    {
+        return $this->role === 'student';
+    }
 }
