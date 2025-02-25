@@ -273,10 +273,11 @@ data-template="vertical-menu-template-free"
                   <div class="dropdown-divider my-1"></div>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="javascript:void(0);">
-                    <i class="bx bx-power-off bx-md me-3"></i><span>Log Out</span>
+                  <a class="dropdown-item logout-btn" href="javascript:void(0);" data-logout-url="{{ route('administrator.logout') }}">
+                      <i class="bx bx-power-off bx-md me-3"></i>
+                      <span>Log Out</span>
                   </a>
-                </li>
+              </li>
               </ul>
             </li>
             <!--/ User -->
