@@ -12,7 +12,6 @@ class LoginController extends MainController
 {
     public function loginIndex()
     {
-        dd(Auth::guard('member')->check());
         if (Auth::guard('member')->check()) {
             return redirect()->route('profile');
         }
@@ -154,9 +153,12 @@ class LoginController extends MainController
         if ($user->is_source === IsSourceEnum::Admin->value) {
             return redirect()->route('login.forgot.password');
         }
-
-        Auth::guard('member')->login($user);
-
-        return redirect()->route('profile')->with('success', __('messages.login_success'));
+        if ($user->role === 'user') {
+            Auth::guard('member')->login($user);
+            return redirect()->route('profile')->with('success', __('messages.login_success'));
+        } elseif ($user->role === 'admin') {
+            Auth::guard('web')->login($user);
+            return redirect()->route('administrator.dashboard')->with('success', __('messages.login_success'));
+        }
     }
 }
