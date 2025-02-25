@@ -10,17 +10,15 @@ use Illuminate\Notifications\Notifiable;
 
 class Member extends Authenticatable
 {
-    use SoftDeletes, Notifiable;
-
     protected $table = 'member';
-    protected $dates = ['deleted_at'];
-    public function isAdmin()
-    {
-        return $this->role === 'admin';
-    }
 
-    public function isStudent()
-    {
-        return $this->role === 'student';
-    }
+    // public function isAdmin()
+    // {
+    //     return $this->role === 'admin';
+    // }
+
+    // public function isStudent()
+    // {
+    //     return $this->role === 'student';
+    // }
 }

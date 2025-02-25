@@ -23,10 +23,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        // 'member' => [
-        //     'driver' => 'session',
-        //     'provider' => 'member',
-        // ],
+        'member' => [
+            'driver' => 'session',
+            'provider' => 'member',
+        ],
     ],
 
     'providers' => [
@@ -34,10 +34,10 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\Member::class),
         ],
-        // 'member' => [
-        //     'driver' => 'eloquent',
-        //     'model' => App\Models\Member::class,
-        // ],
+        'member' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Member::class,
+        ],
     ],
 
     /*

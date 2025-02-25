@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\{Auth, DB, Validator, Hash};
 use Illuminate\Http\Request;
-use App\Models\Member;
+use App\Models\{Member, MemberInfo};
 
 class ProfileController extends MainController
 {
@@ -13,7 +13,7 @@ class ProfileController extends MainController
     {
 
         $userId = Auth::guard('member')->user()->id;
-
+        MemberInfo::create(['first_name' => 'test', 'last_name' => 'test', 'adviser_id' => 1, 'member_id' => 4]);
         $profile = Member::join('member_infomation', 'member_infomation.member_id', '=', 'member.id')
             ->select('member.*', 'member_infomation.*')
             ->where('member.id', $userId)
@@ -21,57 +21,56 @@ class ProfileController extends MainController
         return view('my-account', compact('profile'));
     }
 
-    public function resetPasswordIndex()
-    {
-        $userId = Auth::guard('member')->user()->id;
+    // public function resetPasswordIndex()
+    // {
+    //     $userId = Auth::guard('member')->user()->id;
 
-        $userData = Member::find($userId);
+    //     $userData = Member::find($userId);
 
-        return view('set-new-password-2', compact('userData'));
-    }
+    //     return view('set-new-password-2', compact('userData'));
+    // }
 
 
-    public function resetPasswordSubmit(Request $request)
-    {
-        $user = Auth::guard('member')->user();
+    // public function resetPasswordSubmit(Request $request)
+    // {
+    //     $user = Auth::guard('member')->user();
+    //     // dd($request->all());
+    //     $validator = Validator::make($request->all(), [
+    //         'password_old' => 'required',
+    //         'password' => 'required|string|min:8|confirmed',
+    //     ], [
+    //         'password_old.required' => 'กรุณากรอกรหัสผ่านเก่า',
+    //         'password.required' => 'กรุณากรอกรหัสผ่านใหม่',
+    //         'password.confirmed' => 'การยืนยันรหัสผ่านใหม่ไม่ตรงกัน',
+    //         'password.min' => 'รหัสผ่านใหม่ต้องมีอย่างน้อย 8 ตัวอักษร',
+    //     ]);
+    //     // dd($validator);
+    //     if ($validator->fails()) {
+    //         return redirect()->back()
+    //             ->withErrors($validator)
+    //             ->withInput($request->except('new_password', 'password_confirmation'));
+    //     }
 
-        // dd($request->all());
-        $validator = Validator::make($request->all(), [
-            'password_old' => 'required',
-            'password' => 'required|string|min:8|confirmed',
-        ], [
-            'password_old.required' => 'กรุณากรอกรหัสผ่านเก่า',
-            'password.required' => 'กรุณากรอกรหัสผ่านใหม่',
-            'password.confirmed' => 'การยืนยันรหัสผ่านใหม่ไม่ตรงกัน',
-            'password.min' => 'รหัสผ่านใหม่ต้องมีอย่างน้อย 8 ตัวอักษร',
-        ]);
-        // dd($validator);
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput($request->except('new_password', 'password_confirmation'));
-        }
+    //     if (!Hash::check($request->password_old, $user->password)) {
+    //         return redirect()->back()->withErrors([
+    //             'password_old' => 'รหัสผ่านเก่าไม่ถูกต้อง',
+    //         ]);
+    //     }
 
-        if (!Hash::check($request->password_old, $user->password)) {
-            return redirect()->back()->withErrors([
-                'password_old' => 'รหัสผ่านเก่าไม่ถูกต้อง',
-            ]);
-        }
-
-        if (Hash::check($request->password, $user->password)) {
-            return redirect()->back()->withErrors([
-                'new_password' => 'รหัสผ่านใหม่ซ้ำกับรหัสผ่านเก่า กรุณาใช้รหัสผ่านอื่น',
-            ]);
-        }
-        $user = Auth::guard('member')->user()->id;
-        $userData = Member::find($user);
-        // dd($userId);
-        $userData->update([
-            'password' => Hash::make($request->password),
-        ]);
-        Auth::guard('member')->logout();
-        return redirect()->route('index', ['lang' => app()->getLocale()]);
-    }
+    //     if (Hash::check($request->password, $user->password)) {
+    //         return redirect()->back()->withErrors([
+    //             'new_password' => 'รหัสผ่านใหม่ซ้ำกับรหัสผ่านเก่า กรุณาใช้รหัสผ่านอื่น',
+    //         ]);
+    //     }
+    //     $user = Auth::guard('member')->user()->id;
+    //     $userData = Member::find($user);
+    //     // dd($userId);
+    //     $userData->update([
+    //         'password' => Hash::make($request->password),
+    //     ]);
+    //     Auth::guard('member')->logout();
+    //     return redirect()->route('index', ['lang' => app()->getLocale()]);
+    // }
 
 
 

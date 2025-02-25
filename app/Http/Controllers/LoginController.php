@@ -12,9 +12,10 @@ class LoginController extends MainController
 {
     public function loginIndex()
     {
-        // if (Auth::guard('member')->check()) {
-        //     return redirect()->route('profile');
-        // }
+        dd(Auth::guard('member')->check());
+        if (Auth::guard('member')->check()) {
+            return redirect()->route('profile');
+        }
         return view('login');
     }
 
@@ -139,7 +140,7 @@ class LoginController extends MainController
         $password = $request->input('password');
 
         $user = Member::where('email', $emailOrPhone)
-            ->orWhere('mobile_phone', $emailOrPhone)
+            ->orWhere('student_id', $emailOrPhone)
             ->first();
 
         if (!$user) {

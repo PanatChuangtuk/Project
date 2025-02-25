@@ -179,8 +179,8 @@ maximum-scale=1.0, user-scalable=no" />
                                     <li>
                                         <a href="{{ url('/profile') }}"> @lang('messages.my_account')</a>
                                     </li>
-                                    <li><a href="{{ url('/my-purchase') }}">@lang('messages.my_purchase')</a>
-                                    </li>
+                                    {{-- <li><a href="{{ url('/my-purchase') }}">@lang('messages.my_purchase')</a>
+                                    </li> --}}
                                     <li>
                                         <form id="logout-form" action="{{ url('/logout') }}" method="POST"
                                             style="display: none;">
@@ -279,10 +279,10 @@ maximum-scale=1.0, user-scalable=no" />
                         <li class="{{ request()->path() === app()->getLocale() ? 'active' : '' }}">
                             <a href="{{ url('/ ') }}" style="text-transform: uppercase;">@lang('messages.home')</a>
                         </li>
-                        <li class="{{ request()->is('/about') ? 'active' : '' }}">
+                        {{-- <li class="{{ request()->is('/about') ? 'active' : '' }}">
                             <a href="{{ url('/about') }}" style="text-transform: uppercase;">@lang('messages.about')</a>
-                        </li>
-                        <li
+                        </li> --}}
+                        {{-- <li
                             class="dropdown {{ request()->is('/product') || request()->is('/download') || request()->is('/track-trace') ? 'active' : '' }}">
                             <a href="#" data-bs-toggle="dropdown" data-bs-display="static"
                                 style="text-transform: uppercase;">@lang('messages.products')</a>
@@ -294,8 +294,8 @@ maximum-scale=1.0, user-scalable=no" />
                                 <li><a href="{{ url('/track-trace') }}"
                                         style="text-transform: uppercase;">@lang('messages.track_and_trace')</a></li>
                             </ul>
-                        </li>
-                        <li class="dropdown {{ request()->is('/service') || request()->is('/faq') ? 'active' : '' }}">
+                        </li> --}}
+                        {{-- <li class="dropdown {{ request()->is('/service') || request()->is('/faq') ? 'active' : '' }}">
                             <a href="{{ url('/service') }}" data-bs-toggle="dropdown"
                                 data-bs-display="static">@lang('messages.service')</a>
                             <ul class="dropdown-menu">
@@ -304,17 +304,17 @@ maximum-scale=1.0, user-scalable=no" />
                                 <li><a href="{{ url('/faq') }}"
                                         style="text-transform: uppercase;">@lang('messages.qa')</a></li>
                             </ul>
-                        </li>
-                        <li class="{{ request()->is('/promotion') ? 'active' : '' }}">
+                        </li> --}}
+                        {{-- <li class="{{ request()->is('/promotion') ? 'active' : '' }}">
                             <a href="{{ url('/promotion') }}"
                                 style="text-transform: uppercase;">@lang('messages.promotion')</a>
-                        </li>
-                        <li class="{{ request()->is('/news') ? 'active' : '' }}">
+                        </li> --}}
+                        {{-- <li class="{{ request()->is('/news') ? 'active' : '' }}">
                             <a href="{{ url('/news') }}" style="text-transform: uppercase;">@lang('messages.news')</a>
-                        </li>
-                        <li class="{{ request()->is('/contact') ? 'active' : '' }}">
+                        </li> --}}
+                        {{-- <li class="{{ request()->is('/contact') ? 'active' : '' }}">
                             <a href="{{ url('/contact') }}" style="text-transform: uppercase;">@lang('messages.contact')</a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </div>
             </div>
