@@ -14,64 +14,68 @@ class LoginController extends MainController
     {
         if (Auth::guard('member')->check()) {
             return redirect()->route('profile');
+        } else if (Auth::guard('web')->check()) {
+            return redirect()->route('administrator.dashboard')->with('success', __('messages.login_success'));
         }
         return view('login');
     }
 
-    public function dataForgotPassword()
-    {
-        if (Auth::guard('member')->check()) {
-            return redirect()->route('profile');
-        }
+    // public function dataForgotPassword()
+    // {
+    //     if (Auth::guard('member')->check()) {
+    //         return redirect()->route('profile');
+    //     } else if (Auth::guard('web')->check()) {
+    //         return redirect()->route('administrator.dashboard')->with('success', __('messages.login_success'));
+    //     }
 
-        return view('otp-forgot-password-login');
-    }
+    //     return view('otp-forgot-password-login');
+    // }
 
 
-    public function dataForgotPasswordSubmit(Request $request)
-    {
-        if (Auth::guard('member')->check()) {
-            return redirect()->route('profile');
-        }
-        $validator = Validator::make($request->all(), [
-            'email_or_phone' => 'required|string',
+    // public function dataForgotPasswordSubmit(Request $request)
+    // {
+    //     if (Auth::guard('member')->check()) {
+    //         return redirect()->route('profile');
+    //     }
+    //     $validator = Validator::make($request->all(), [
+    //         'email_or_phone' => 'required|string',
 
-        ], [
-            'email_or_phone.required' =>  __('messages.email_or_phone_field_required'),
+    //     ], [
+    //         'email_or_phone.required' =>  __('messages.email_or_phone_field_required'),
 
-        ]);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+    //     ]);
+    //     if ($validator->fails()) {
+    //         return redirect()->back()->withErrors($validator)->withInput();
+    //     }
 
-        $userData = Member::where('email', $request->email_or_phone)
-            ->orWhere('mobile_phone', $request->email_or_phone)
-            ->first();
+    //     $userData = Member::where('email', $request->email_or_phone)
+    //         ->orWhere('mobile_phone', $request->email_or_phone)
+    //         ->first();
 
-        if (!$userData) {
-            return response()->json([
-                'status' => 'error',
-            ], 404);
-        }
+    //     if (!$userData) {
+    //         return response()->json([
+    //             'status' => 'error',
+    //         ], 404);
+    //     }
 
-        $payload = [
-            'email' => $request->email_or_phone,
-            'iat' => time(),
-            'exp' => time() + 300,
-        ];
+    //     $payload = [
+    //         'email' => $request->email_or_phone,
+    //         'iat' => time(),
+    //         'exp' => time() + 300,
+    //     ];
 
-        $token = JWT::encode($payload, env('JWT_SECRET'), 'HS256');
-        session(['reset_token' => $token]);
-        return response()->json([
-            'status' => 'success',
-        ], 200);
-    }
+    //     $token = JWT::encode($payload, env('JWT_SECRET'), 'HS256');
+    //     session(['reset_token' => $token]);
+    //     return response()->json([
+    //         'status' => 'success',
+    //     ], 200);
+    // }
 
-    public function otpForgotPassword(Request $request)
-    {
+    // public function otpForgotPassword(Request $request)
+    // {
 
-        return view('otp-forgot-password');
-    }
+    //     return view('otp-forgot-password');
+    // }
 
 
     // public function otpForgotPasswordSubmit(Request $request)
@@ -82,44 +86,44 @@ class LoginController extends MainController
     //     ]);
     // }
 
-    public function resetPasswordIndex($lang, Request $request)
-    {
-        if (Auth::guard('member')->check()) {
-            return redirect()->route('profile');
-        }
-        return view('set-new-password');
-    }
+    // public function resetPasswordIndex($lang, Request $request)
+    // {
+    //     if (Auth::guard('member')->check()) {
+    //         return redirect()->route('profile');
+    //     }
+    //     return view('set-new-password');
+    // }
 
-    public function resetPasswordSubmit($lang, Request $request)
-    {
-        $token = JWT::decode(session('reset_token'), new Key(env('JWT_SECRET'), 'HS256'));
+    // public function resetPasswordSubmit($lang, Request $request)
+    // {
+    //     $token = JWT::decode(session('reset_token'), new Key(env('JWT_SECRET'), 'HS256'));
 
-        $userData = Member::where('email', $token->email)
-            ->orWhere('mobile_phone', $token->email)
-            ->first();
+    //     $userData = Member::where('email', $token->email)
+    //         ->orWhere('mobile_phone', $token->email)
+    //         ->first();
 
-        $validator = Validator::make($request->all(), [
-            'password' => 'required|string|min:8|confirmed',
-        ], [
-            'password.required' => __('messages.password_field_required'),
-            'password.confirmed' => __('messages.passwords_do_not_match'),
-            'password.min' => __('messages.password_must_be_at_least_8_characters'),
-        ]);
+    //     $validator = Validator::make($request->all(), [
+    //         'password' => 'required|string|min:8|confirmed',
+    //     ], [
+    //         'password.required' => __('messages.password_field_required'),
+    //         'password.confirmed' => __('messages.passwords_do_not_match'),
+    //         'password.min' => __('messages.password_must_be_at_least_8_characters'),
+    //     ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput($request->except('new_password', 'password_confirmation'));
-        }
+    //     if ($validator->fails()) {
+    //         return redirect()->back()
+    //             ->withErrors($validator)
+    //             ->withInput($request->except('new_password', 'password_confirmation'));
+    //     }
 
-        $userData->update([
-            'is_source' => IsSourceEnum::Register->value,
-            'password' => Hash::make($request->password),
-        ]);
-        session()->forget('reset_token');
+    //     $userData->update([
+    //         'is_source' => IsSourceEnum::Register->value,
+    //         'password' => Hash::make($request->password),
+    //     ]);
+    //     session()->forget('reset_token');
 
-        return redirect()->route('login');
-    }
+    //     return redirect()->route('login');
+    // }
 
     public function submit(Request $request)
     {
@@ -139,6 +143,7 @@ class LoginController extends MainController
         $password = $request->input('password');
 
         $user = Member::where('email', $emailOrPhone)
+            ->where('status', '1')
             ->orWhere('student_id', $emailOrPhone)
             ->first();
 
@@ -150,9 +155,9 @@ class LoginController extends MainController
             return redirect()->back()->withErrors(['password' => __('messages.invalid_password')])->withInput();
         }
 
-        if ($user->is_source === IsSourceEnum::Admin->value) {
-            return redirect()->route('login.forgot.password');
-        }
+        // if ($user->is_source === IsSourceEnum::Admin->value) {
+        //     return redirect()->route('login.forgot.password');
+        // }
         if ($user->role === 'user') {
             Auth::guard('member')->login($user);
             return redirect()->route('profile')->with('success', __('messages.login_success'));

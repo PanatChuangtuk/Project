@@ -508,6 +508,26 @@ data-template="vertical-menu-template-free"
             dateFormat: "Y-m-d H:i",
             time_24hr: true,
         });
+    </script><script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoutButton = document.querySelector('.logout-btn');
+            logoutButton.addEventListener('click', function() {
+                const logoutUrl = this.dataset.logoutUrl;
+                Swal.fire({
+                    title: 'Are you sure?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'OK',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = logoutUrl;
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>

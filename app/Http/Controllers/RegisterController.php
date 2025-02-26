@@ -50,9 +50,11 @@ class RegisterController extends MainController
 
         $user = Member::create([
             'username' => $request->username,
+            'role' => 'user',
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'mobile_phone' => $request->student_id,
+            'status' => 0,
             'created_at' => Carbon::now(),
             'created_by' => Auth::check() ? Auth::user()->id : null
         ]);
