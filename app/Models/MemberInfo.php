@@ -10,6 +10,7 @@ class MemberInfo extends Model
     use SoftDeletes;
 
     protected $table = 'member_infomation';
+
     protected $fillable = [
         'first_name',
         'last_name',
@@ -18,4 +19,9 @@ class MemberInfo extends Model
     ];
 
     protected $dates = ['deleted_at'];
+
+    public function member()
+    {
+        return $this->belongsTo(Member::class, 'member_id', 'id');
+    }
 }

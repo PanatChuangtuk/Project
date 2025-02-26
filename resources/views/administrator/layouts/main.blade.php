@@ -36,7 +36,7 @@ data-template="vertical-menu-template-free"
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ URL::asset('administrator') }}/assets/img/gas_logo.png" />
-
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,29 +44,31 @@ data-template="vertical-menu-template-free"
     <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.3.1/ckeditor5.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-    
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    
+
     <!-- Icons -->
     <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/fonts/boxicons.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css" crossorigin="anonymous">
     <!-- Krajee -->
-    <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css" rel="stylesheet"
-    type="text/css" />
+    <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css" rel="stylesheet" type="text/css" />
     <!-- Core CSS -->
     <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/css/core.css" class="template-customizer-core-css" />
     <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/css/demo.css" />
-    
+
     <!-- Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/libs/select2/select2.css" />
-    
+
     <!-- File Input -->
     <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+
+    <!-- Theme CSS -->
+    {{-- <link rel="stylesheet" href="{{ URL::asset('css/theme.css') }}"> --}}
     
     @yield('stylesheet')
     {{-- <style>
@@ -258,20 +260,20 @@ data-template="vertical-menu-template-free"
                     </div>
                   </a>
                 </li>
-                <li>
+                {{-- <li>
                   <div class="dropdown-divider my-1"></div>
-                </li>
-                <li>
+                </li> --}}
+                {{-- <li>
                   <a class="dropdown-item" href="#">
                     <i class="bx bx-user bx-md me-3"></i><span>My Profile</span>
                   </a>
-                </li>
-                <li>
+                </li> --}}
+                {{-- <li>
                   <a class="dropdown-item" href="#"> <i class="bx bx-cog bx-md me-3"></i><span>Settings</span> </a>
-                </li>
-                <li>
+                </li> --}}
+                {{-- <li>
                   <div class="dropdown-divider my-1"></div>
-                </li>
+                </li> --}}
                 <li>
                   <a class="dropdown-item logout-btn" href="javascript:void(0);" data-logout-url="{{ route('administrator.logout') }}">
                       <i class="bx bx-power-off bx-md me-3"></i>
@@ -345,7 +347,6 @@ data-template="vertical-menu-template-free"
     <!-- / Layout wrapper -->
    
  
-    <!-- Core JS -->
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/jquery/jquery.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/popper/popper.js"></script>
@@ -353,12 +354,12 @@ data-template="vertical-menu-template-free"
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
     <script src="{{ URL::asset('administrator') }}/assets/vendor/js/menu.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Vendors JS -->
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/apex-charts/apexcharts.js"></script>
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/datatables/datatables.min.js"></script>
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
-    
+
     <!-- File Input -->
     <script src="{{ URL::asset('administrator') }}/vendor-admin/bootstrap-fileinput/js/plugins/piexif.min.js"></script>
     <script src="{{ URL::asset('administrator') }}/vendor-admin/bootstrap-fileinput/js/plugins/sortable.min.js"></script>
@@ -366,28 +367,28 @@ data-template="vertical-menu-template-free"
     <script src="{{ URL::asset('administrator') }}/vendor-admin/bootstrap-fileinput/themes/fas/theme.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/js/fileinput.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/js/locales/LANG.js"></script>
-    
+
     <!-- Resumable.js (optional) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/resumable.js/1.0.3/resumable.min.js"></script>
-  
+
     <!-- Krajee -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <!-- CKEditor -->
     {{-- <script src="{{ URL::asset('administrator') }}/vendor-admin/ckeditor4/ckeditor.js"></script>
     <script src="{{ URL::asset('administrator') }}/vendor-admin/ckeditor/build/ckeditor.js"></script> --}}
-    
+
     <script type="importmap">
-      {
-          "imports": {
-              "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.3.1/ckeditor5.js",
-              "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.3.1/"
-          }
-      }
-  </script>
+        {
+            "imports": {
+                "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.3.1/ckeditor5.js",
+                "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.3.1/"
+            }
+        }
+    </script>
     <!-- Full Calendar -->
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/fullcalendar/fullcalendar.js"></script>
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/flatpickr/flatpickr.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
     <!-- Moment -->
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/moment/moment.js"></script>
     
@@ -395,110 +396,25 @@ data-template="vertical-menu-template-free"
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js"></script>
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js"></script>
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js"></script>
-    
+
     <!-- Select2 -->
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/select2/select2.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    
+
     <!-- Star Ratings -->
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/rateyo/rateyo.js"></script>
-    
+
     <!-- Main JS -->
     <script src="{{ URL::asset('administrator') }}/assets/js/main.js"></script>
     <script src="{{ URL::asset('administrator') }}/assets/js/dashboards-analytics.js"></script>
-    
+
     <!-- Custom JS -->
     <script src="{{ URL::asset('administrator') }}/js/function.js?{{ <?= time(); ?> }}"></script>
     <script src="{{ URL::asset('administrator') }}/js/custom-alert.js"></script>
-    
-    <!-- GitHub Buttons -->
-    {{-- <script async defer src="https://buttons.github.io/buttons.js"></script> --}}
+
     @yield('script')
 
     <script>
-        // initialDatatable()
-        // function initialDatatable(){
-        //     try
-        //     {                
-        //         var table = $('#dataTable').DataTable({
-        //             searching: false,
-        //             paging: false,
-        //             order: [[ 0, '' ]],
-        //         });
-
-        //         if ($('#dataTableSort').length > 0) {
-        //             table = $('#dataTableSort').DataTable({
-        //                 searching: false,
-        //                 paging: false,
-        //                 rowReorder: {
-        //                     selector: 'tr td:not(.no-sort)',
-        //                     update: true
-        //                 },
-        //                 columnDefs: [
-        //                     { visible: false, targets: [0] }
-        //                 ],
-        //                 order: [[ 1, 'asc' ]],
-        //             });
-        //         }
-                
-        //         // table.order([0,'']).draw();
-        //         //sort columns
-        //         var reqColumn = "{{request('column')}}"
-        //         var reqColumnName = "{{request('columnName')}}"
-        //         var reqDirection = "{{request('direction')}}"
-        //         var reqPage = "{{request('page')}}"
-        //         var reqPerPage = "{{request('perPage')}}"
-
-        //         if(reqColumn && reqDirection){
-        //             table.order([reqColumn, reqDirection]).draw();
-        //         }
-
-        //         table.on('order.dt', function(t) {
-        //             var currentRoute = '{{ Request::url() }}'
-        //             var columnNames = table.columns().header().map(function(th) {
-        //                 return {
-        //                     name: $(th).text(),
-        //                     dataName: $(th).attr('data-name')
-        //                 };
-        //             }).toArray();
-
-        //             var column = table.order()[0][0]; // Get the index of the sorted column
-        //             var direction = table.order()[0][1]; // 'asc' or 'desc'
-
-        //             //parameter in forms
-        //             var formData = $("form").serialize();
-
-        //             if(column) {
-        //                 swal.showLoading();
-        //                 // Construct the URL with parameters
-        //                 var url = `${currentRoute}?column=${column}&columnName=${columnNames[column].dataName}&direction=${direction}&page=${reqPage}&perPage=${reqPerPage}&${formData}#dataTable`;
-
-        //                 window.location.href = url;
-        //             }
-        //         });
-
-        //         table.on('row-reorder', function(e, diff, edit) {
-        //             // console.log(e)
-        //             console.log(diff)
-        //             // console.log(edit)
-        //             if(diff.length > 0) {
-        //                 var formdata   = new FormData();
-        //                 formdata.append('_token','{{ csrf_token() }}');
-        //                 formdata.append('sort_order_list',JSON.stringify(diff));
-                        
-        //                 //formid,urlSave,urlRedirect
-        //                 callEditAlert(formdata,'{{ url("administrator/".str_replace("administrator.","",Route::currentRouteName())."/update/") }}/0?mode={{ request("mode") }}','{{ url("administrator/".str_replace("administrator.","",Route::currentRouteName())) }}?mode={{ request("mode") }}')
-        //             }
-        //         });
-        //     }
-        //     catch (err) {
-        //         console.log(err)
-        //     }
-        // }
-
-        // var date = document.querySelector(".date-flatpick");
-        // var dateTime = document.querySelector(".date-flatpick-time");
-
         $(".date-flatpick").flatpickr({
             monthSelectorType: "static"
         });

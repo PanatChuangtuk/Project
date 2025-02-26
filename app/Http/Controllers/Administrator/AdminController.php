@@ -16,7 +16,7 @@ class AdminController extends Controller
     {
         $query = $request->input('query');
 
-        $userQuery = Member::query();
+        $userQuery = Member::where('role', 'admin');
 
         if ($query) {
             $userQuery->where('name', 'LIKE', "%{$query}%");
@@ -25,8 +25,6 @@ class AdminController extends Controller
         $users = $userQuery->paginate(10)->appends([
             'query' => $query,
         ]);
-
-
         return view('administrator.admin.index', compact('users', 'query'));
     }
 

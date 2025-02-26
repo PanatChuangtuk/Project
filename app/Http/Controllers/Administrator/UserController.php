@@ -16,7 +16,7 @@ class UserController extends Controller
     {
         $query = $request->input('query');
 
-        $userQuery = Member::query();
+        $userQuery = Member::where('role', 'user');
 
         if ($query) {
             $userQuery->where('name', 'LIKE', "%{$query}%");

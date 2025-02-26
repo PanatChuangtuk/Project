@@ -52,7 +52,7 @@
                                             <input class="form-check-input check-item" type="checkbox" id="checkAll" />
                                         </div>
                                     </th>
-                                    <th>ID</th>
+                                    {{-- <th>ID</th> --}}
                                     <th>UserName</th>
                                     <th>Email</th>
                                     <th class="text-center">Created Date</th>
@@ -69,8 +69,20 @@
                                                     value="{{ $item->id }}">
                                             </div>
                                         </td>
-                                        <td>{{ $item->id }}</td>
-                                        <td>{{ $item->username }}</td>
+                                        {{-- <td>{{ $item->id }}</td> --}}
+                                        <td>
+                                            <div class="text-center">
+                                                <div class="flex-grow-1">
+                                                    <strong class="d-block">
+                                                        {{ $item->info->first_name ?? null }} |
+                                                        {{ $item->info->last_name ?? null }}
+                                                    </strong>
+                                                    <span class="text-muted small">
+                                                        {{ $item->info->mobile_phone ?? null }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </td>
                                         <td>{{ $item->email }}</td>
                                         {{-- <td class="text-center">
                                             @if (Auth::user()->role->name == 'Super Admin')

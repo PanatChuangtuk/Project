@@ -4,21 +4,34 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class Member extends Authenticatable
 {
+    use SoftDeletes, Notifiable;
+
     protected $table = 'member';
 
-    // public function isAdmin()
-    // {
-    //     return $this->role === 'admin';
-    // }
+    protected $fillable = [
+        'student_id',
+        'role',
+        'password',
+        'email',
+        'status',
+        'created_by',
+        'updated_by',
+        'deleted_by'
+    ];
 
-    // public function isStudent()
-    // {
-    //     return $this->role === 'student';
-    // }
+    protected $hidden = [
+        'password',
+    ];
+
+    protected $dates = ['deleted_at'];
+
+    public function info()
+    {
+        return $this->hasOne(MemberInfo::class, 'member_id', 'id');
+    }
 }
