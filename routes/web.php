@@ -6,7 +6,8 @@ use App\Http\Controllers\{
     LoginController,
     RegisterController,
     ProfileController,
-    MemberController
+    MemberController,
+    ImageController
 };
 
 require base_path('routes/admin.php');
@@ -15,6 +16,10 @@ require base_path('routes/admin.php');
 Route::get('login', [LoginController::class, 'loginIndex'])->name('login');
 Route::post('login', [LoginController::class, 'submit'])->name('login.submit');
 
+
+
+Route::get('/capture', [ImageController::class, 'showCaptureForm']);
+Route::post('/save-image', [ImageController::class, 'saveImage'])->name('save.image');
 
 // Route::get('/student/dashboard', [MemberController::class, 'studentDashboard'])->name('student.dashboard');
 

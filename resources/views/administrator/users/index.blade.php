@@ -53,8 +53,8 @@
                                         </div>
                                     </th>
                                     {{-- <th>ID</th> --}}
-                                    <th>UserName</th>
-                                    <th>Email</th>
+                                    <th class="text-center">UserName</th>
+                                    <th class="text-center">Email</th>
                                     <th class="text-center">Created Date</th>
                                     <th class="text-center">Actions</th>
                                 </tr>
@@ -83,7 +83,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{{ $item->email }}</td>
+                                        <td class="text-center">{{ $item->email }}</td>
                                         {{-- <td class="text-center">
                                             @if (Auth::user()->role->name == 'Super Admin')
                                                 @if (Auth::user()->id != $item->id)

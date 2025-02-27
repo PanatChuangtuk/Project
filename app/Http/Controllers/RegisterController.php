@@ -22,6 +22,7 @@ class RegisterController extends MainController
     }
     public function submit(Request $request)
     {
+        dd($request->all());
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:member',
@@ -50,6 +51,7 @@ class RegisterController extends MainController
 
         $user = Member::create([
             'username' => $request->username,
+            'student_id' => $request->student_id,
             'role' => 'user',
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -62,7 +64,7 @@ class RegisterController extends MainController
             'member_id' => $user->id,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
-            // 'adviser_id' => $request->company,
+            'adviser_id' => 1,
 
         ]);
         return redirect()->route('login');
