@@ -103,7 +103,7 @@ maximum-scale=1.0, user-scalable=no" />
 
             <!-- Video element to display camera stream -->
             <div class="video-container">
-                <video id="video" width="640" height="480" autoplay></video>
+                {{-- <video id="video" width="640" height="480" autoplay></video> --}}
             </div>
 
             <!-- Canvas to draw captured image -->
@@ -178,8 +178,8 @@ maximum-scale=1.0, user-scalable=no" />
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="title">@lang('messages.firstname')<span class="star">*</span></label>
-                        <input type="text" name="first_name" class="form-control"
-                            placeholder="@lang('messages.input_firstname')" value="{{ old('first_name') }}" />
+                        <input type="text" name="first_name" class="form-control" placeholder="@lang('messages.input_firstname')"
+                            value="{{ old('first_name') }}" />
                         @error('first_name')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
