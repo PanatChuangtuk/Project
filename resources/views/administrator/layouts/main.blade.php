@@ -223,11 +223,11 @@ data-template="vertical-menu-template-free"
           <!-- Search -->
           <div class="navbar-nav align-items-center">
             <div class="nav-item d-flex align-items-center">
-              <i class="bx bx-search bx-md"></i>
+              {{-- <i class="bx bx-search bx-md"></i> --}}
               <input
                 type="text"
                 class="form-control border-0 shadow-none ps-1 ps-sm-2"
-                placeholder="Search..."
+                {{-- placeholder="Search..." --}}
                 aria-label="Search..." />
             </div>
           </div>
