@@ -161,6 +161,12 @@
                 <div data-i18n="Basic"> Admin </div>
             </a>
         </li>
+        <li class="menu-item">
+            <a href="{{ route('administrator.student') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-blanket"></i>
+                <div data-i18n="Basic"> Student </div>
+            </a>
+        </li>
         {{-- <li class="menu-item">
           <a href="{{ route('administrator.roles') }}" class="menu-link">
               <i class="menu-icon tf-icons bx bx-blanket"></i>

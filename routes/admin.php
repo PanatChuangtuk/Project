@@ -7,7 +7,8 @@ use App\Http\Controllers\Administrator\{
     AuthController,
     UserController,
     AdminController,
-    DashboardController
+    DashboardController,
+    StudentController
 };
 
 Route::prefix('administrator')->group(function () {
@@ -40,6 +41,23 @@ Route::prefix('administrator')->group(function () {
             Route::post('/update/{id}', [UserController::class, 'update'])->name('users.update');
             Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.destroy');
             Route::post('/bulk-delete', [UserController::class, 'bulkDelete'])->name('users.bulk.delete');
+            Route::post('/import', [UserController::class, 'import'])->name('user.import');
+            Route::get('/export', [UserController::class, 'exportPage'])->name('user.export');
+            Route::post('/import/submit', [UserController::class, 'import'])->name('user.import.submit');
+            Route::post('/export/submit', [UserController::class, 'export'])->name('user.export.submit');
+        });
+        Route::group(['prefix' => 'student', 'as' => 'administrator.'], function () {
+            Route::get('/', [StudentController::class, 'index'])->name('student');
+            Route::get('/add', [StudentController::class, 'add'])->name('student.add');
+            // Route::post('/submit', [StudentController::class, 'submit'])->name('student.submit');
+            Route::get('/edit/{id}', [StudentController::class, 'edit'])->name('student.edit');
+            // Route::post('/update/{id}', [StudentController::class, 'update'])->name('student.update');
+            Route::delete('/{id}', [StudentController::class, 'destroy'])->name('student.destroy');
+            Route::post('/bulk-delete', [StudentController::class, 'bulkDelete'])->name('student.bulk.delete');
+            Route::post('/import', [StudentController::class, 'import'])->name('student.import');
+            Route::get('/export', [StudentController::class, 'exportPage'])->name('student.export');
+            Route::post('/import/submit', [StudentController::class, 'import'])->name('student.import.submit');
+            Route::post('/export/submit', [StudentController::class, 'export'])->name('student.export.submit');
         });
     });
 });

@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Member;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\MembersImport;
 
 class UserController extends Controller
 {
@@ -88,5 +89,18 @@ class UserController extends Controller
         ]);
 
         return redirect()->route('administrator.users');
+    }
+    public function import(Request $request)
+    {
+        if ($request->hasFile('file') && $request->file('file')->isValid()) {
+
+            $path = $request->file('file')->getRealPath();
+
+            Excel::import(new MembersImport, $path);
+
+            return redirect()->back()->with('success', 'Data imported successfully.');
+        }
+
+        return redirect()->back()->with('error', 'No valid file selected.');
     }
 }
