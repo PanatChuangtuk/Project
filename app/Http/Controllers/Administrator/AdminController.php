@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Administrator;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Member;
+use App\Models\{Member, MemberInfo};
 use Illuminate\Http\Request;
 // use App\Imports\UsersImport;
 // use App\Exports\UsersExport;
@@ -54,13 +54,22 @@ class AdminController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        Member::create([
+        $member = Member::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => $request->role_id,
+            'role' => 'admin',
+            'status' => 1,
         ]);
-
+        $this->uploadsImage($request->image, $path);
+        MemberInfo::create([
+            'user_id' => $member->id,
+            'adviser_id' => 0,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'mobile' => $request->mobile,
+            'avatar' => ''
+        ]);
         return redirect()->route('administrator.admin');
     }
 
