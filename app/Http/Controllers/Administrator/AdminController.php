@@ -61,14 +61,17 @@ class AdminController extends Controller
             'role' => 'admin',
             'status' => 1,
         ]);
-        $this->uploadsImage($request->image, $path);
+        $filename = null;
+        if ($request->hasFile('image')) {
+            $filename = $this->uploadsImage($request->file('image'), 'admin');
+        }
         MemberInfo::create([
             'user_id' => $member->id,
             'adviser_id' => 0,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'mobile' => $request->mobile,
-            'avatar' => ''
+            'avatar' => $filename
         ]);
         return redirect()->route('administrator.admin');
     }

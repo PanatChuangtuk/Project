@@ -62,6 +62,15 @@
                                 class="form-control" required />
                         </div>
                     </div>
+
+                    <div class="mb-4">
+                        <label for="password_confirmation" class="form-label">First Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            <input type="password" id="password_confirmation" name="password_confirmation"
+                                class="form-control" required />
+                        </div>
+                    </div>
                 </div>
 
             </div>

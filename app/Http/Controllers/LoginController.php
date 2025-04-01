@@ -144,7 +144,7 @@ class LoginController extends MainController
 
         $user = Member::where('email', $emailOrPhone)
             ->where('status', '1')
-            ->orWhere('student_id', $emailOrPhone)
+            // ->orWhere('student_id', $emailOrPhone)
             ->first();
 
         if (!$user) {

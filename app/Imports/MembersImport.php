@@ -20,4 +20,8 @@ class MembersImport implements ToModel, WithHeadingRow
             'created_at'     => now(),
         ]);
     }
+    public function headingRow(): int
+    {
+        return 1;
+    }
 }
