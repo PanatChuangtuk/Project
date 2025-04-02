@@ -10,13 +10,11 @@ use Intervention\Image\Facades\Image;
 
 class ImageController extends Controller
 {
-    // แสดงฟอร์มจับภาพ
     public function showCaptureForm()
     {
         return view('capture');
     }
 
-    // บันทึกภาพที่ถ่ายจากกล้อง
     public function saveImage(Request $request)
     {
         if ($request->has('imageData')) {

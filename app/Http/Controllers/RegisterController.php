@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\MainController;
-use Illuminate\Support\Facades\{Hash, Auth, Validator, Http};
+use Illuminate\Support\Facades\{Hash, Auth, Validator, Storage};
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Enum\IsSourceEnum;
@@ -22,7 +22,7 @@ class RegisterController extends MainController
     }
     public function submit(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:member',
@@ -49,6 +49,15 @@ class RegisterController extends MainController
                 ->withInput($request->except('password', 'password_confirmation'));
         }
 
+        if ($request->has('imageData')) {
+            $imageData = $request->input('imageData');
+            $imageData = str_replace('data:image/png;base64,', '', $imageData);
+            $imageData = base64_decode($imageData);
+            $fileName = 'captured_' . time() . '.png';
+            Storage::disk('public')->put('images/' . $fileName, $imageData);
+            return back()->with('message', 'Image saved successfully!');
+        }
+
         $user = Member::create([
             'username' => $request->username,
             'student_id' => $request->student_id,
@@ -65,7 +74,7 @@ class RegisterController extends MainController
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'adviser_id' => 1,
-
+            'avatar' => $fileName
         ]);
         return redirect()->route('login');
     }

@@ -11,9 +11,8 @@ class ProfileController extends MainController
 {
     public function profileIndex()
     {
-
         $userId = Auth::guard('member')->user()->id;
-        MemberInfo::create(['first_name' => 'test', 'last_name' => 'test', 'adviser_id' => 1, 'member_id' => 4]);
+        // MemberInfo::create(['first_name' => 'test', 'last_name' => 'test', 'adviser_id' => 1, 'member_id' => 4]);
         $profile = Member::join('member_infomation', 'member_infomation.member_id', '=', 'member.id')
             ->select('member.*', 'member_infomation.*')
             ->where('member.id', $userId)
