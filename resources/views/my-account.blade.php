@@ -26,8 +26,7 @@
                         </button>
                     </div>
 
-                    <form class="form pt-3" method="POST"
-                        action="{{ route('profile.submit', ['lang' => app()->getLocale()]) }}">
+                    <form class="form pt-3" method="POST" action="{{ route('profile.submit') }}">
                         @csrf
                         <div class="row form-row">
                             <div class="col-md-6">

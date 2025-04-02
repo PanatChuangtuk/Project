@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Observers\Observer;
 
-class About extends Model
+class Equipment extends Model
 {
     use SoftDeletes;
     protected $table = 'about';

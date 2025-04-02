@@ -279,9 +279,9 @@ maximum-scale=1.0, user-scalable=no" />
                         <li class="{{ request()->path() === app()->getLocale() ? 'active' : '' }}">
                             <a href="{{ url('/ ') }}" style="text-transform: uppercase;">@lang('messages.home')</a>
                         </li>
-                        {{-- <li class="{{ request()->is('/about') ? 'active' : '' }}">
-                            <a href="{{ url('/about') }}" style="text-transform: uppercase;">@lang('messages.about')</a>
-                        </li> --}}
+                        <li class="{{ request()->is('/equipment') ? 'active' : '' }}">
+                            <a href="{{ url('/equipment') }}" style="text-transform: uppercase;">equipment</a>
+                        </li>
                         {{-- <li
                             class="dropdown {{ request()->is('/product') || request()->is('/download') || request()->is('/track-trace') ? 'active' : '' }}">
                             <a href="#" data-bs-toggle="dropdown" data-bs-display="static"

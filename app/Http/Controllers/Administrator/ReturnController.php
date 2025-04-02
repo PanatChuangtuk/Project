@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
-class LendController extends Controller
+class ReturnController extends Controller
 {
     public function index(Request $request)
     {

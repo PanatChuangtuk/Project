@@ -8,8 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Student;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\MembersImport;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class StudentController extends Controller
 {
@@ -92,15 +91,25 @@ class StudentController extends Controller
     // }
     public function import(Request $request)
     {
-        if ($request->hasFile('file') && $request->file('file')->isValid()) {
+        ini_set('memory_limit', '512M');
+        ini_set('max_execution_time', 180);
+        $file = $request->file('file');
 
-            $path = $request->file('file')->getRealPath();
+        $filePath = $file->storeAs('file/product', $file->getClientOriginalName(), 'public');
+        $filePath = public_path('upload/' . $filePath);
 
-            Excel::import(new MembersImport, $path);
-
-            return redirect()->back()->with('success', 'Data imported successfully.');
-        }
-
-        return redirect()->back()->with('error', 'No valid file selected.');
+        (new FastExcel)->import($filePath, function ($line) {
+            return Student::updateOrCreate(
+                ['student_number' => $line['student_number']],
+                [
+                    'first_name'   => $line['first_name'] ?? null,
+                    'last_name'    => $line['last_name'] ?? null,
+                    'mobile_phone' => $line['mobile_phone'] ?? null,
+                    'status'       => 1,
+                    'created_at'   => now(),
+                ]
+            );
+        });
+        return redirect()->back()->with('success', 'Data imported successfully.');
     }
 }

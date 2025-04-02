@@ -9,8 +9,8 @@
         </div>
 
         <ul class="nav nav-profile">
-            <li class="{{ Request::is(app()->getLocale() . '/profile') ? 'active' : '' }}">
-                <a href="{{ url(app()->getLocale() . '/profile') }}">
+            <li class="{{ Request::is('/profile') ? 'active' : '' }}">
+                <a href="{{ url('/profile') }}">
                     <img class="icons" src="{{ asset('img/icons/icon-user.svg') }}" alt="" />
                     @lang('messages.my_account')
                 </a>
@@ -79,8 +79,7 @@
                 </a>
             </li> --}}
             <li>
-                <form id="logout-form" action="{{ url(app()->getLocale() . '/logout') }}" method="POST"
-                    style="display: none;">
+                <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
                     @csrf
                 </form>
                 <a href="#" onclick="confirmLogout(event)">
