@@ -17,7 +17,6 @@ class MemberInfo extends Model
         'adviser_id',
         'member_id',
         'student_id',
-        'student_number',
         'avatar'
     ];
 
@@ -26,5 +25,9 @@ class MemberInfo extends Model
     public function member()
     {
         return $this->belongsTo(Member::class, 'member_id', 'id');
+    }
+    public function student()
+    {
+        return $this->hasOne(Student::class, 'student_id', 'id');
     }
 }

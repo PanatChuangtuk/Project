@@ -231,6 +231,18 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="fw-bold text-center w-100 d-block">รหัสนักศึกษา <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" name="student_id" class="form-control"
+                                            placeholder="กรอกนามสกุล" value="{{ old('student_id') }}" />
+                                        @error('student_id')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
                                 <input type="hidden" id="imageData" name="imageData">
                                 <div class="col-12 d-flex py-3">
                                     <button class="btn btn-success mx-auto px-5 py-2 shadow-lg fw-bold">
