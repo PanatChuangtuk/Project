@@ -267,10 +267,10 @@ maximum-scale=1.0, user-scalable=no" />
                     <div class="cols col-form" data-aos="fade-in">
                         <div class="boxed me-lg-0">
                             <div class="article pb-3" style="--font-size: 14px; --color: #375b51">
-                                <h2>@lang('messages.login')</h2>
-                                <p> @lang('messages.login_area_info')
-                                    @lang('messages.login_area_details')
-                                    @lang('messages.login_area_instruction')
+                                <h2>เข้าสู่ระบบ</h2>
+                                <p> กรุณากรอกข้อมูลเพื่อเข้าสู่ระบบ
+                                    ระบบนี้ช่วยให้คุณสามารถเข้าถึงบัญชีของคุณได้
+                                    โปรดป้อนข้อมูลที่ถูกต้องเพื่อดำเนินการต่อ
                                 </p>
                             </div>
                             <form class="form" method="POST" action="{{ route('login.submit') }}">
@@ -278,9 +278,9 @@ maximum-scale=1.0, user-scalable=no" />
                                 <div class="row g-4">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label class="title">@lang('messages.email')/@lang('messages.phone_number')</label>
+                                            <label class="title">อีเมล</label>
                                             <input type="text" class="form-control" name="email_or_phone"
-                                                value="{{ old('email_or_phone') }}" placeholder="@lang('messages.input_email_or_phone')" />
+                                                value="{{ old('email_or_phone') }}" placeholder="กรุณากรอกอีเมล" />
                                             @error('email_or_phone')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -289,33 +289,32 @@ maximum-scale=1.0, user-scalable=no" />
 
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label class="title">@lang('messages.password')</label>
+                                            <label class="title">รหัสผ่าน</label>
                                             <div class="group mb-3">
                                                 <span class="icons icon-eye right"></span>
                                                 <input type="password" class="form-control pw" name="password"
-                                                    id="password" placeholder="@lang('messages.enter_your_password')" />
+                                                    id="password" placeholder="กรุณากรอกรหัสผ่านของคุณ" />
                                                 @error('password')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
-                                            <label class="title mb-0">
-                                                <a
-                                                    href="{{ url('/otp-forgot-password-login') }}">@lang('messages.forgot_password')</a>
-                                            </label>
+                                            {{-- <label class="title mb-0">
+                                                <a href="{{ url('/otp-forgot-password-login') }}">ลืมรหัสผ่าน?</a>
+                                            </label> --}}
                                         </div>
                                     </div>
 
                                     <div class="col-12 d-flex pt-sm-4">
-                                        <button class="btn px-5 ms-auto me-sm-0 me-auto" type="submit">
-                                            <span class="px-3">@lang('messages.login')</span>
+                                        <button class="btn px-5 ms-auto me-sm-0 " type="submit">
+                                            <span class="px-3">เข้าสู่ระบบ</span>
                                         </button>
                                     </div>
 
                                     <div class="col-12 py-4">
                                         <div class="form-note">
-                                            <h6>@lang('messages.dont_have_account')</h6>
+                                            <h6>ยังไม่มีบัญชี?</h6>
                                             <a href="{{ url('/register') }}" class="btn btn-32 btn-light rounded-14">
-                                                <span class="fs-14 px-2">@lang('messages.register')</span>
+                                                <span class="fs-14 px-2">สมัครสมาชิก</span>
                                             </a>
                                         </div>
                                     </div>

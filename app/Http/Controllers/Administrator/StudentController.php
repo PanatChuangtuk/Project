@@ -32,10 +32,10 @@ class StudentController extends Controller
 
 
 
-    // public function add()
-    // {
-    //     return view('administrator.users.add');
-    // }
+    public function add()
+    {
+        return view('administrator.student.add');
+    }
 
     // public function edit($id)
     // {
@@ -100,16 +100,49 @@ class StudentController extends Controller
 
         (new FastExcel)->import($filePath, function ($line) {
             return Student::updateOrCreate(
-                ['student_number' => $line['student_number']],
+                ['student_number' => $line['StudentNumber']],
                 [
-                    'first_name'   => $line['first_name'] ?? null,
-                    'last_name'    => $line['last_name'] ?? null,
-                    'mobile_phone' => $line['mobile_phone'] ?? null,
+                    'first_name'   => $line['FirstName'] ?? null,
+                    'last_name'    => $line['LastName'] ?? null,
+                    'mobile_phone' => $line['MobilePhone'] ?? null,
+                    'email' => $line['Email'] ?? null,
                     'status'       => 1,
                     'created_at'   => now(),
                 ]
             );
         });
         return redirect()->back()->with('success', 'Data imported successfully.');
+    }
+    public function destroy($id, Request $request)
+    {
+        $about = Student::findOrFail($id);
+        $about->delete();
+
+        $currentPage = $request->query('page', 1);
+
+        return redirect()->route('administrator.student', ['page' => $currentPage])->with([
+            'success' => 'About deleted successfully!',
+            'id' => $id
+        ]);
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (is_array($ids) && count($ids) > 0) {
+            Student::whereIn('id', $ids)->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Selected about have been deleted successfully.',
+                'deleted_ids' => $ids
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'No about selected for deletion.'
+        ], 400);
     }
 }

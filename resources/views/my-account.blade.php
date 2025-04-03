@@ -20,7 +20,8 @@
             <div class="content">
                 <div class="card-info main px-5">
                     <div class="avatar-setting">
-                        <img class="avatar" src="{{ asset('img/thumb/avatar-2.png') }}" alt="" />
+                        <img class="avatar" src="{{ asset('upload/images/' . $profile->avatar) }}" alt="" />
+
                     </div>
 
                     <form class="form pt-3" method="POST" action="{{ route('profile.submit') }}">
@@ -29,7 +30,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="title">@lang('messages.username')</label>
-                                    <input type="text" class="form-control"name="username"
+                                    <input type="text" class="form-control"name="username" 4t
                                         value="{{ $profile->username ?? null }}" />
                                 </div>
                             </div>

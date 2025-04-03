@@ -57,7 +57,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="password_confirmation" class="form-label">Repeat your password</label>
+                        <label for="password_confirmation" class="form-label">Confirmation your password</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-key"></i></span>
                             <input type="password" id="password_confirmation" name="password_confirmation"

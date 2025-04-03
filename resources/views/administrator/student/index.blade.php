@@ -8,18 +8,6 @@
 @endsection
 
 @section('content')
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
-
     <div class="row">
         <div class="col-md-12">
             <x-bread-crumb />
@@ -61,7 +49,7 @@
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="{{ route('administrator.user.import') }}" method="POST"
+                                    <form action="{{ route('administrator.student.import') }}" method="POST"
                                         enctype="multipart/form-data">
                                         @csrf
                                         <div class="mb-3">
@@ -74,14 +62,17 @@
 
                                         <div class="d-flex justify-content-between align-items-center">
                                             <button type="submit" class="btn btn-primary">
-                                                <i class="fas fa-upload"></i> นำเข้าข้อมูล
+                                                <i class='bx bx-upload'></i> นำเข้าข้อมูล
                                             </button>
 
                                         </div>
                                     </form>
-                                    <button class="btn btn-outline-primary mt-3" data-bs-dismiss="modal">
-                                        <i class="fas fa-upload"></i> รูปแบบข้อมูลที่ใช้นำเข้า
-                                    </button>
+                                    {{-- <button class="btn btn-outline-primary mt-3" data-bs-dismiss="modal"> --}}
+                                    <a href="{{ asset('upload/ตัวอย่างที่ใช่ในการImport.csv') }}"
+                                        class="btn btn-outline-primary mt-3" download><i class='bx bx-download'></i></i>
+                                        รูปแบบข้อมูลที่ใช้นำเข้า</a>
+
+                                    {{-- </button> --}}
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>

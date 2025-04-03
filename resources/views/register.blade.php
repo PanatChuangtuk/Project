@@ -17,6 +17,7 @@
     <link href="{{ asset('css/swiper.css') }}" rel="stylesheet">
     <link href="{{ asset('css/jquery.scrollbar.css') }}" rel="stylesheet">
     <link href="{{ asset('css/global.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
         body {
             background: linear-gradient(135deg, #f8f9fa, #e9ecef);
@@ -120,6 +121,51 @@
 
         .save-btn:hover {
             background-color: #0056b3;
+        }
+
+        .select2-container {
+            width: 300px !important;
+            height: 50px !important;
+            display: block;
+            margin: 0 auto;
+
+        }
+
+        .select2-container .select2-selection--single {
+            background-color: #f5f5f5;
+            border: 1px solid #f5f5f5;
+            height: 50px !important;
+            line-height: 50px !important;
+        }
+
+        .select2-container .select2-selection__rendered {
+            line-height: 50px !important;
+        }
+
+        .select2-container .select2-selection__arrow {
+            display: none !important;
+        }
+
+        .select2-container .select2-selection__clear {
+            display: none !important;
+        }
+
+        .select2-container .select2-selection--single::after {
+            content: "";
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid #697A8D;
+            width: 0;
+            height: 0;
+        }
+
+        .select2-container--open .select2-selection--single::after {
+            border-top: 0;
+            border-bottom: 6px solid #697A8D;
         }
     </style>
 </head>
@@ -235,10 +281,11 @@
                                     <div class="form-group">
                                         <label class="fw-bold text-center w-100 d-block">รหัสนักศึกษา <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" name="student_id" class="form-control"
-                                            placeholder="กรอกนามสกุล" value="{{ old('student_id') }}" />
+                                        <select name="student_id" id="studentSelect"class="form-control">
+                                            <option value="">รหัสนักศึกษา</option>
+                                        </select>
                                         @error('student_id')
-                                            <span class="text-danger">{{ $message }}</span>
+                                            <span class="text-danger d-block text-center w-100">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
@@ -269,7 +316,7 @@
     <script src="{{ asset('js/custom.js') }}" defer></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
             const $video = $('#video');
@@ -322,7 +369,32 @@
             });
         });
     </script>
+    <script>
+        $('#studentSelect').select2({
+            ajax: {
+                url: 'api/get-user',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
 
+                    return {
+                        query: params.term,
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data.results.map(function(item) {
+                            return {
+                                id: item.id,
+                                text: item.student_number
+                            };
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+    </script>
 
 
 

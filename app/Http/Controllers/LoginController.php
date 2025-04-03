@@ -131,8 +131,8 @@ class LoginController extends MainController
             'email_or_phone' => 'required|string',
             'password' => 'required|string|min:8',
         ], [
-            'email_or_phone.required' => __('messages.email_or_phone_field_required'),
-            'password.required' => __('messages.password_field_required'),
+            'email_or_phone.required' => 'กรุณากรอกอีเมลหรือเบอร์โทรศัพท์',
+            'password.required' => 'กรุณากรอกรหัสผ่าน',
         ]);
 
         if ($validator->fails()) {
@@ -147,23 +147,21 @@ class LoginController extends MainController
             // ->orWhere('student_id', $emailOrPhone)
             ->first();
 
+
         if (!$user) {
-            return redirect()->back()->withErrors(['email_or_phone' => __('messages.user_not_found')])->withInput();
+            return redirect()->back()->withErrors(['email_or_phone' => 'ไม่พบบัญชีผู้ใช้ (หากสมัครแล้วกรุณาติดต่อเจ้าหน้าที่)'])->withInput();
         }
 
         if (!Hash::check($password, $user->password)) {
-            return redirect()->back()->withErrors(['password' => __('messages.invalid_password')])->withInput();
+            return redirect()->back()->withErrors(['password' => 'รหัสผ่านไม่ถูกต้อง'])->withInput();
         }
 
-        // if ($user->is_source === IsSourceEnum::Admin->value) {
-        //     return redirect()->route('login.forgot.password');
-        // }
         if ($user->role === 'user') {
             Auth::guard('member')->login($user);
-            return redirect()->route('profile')->with('success', __('messages.login_success'));
+            return redirect()->route('profile')->with('success', 'เข้าสู่ระบบสำเร็จ');
         } elseif ($user->role === 'admin') {
             Auth::guard('web')->login($user);
-            return redirect()->route('administrator.dashboard')->with('success', __('messages.login_success'));
+            return redirect()->route('administrator.dashboard')->with('success', 'เข้าสู่ระบบสำเร็จ');
         }
     }
 }

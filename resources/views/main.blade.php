@@ -122,7 +122,8 @@
                             <div class="member-links member dropdown">
                                 <li>
                                     <a href="#" data-bs-toggle="dropdown" data-bs-display="static" class="link">
-                                        <img class="icons avatar" src="{{ asset('img/thumb/avatar-1.png') }}"
+                                        <img class="icons avatar"
+                                            src="{{ asset('upload/images/' . $profileUser->avatar) ?? null }}"
                                             alt="">
                                         <span
                                             class="username">{{ $profileUser->first_name . ' ' . $profileUser->last_name }}</span>

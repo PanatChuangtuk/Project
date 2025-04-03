@@ -70,7 +70,7 @@ class AdminController extends Controller
             'adviser_id' => 0,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
-            'mobile' => $request->mobile,
+            // 'mobile' => $request->mobile,
             'avatar' => $filename
         ]);
         return redirect()->route('administrator.admin');

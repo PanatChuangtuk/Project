@@ -23,7 +23,7 @@ class Student extends Model
         'status',
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $dates = ['deleted_at'];
 }

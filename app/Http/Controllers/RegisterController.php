@@ -31,17 +31,19 @@ class RegisterController extends MainController
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'imageData' => 'nullable',
+            'student_id' => 'required|integer',
         ], [
-            'username.required' => __('messages.please_enter_username'),
-            'username.max' => __('messages.username_must_not_exceed_255_characters'),
-            'email.required' => __('messages.please_enter_email'),
-            'email.email' => __('messages.please_enter_valid_email'),
-            'email.unique' => __('messages.email_already_in_use'),
-            'password.required' => __('messages.please_enter_password'),
-            'password.min' => __('messages.password_must_be_at_least_8_characters'),
-            'password.confirmed' => __('messages.passwords_do_not_match'),
-            'first_name.required' => __('messages.please_enter_firstname'),
-            'last_name.required' => __('messages.please_enter_lastname'),
+            'username.required' => 'กรุณากรอกชื่อผู้ใช้',
+            'username.max' => 'ชื่อผู้ใช้ต้องไม่เกิน 255 ตัวอักษร',
+            'email.required' => 'กรุณากรอกอีเมล',
+            'email.email' => 'กรุณากรอกอีเมลที่ถูกต้อง',
+            'email.unique' => 'อีเมลนี้มีผู้ใช้งานแล้ว',
+            'password.required' => 'กรุณากรอกรหัสผ่าน',
+            'password.min' => 'รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร',
+            'password.confirmed' => 'รหัสผ่านไม่ตรงกัน',
+            'first_name.required' => 'กรุณากรอกชื่อจริง',
+            'last_name.required' => 'กรุณากรอกนามสกุล',
+            'student_id.required' => 'กรุณาเลือกรหัสนักศึกษา',
         ]);
 
         if ($validator->fails()) {
@@ -54,11 +56,10 @@ class RegisterController extends MainController
 
         $user = Member::create([
             'username' => $request->username,
-            'student_id' => $request->student_id,
             'role' => 'user',
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'mobile_phone' => $request->student_id,
+            'mobile_phone' => $request->mobile_phone,
             'status' => 0,
             'created_at' => Carbon::now(),
             'created_by' => Auth::check() ? Auth::user()->id : null
@@ -76,10 +77,9 @@ class RegisterController extends MainController
             'member_id' => $user->id,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
-            'student_id' => 1,
+            'student_id' => $request->student_id,
             'adviser_id' => 1,
             'avatar' => $fileName,
-            'student_number' => 's123456789'
         ]);
         return redirect()->route('login');
     }

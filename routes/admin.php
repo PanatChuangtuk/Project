@@ -41,10 +41,6 @@ Route::prefix('administrator')->group(function () {
             Route::post('/update/{id}', [UserController::class, 'update'])->name('users.update');
             Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.destroy');
             Route::post('/bulk-delete', [UserController::class, 'bulkDelete'])->name('users.bulk.delete');
-            Route::post('/import', [UserController::class, 'import'])->name('user.import');
-            Route::get('/export', [UserController::class, 'exportPage'])->name('user.export');
-            Route::post('/import/submit', [UserController::class, 'import'])->name('user.import.submit');
-            Route::post('/export/submit', [UserController::class, 'export'])->name('user.export.submit');
         });
         Route::group(['prefix' => 'student', 'as' => 'administrator.'], function () {
             Route::get('/', [StudentController::class, 'index'])->name('student');

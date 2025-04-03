@@ -5,15 +5,15 @@
 @section('content')
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ route('administrator.dashboard') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('administrator.users') }}">User</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('administrator.student') }}">User</a></li>
         <li class="breadcrumb-item active" aria-current="page">Add</li>
     </ol>
-    <form id="form-create" method="POST" action="{{ route('administrator.users.submit') }}" class="mx-1 mx-md-4">
+    <form id="form-create" method="POST" action="{{ route('administrator.student.submit') }}" class="mx-1 mx-md-4">
         @csrf
         <div class="demo-inline-spacing">
             <div class="text-end">
                 <button type="submit" class="btn btn-success">Save</button>
-                <a href="{{ route('administrator.users') }}"> <button type="button"
+                <a href="{{ route('administrator.student') }}"> <button type="button"
                         class="btn btn-danger">Cancel</button></a>
             </div>
 
@@ -55,7 +55,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="password_confirmation" class="form-label">Repeat your password</label>
+                        <label for="password_confirmation" class="form-label">Confirmation your password</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-key"></i></span>
                             <input type="password" id="password_confirmation" name="password_confirmation"
