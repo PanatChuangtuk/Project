@@ -45,9 +45,9 @@ Route::prefix('administrator')->group(function () {
         Route::group(['prefix' => 'student', 'as' => 'administrator.'], function () {
             Route::get('/', [StudentController::class, 'index'])->name('student');
             Route::get('/add', [StudentController::class, 'add'])->name('student.add');
-            // Route::post('/submit', [StudentController::class, 'submit'])->name('student.submit');
+            Route::post('/submit', [StudentController::class, 'submit'])->name('student.submit');
             Route::get('/edit/{id}', [StudentController::class, 'edit'])->name('student.edit');
-            // Route::post('/update/{id}', [StudentController::class, 'update'])->name('student.update');
+            Route::post('/update/{id}', [StudentController::class, 'update'])->name('student.update');
             Route::delete('/{id}', [StudentController::class, 'destroy'])->name('student.destroy');
             Route::post('/bulk-delete', [StudentController::class, 'bulkDelete'])->name('student.bulk.delete');
             Route::post('/import', [StudentController::class, 'import'])->name('student.import');

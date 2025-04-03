@@ -3,71 +3,84 @@
 @section('title')
 
 @section('content')
-    <ol class="breadcrumb">
+    <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
         <li class="breadcrumb-item"><a href="{{ route('administrator.dashboard') }}">Home</a></li>
         <li class="breadcrumb-item"><a href="{{ route('administrator.admin') }}">Admin</a></li>
         <li class="breadcrumb-item active" aria-current="page">Edit</li>
     </ol>
-    <form id="form-update" method="POST" action="{{ route('administrator.admin.update', $user->id) }}" class="mx-1 mx-md-4">
-        @csrf
-        <div class="demo-inline-spacing">
-            <div class="text-end">
-                <button type="submit" class="btn btn-success">Save</button>
-                <a href="{{ route('administrator.admin') }}"> <button type="button"
-                        class="btn btn-danger">Cancel</button></a>
-            </div>
 
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title"></h5>
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header text-white rounded-top-4">
+            <h5 class="mb-0"><i class="fas fa-user-edit"></i> Edit Admin</h5>
+        </div>
+        <div class="card-body">
+            <form id="form-update" method="POST" action="{{ route('administrator.admin.update', $user->id) }}"
+                enctype="multipart/form-data">
+                @csrf
 
-                    <div class="mb-4">
-                        <label for="name" class="form-label">Your Name</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-user"></i></span>
-                            <input type="text" id="name" name="name" class="form-control" required
-                                value="{{ $user->name }}" />
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label for="name" class="form-label fw-semibold">Name</label>
+                        <div class="input-group shadow-sm">
+                            <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
+                            <input type="text" id="name" name="name" class="form-control border-0 shadow-sm"
+                                value="{{ $user->name }}" required />
                         </div>
                         @error('name')
-                            <div class="text-danger">{{ $message }}</div>
+                            <div class="text-danger small mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <div class="mb-4">
-                        <label for="email" class="form-label">Your Email</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                            <input type="email" id="email" name="email" class="form-control"
+                    <div class="col-md-6">
+                        <label for="email" class="form-label fw-semibold">Email</label>
+                        <div class="input-group shadow-sm">
+                            <span class="input-group-text bg-light"><i class="fas fa-envelope"></i></span>
+                            <input type="email" id="email" name="email" class="form-control border-0 shadow-sm"
                                 value="{{ $user->email }}" required />
                         </div>
                         @error('email')
-                            <div class="text-danger">{{ $message }}</div>
+                            <div class="text-danger small mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <div class="mb-4">
-                        <label for="password" class="form-label">Password</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                            <input type="password" id="password" name="password" class="form-control" required />
+                    <div class="col-md-6">
+                        <label for="password" class="form-label fw-semibold">Password</label>
+                        <div class="input-group shadow-sm">
+                            <span class="input-group-text bg-light"><i class="fas fa-lock"></i></span>
+                            <input type="password" id="password" name="password" class="form-control border-0 shadow-sm" />
                         </div>
                         @error('password')
-                            <div class="text-danger">{{ $message }}</div>
+                            <div class="text-danger small mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <div class="mb-4">
-                        <label for="password_confirmation" class="form-label">Repeat your password</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                    <div class="col-md-6">
+                        <label for="password_confirmation" class="form-label fw-semibold">Confirm Password</label>
+                        <div class="input-group shadow-sm">
+                            <span class="input-group-text bg-light"><i class="fas fa-key"></i></span>
                             <input type="password" id="password_confirmation" name="password_confirmation"
-                                class="form-control" required />
+                                class="form-control border-0 shadow-sm" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mt-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="status" value="1" name="status"
+                                {{ $user->status ? 'checked' : '' }}>
+                            <label class="form-check-label fw-semibold" for="status">Active Status</label>
                         </div>
                     </div>
                 </div>
 
-            </div>
+                <div class="text-end mt-4">
+                    <button type="submit" class="btn btn-success px-4 shadow-sm">
+                        <i class="fas fa-save"></i> Save
+                    </button>
+                    <a href="{{ route('administrator.admin') }}" class="btn btn-danger px-4 shadow-sm">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+            </form>
         </div>
-    </form>
-
+    </div>
 @endsection

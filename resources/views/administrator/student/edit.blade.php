@@ -3,71 +3,100 @@
 @section('title')
 
 @section('content')
-    <ol class="breadcrumb">
+    <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
         <li class="breadcrumb-item"><a href="{{ route('administrator.dashboard') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('administrator.users') }}">User</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('administrator.student') }}">Student</a></li>
         <li class="breadcrumb-item active" aria-current="page">Edit</li>
     </ol>
-    <form id="form-update" method="POST" action="{{ route('administrator.users.update', $user->id) }}" class="mx-1 mx-md-4">
-        @csrf
-        <div class="demo-inline-spacing">
-            <div class="text-end">
-                <button type="submit" class="btn btn-success">Save</button>
-                <a href="{{ route('administrator.users') }}"> <button type="button"
-                        class="btn btn-danger">Cancel</button></a>
-            </div>
 
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title"></h5>
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header text-white rounded-top-4">
+            <h5 class="mb-0"><i class="fas fa-user-edit"></i> Edit Student</h5>
+        </div>
+        <div class="card-body">
+            <form id="form-edit" method="POST" action="{{ route('administrator.student.update', $student->id) }}"
+                enctype="multipart/form-data">
+                @csrf
 
-                    <div class="mb-4">
-                        <label for="name" class="form-label">Your Name</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-user"></i></span>
-                            <input type="text" id="name" name="name" class="form-control" required
-                                value="{{ $user->name }}" />
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label for="first_name" class="form-label fw-semibold">First Name</label>
+                        <div class="input-group shadow-sm">
+                            <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
+                            <input type="text" id="first_name" name="first_name" class="form-control border-0 shadow-sm"
+                                value="{{ $student->first_name }}" required>
                         </div>
-                        @error('name')
-                            <div class="text-danger">{{ $message }}</div>
+                        @error('first_name')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <div class="mb-4">
-                        <label for="email" class="form-label">Your Email</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                            <input type="email" id="email" name="email" class="form-control"
-                                value="{{ $user->email }}" required />
+                    <div class="col-md-6">
+                        <label for="last_name" class="form-label fw-semibold">Last Name</label>
+                        <div class="input-group shadow-sm">
+                            <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
+                            <input type="text" id="last_name" name="last_name" class="form-control border-0 shadow-sm"
+                                value="{{ $student->last_name }}" required>
+                        </div>
+                        @error('last_name')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="student_number" class="form-label fw-semibold">Student Number</label>
+                        <div class="input-group shadow-sm">
+                            <span class="input-group-text bg-light"><i class="fas fa-id-card"></i></span>
+                            <input type="text" id="student_number" name="student_number"
+                                class="form-control border-0 shadow-sm" value="{{ $student->student_number }}" required>
+                        </div>
+                        @error('student_number')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="mobile_phone" class="form-label fw-semibold">Mobile Phone</label>
+                        <div class="input-group shadow-sm">
+                            <span class="input-group-text bg-light"><i class="fas fa-phone"></i></span>
+                            <input type="text" id="mobile_phone" name="mobile_phone"
+                                class="form-control border-0 shadow-sm" value="{{ $student->mobile_phone }}" required>
+                        </div>
+                        @error('mobile_phone')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="email" class="form-label fw-semibold">Email</label>
+                        <div class="input-group shadow-sm">
+                            <span class="input-group-text bg-light"><i class="fas fa-envelope"></i></span>
+                            <input type="email" id="email" name="email" class="form-control border-0 shadow-sm"
+                                value="{{ $student->email }}" required>
                         </div>
                         @error('email')
-                            <div class="text-danger">{{ $message }}</div>
+                            <div class="text-danger small mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <div class="mb-4">
-                        <label for="password" class="form-label">Password</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                            <input type="password" id="password" name="password" class="form-control" required />
-                        </div>
-                        @error('password')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="password_confirmation" class="form-label">Confirmation your password</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-key"></i></span>
-                            <input type="password" id="password_confirmation" name="password_confirmation"
-                                class="form-control" required />
+                    <div class="col-md-12 mt-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="status" value="1" name="status"
+                                {{ $student->status ? 'checked' : '' }}>
+                            <label class="form-check-label fw-semibold" for="status">Active Status</label>
                         </div>
                     </div>
                 </div>
 
-            </div>
+                <div class="text-end mt-4">
+                    <button type="submit" class="btn btn-success px-4 shadow-sm">
+                        <i class="fas fa-save"></i> Update
+                    </button>
+                    <a href="{{ route('administrator.student') }}" class="btn btn-danger px-4 shadow-sm">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+            </form>
         </div>
-    </form>
-
+    </div>
 @endsection
