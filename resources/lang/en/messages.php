@@ -237,4 +237,7 @@ return [
     'featured_reviews' => 'Featured Reviews & Ratings',
     'terms_and_conditions' => 'Terms and Conditions for Use of Service',
     'privacy_policyu&v' => 'U&V Privacy Policy',
+    'login_area_info' => 'กรุณาเข้าสู่ระบบเพื่อเข้าถึงพื้นที่ส่วนตัวของคุณ',
+    'login_area_details' => 'หากคุณยังไม่มีบัญชีผู้ใช้ คุณสามารถสมัครสมาชิกได้ที่นี่',
+    'login_area_instruction' => 'กรุณากรอกชื่อผู้ใช้และรหัสผ่านของคุณเพื่อทำการเข้าสู่ระบบ',
 ];

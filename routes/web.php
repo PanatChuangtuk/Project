@@ -6,7 +6,7 @@ use App\Http\Controllers\{
     LoginController,
     RegisterController,
     ProfileController,
-    MemberController,
+    EquipmentController,
     ImageController
 };
 
@@ -29,6 +29,7 @@ Route::post('register/submit', [RegisterController::class, 'submit'])->name('reg
 Route::middleware(['auth:member'])->group(function () {
     Route::get('profile', [ProfileController::class, 'profileIndex'])->name('profile');
     Route::post('profile', [ProfileController::class, 'submit'])->name('profile.submit');
+    Route::get('equipment', [EquipmentController::class, 'index'])->name('equipment');
     Route::post('logout', [ProfileController::class, 'logout'])->name('logout');
 });
 // Route::get('/', function () {

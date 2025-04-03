@@ -21,6 +21,9 @@
                 <div class="card-info main px-5">
                     <div class="avatar-setting">
                         <img class="avatar" src="{{ asset('img/thumb/avatar-2.png') }}" alt="" />
+                        <button class="btn" type="button">
+                            <img class="icons svg-js" src="{{ asset('img/icons/icon-plus.svg') }}" alt="" />
+                        </button>
                     </div>
 
                     <form class="form pt-3" method="POST" action="{{ route('profile.submit') }}">

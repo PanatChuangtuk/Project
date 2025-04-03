@@ -16,7 +16,9 @@ class MemberInfo extends Model
         'last_name',
         'adviser_id',
         'member_id',
-        'student_id'
+        'student_id',
+        'student_number',
+        'avatar'
     ];
 
     protected $dates = ['deleted_at'];

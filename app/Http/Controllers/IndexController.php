@@ -9,9 +9,6 @@ class IndexController extends MainController
 {
     function bannerShow()
     {
-
-
-
         return view('index');
     }
 }

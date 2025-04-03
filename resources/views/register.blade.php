@@ -132,7 +132,6 @@
                 <p class="fs-14 text-secondary m-0">สร้างบัญชีใหม่ของคุณ</p>
             </div>
 
-            <!-- Navigation Tabs -->
             <ul class="nav nav-pills justify-content-center mb-4" id="registerTabs">
                 <li class="nav-item">
                     <a class="nav-link active px-4 py-2 " id="camera-tab" data-bs-toggle="tab" href="#camera-section">
@@ -147,7 +146,7 @@
             </ul>
 
             <div class="tab-content">
-                <!-- Tab 1: ถ่ายภาพ -->
+
                 <div class="tab-pane fade show active" id="camera-section">
                     <div class="capture-container">
                         <div class="video-container mb-4" style="border-radius: 10px; overflow: hidden;">
@@ -158,11 +157,11 @@
 
                         <div class="capture-btn-container mt-4">
                             <button id="capture" class="capture-btn">Capture Image</button>
+                            <button id="retake" style="display: none;">ถ่ายใหม่</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Tab 2: กรอกข้อมูล -->
                 <div class="tab-pane fade" id="form-section">
                     <div class=" shadow-lg p-4 ">
                         <form class="form" method="post" action="{{ route('register.submit') }}">
@@ -264,20 +263,26 @@
             const $video = $('#video');
             const $canvas = $('#canvas')[0];
             const $captureButton = $('#capture');
+            const $retakeButton = $('#retake');
             const $imageDataInput = $('#imageData');
             const $capturedImage = $('#capturedImage');
 
             let stream;
-            navigator.mediaDevices.getUserMedia({
-                    video: true
-                })
-                .then(function(cameraStream) {
-                    stream = cameraStream;
-                    $video[0].srcObject = stream;
-                })
-                .catch(function(err) {
-                    console.log("Error accessing camera: " + err);
-                });
+
+            function startCamera() {
+                navigator.mediaDevices.getUserMedia({
+                        video: true
+                    })
+                    .then(function(cameraStream) {
+                        stream = cameraStream;
+                        $video[0].srcObject = stream;
+                    })
+                    .catch(function(err) {
+                        console.log("Error accessing camera: " + err);
+                    });
+            }
+
+            startCamera();
 
             $captureButton.on('click', function() {
                 const context = $canvas.getContext('2d');
@@ -286,10 +291,22 @@
                 $imageDataInput.val(imageData);
                 $capturedImage.attr('src', imageData).show();
                 $video.hide();
+                $captureButton.hide();
 
                 if (stream) {
                     stream.getTracks().forEach(track => track.stop());
+
                 }
+                $retakeButton.show();
+            });
+
+            $retakeButton.on('click', function() {
+                $capturedImage.hide();
+                $video.show();
+                $captureButton.show();
+                $retakeButton.hide();
+                $imageDataInput.val('');
+                startCamera();
             });
         });
     </script>

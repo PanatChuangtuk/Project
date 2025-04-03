@@ -27,6 +27,217 @@ maximum-scale=1.0, user-scalable=no" />
             height: 200px;
             text-align: center;
         }
+
+        /* Preloader */
+        .preload {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Navbar */
+        .navbar-toppage {
+            background-color: #333;
+            padding: 10px 0;
+        }
+
+        .navbar-toggle {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .navbar-toggle .group span {
+            display: block;
+            width: 30px;
+            height: 3px;
+            background-color: #fff;
+            margin: 5px 0;
+        }
+
+        .navbar-main {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
+        }
+
+        .navbar-brand img {
+            max-height: 40px;
+        }
+
+        .nav-main {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-main li {
+            margin: 0 20px;
+        }
+
+        .nav-main li a {
+            text-transform: uppercase;
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .nav-main li.active a {
+            color: #3498db;
+        }
+
+        .navbar-slider .nav-accordion {
+            list-style: none;
+            padding: 0;
+        }
+
+        .navbar-slider .nav-accordion li {
+            margin-bottom: 10px;
+        }
+
+        .navbar-slider .nav-accordion li h5 {
+            font-size: 18px;
+            color: #333;
+            margin: 0;
+        }
+
+        .navbar-slider .followus {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .navbar-slider .followus a {
+            margin: 0 10px;
+        }
+
+        .navbar-slider .followus img {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            font-size: 14px;
+        }
+
+        .footer-info,
+        .footer-links,
+        .footer-contact {
+            padding: 10px;
+        }
+
+        .footer-info p {
+            font-size: 16px;
+            text-align: center;
+            color: #ddd;
+        }
+
+        .footer-info hr {
+            border-color: #444;
+            width: 50%;
+            margin: 10px auto;
+        }
+
+        .footer-links ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .footer-links ul li {
+            margin: 10px 0;
+        }
+
+        .footer-links ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .footer-links ul li a:hover {
+            color: #3498db;
+        }
+
+        .followus {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .totop {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .totop a {
+            color: #fff;
+            font-size: 18px;
+        }
+
+        .totop a:hover {
+            color: #3498db;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-main {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .nav-main li {
+                margin: 10px 0;
+            }
+
+            .footer-info p,
+            .footer-links ul,
+            .footer-contact {
+                text-align: center;
+            }
+
+            .footer-info hr {
+                width: 80%;
+            }
+
+            .navbar-slider .nav-accordion li {
+                margin-bottom: 15px;
+            }
+
+            .navbar-slider .followus a {
+                margin: 0 15px;
+            }
+        }
     </style>
 
 </head>
@@ -41,336 +252,10 @@ maximum-scale=1.0, user-scalable=no" />
         <header class="header">
             <div class="navbar-toppage">
                 <div class="container">
-                    <button class="btn btn-icon navbar-toggle" type="button">
-                        <span class="group">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </span>
-                    </button>
-                    <ul class="nav nav-general right member">
-                        {{-- @foreach ($social as $socialItem)
-                            <li>
-                                <div class="followus">
-                                    <a href="{{ strip_tags($socialItem->html) }}" target="_blank"><img
-                                            class="svg-js icons"
-                                            src="{{ asset('upload/file/social/' . $socialItem->image) }}"
-                                            alt=""></a>
-                                </div>
-                            </li>
-                        @endforeach --}}
 
-
-                        {{-- @guest('member')
-                            <div class="member-links">
-                                @if (Route::has('login'))
-                                    <li>
-                                        <a href="{{ url('/login') }}" class="link">
-                                            @lang('messages.login')
-                                        </a>
-                                    </li>
-                                @endif
-
-                                /
-
-                                @if (Route::has('register'))
-                                    <li>
-                                        <a href="{{ url('/register') }}" class="link">
-                                            @lang('messages.register')
-                                        </a>
-                                    </li>
-                                @endif
-                            </div>
-                        @endguest --}}
-
-                        @auth('member')
-                            <div class="member-links member dropdown">
-                                <li>
-                                    <a href="#" data-bs-toggle="dropdown" data-bs-display="static" class="link">
-                                        <img class="icons avatar" src="{{ asset('img/thumb/avatar-1.png') }}"
-                                            alt="">
-                                        {{-- <span
-                                            class="username">{{ $profileUser->first_name . ' ' . $profileUser->last_name }}</span> --}}
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a href="{{ url('/profile') }}"> @lang('messages.my_account')</a>
-                                        </li>
-                                        <li><a href="{{ url('/my-purchase') }}">@lang('messages.my_purchase')</a>
-                                        </li>
-                                        <li>
-                                            <form id="logout-form" action="{{ url('/logout') }}" method="POST"
-                                                style="display: none;">
-                                                @csrf
-                                            </form>
-                                            <a href="#" class="logout" onclick="confirmLogout(event)">
-                                                @lang('messages.sign_out')
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </div>
-                        @endauth
-
-                        {{-- <li>
-                            <a class="cart-mini" href="{{ route('cart.index') }}">
-                                <div class="btn btn-outline">
-                                    <img class="svg-js icons" src="{{ asset('img/icons/icon-cart.svg') }}"
-                                        alt="">
-                                </div>
-                                {{ sizeof($cart) }} @lang('messages.item') (s) --}}
-                        {{-- @foreach ($cart as $item)
-                                    - {{ number_format($item['price'] * $item['quantity'], 2) }} ฿
-                                @endforeach --}}
-                        {{-- </a>
-                    </li>
-                    @endif
-                    </ul> 
-                    <ul class="nav nav-general right">
-                        {{-- <li class="nav-search">
-                            <a href="#" class="btn btn-outline d-desktop-none" data-bs-toggle="dropdown"
-                                data-bs-display="static">
-                                <img class="svg-js icons icon-bell" src="{{ asset('img/icons/icon-search.svg') }}"
-                                    alt="">
-                            </a> --}}
-                        {{-- <div class="dropdown-menu">
-                                <div class="form-group search">
-                                    <span class="icons icon-search left"></span>
-                                    <input type="text" class="form-control" placeholder="@lang('messages.search')">
-                                </div>
-                            </div> --}}
-
-                        {{-- </li> --}}
-
-                        {{-- <li class="d-desktop-none">
-                            <a class="btn btn-outline" href="{{ route('cart.index') }}">
-                                <img class="icons cart svg-js" src="{{ asset('img/icons/icon-cart.svg') }}"
-                                    alt="">
-                            </a>
-                        </li> --}}
-                        @guest('member')
-                            <li class="dropdown d-desktop-none">
-                                <a class="btn btn-outline" href="#" data-bs-toggle="dropdown"
-                                    data-bs-display="static">
-                                    <img class="icons avatar svg-js" src="{{ asset('img/icons/icon-user.svg') }}"
-                                        alt="">
-                                </a>
-                                <ul class="dropdown-menu right" style="--width:96px">
-                                    @if (Route::has('login'))
-                                        <li><a href="{{ route('login') }}">@lang('messages.login')</a>
-                                        </li>
-                                    @endif
-                                    @if (Route::has('register'))
-                                        <li><a href="{{ route('register') }}">@lang('messages.register')</a>
-                                        </li>
-                                    @endif
-                                </ul>
-                            </li>
-                        @endguest
-
-                        @auth('member')
-                            <li class="dropdown d-desktop-none">
-                                <a class="btn btn-outline" href="#" data-bs-toggle="dropdown"
-                                    data-bs-display="static">
-                                    <img class="icons avatar svg-js" src="{{ asset('img/icons/icon-user.svg') }}"
-                                        alt="">
-                                </a>
-                                <ul class="dropdown-menu right" style="--width:96px">
-                                    <li>
-                                        <a href="{{ url('/profile') }}"> @lang('messages.my_account')</a>
-                                    </li>
-                                    <li><a href="{{ url('/my-purchase') }}">@lang('messages.my_purchase')</a>
-                                    </li>
-                                    <li>
-                                        <form id="logout-form" action="{{ url('/logout') }}" method="POST"
-                                            style="display: none;">
-                                            @csrf
-                                        </form>
-                                        <a href="#" class="logout" onclick="confirmLogout(event)">
-                                            @lang('messages.sign_out')
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endauth
-
-
-
-
-
-
-
-
-
-
-                        {{-- <li class="dropdown notify">
-                            <a href="#" data-bs-toggle="dropdown" data-bs-display="static">
-                                <img class="svg-js icons icon-bell" src="{{ asset('img/icons/icon-bell.svg') }}"
-                                    alt="">
-                                <span class="badge">1</span>
-                            </a>
-
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <h5 class="title"><a href="notification">@lang('messages.notification')</a></h5>
-                                </li>
-                                <li>
-                                    <div class="card-notify">
-                                        <a href="promotion-details" class="card-link"></a>
-                                        <img class="card-photo" src="{{ asset('img/thumb/photo-200x200--1.jpg') }}"
-                                            alt="">
-                                        <div class="card-body">
-                                            <h3>9.9 SepSale Discount9%</h3>
-                                            <p>page.Once the payment method is confirmed and the order is placed on
-                                                the
-                                                “Checkout” page, it cannot be modified thereafter. To mak...</p>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div class="card-notify">
-                                        <a href="my-purchase-to-receive" class="card-link"></a>
-                                        <img class="card-photo" src="{{ asset('img/thumb/photo-200x200--2.jpg') }}"
-                                            alt="">
-                                        <div class="card-body">
-                                            <h3>Parcel Delivered</h3>
-                                            <p>Parcel for your order SH20240000101 has been delivered.</p>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li class="viewall">
-                                    <a href="notification">@lang('messages.view_all')</a>
-                                </li>
-                            </ul>
-                        </li> --}}
-
-                        {{-- <li class="dropdown lang">
-                            <a class="btn btn-outline" href="#" data-bs-toggle="dropdown"
-                                data-bs-display="static">
-                                {{ strtoupper(app()->getLocale()) }}
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="{{ url('lang/en/') }}"
-                                        class="{{ app()->getLocale() == 'en' ? 'active' : '' }}">EN</a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="{{ url('lang/th/') }}"class="{{ app()->getLocale() == 'th' ? 'active' : '' }}">TH</a>
-                                </li>
-                            </ul>
-                        </li> --}}
-
-                    </ul>
                 </div>
             </div>
-
-            {{-- <div class="navbar-main">
-                <div class="container">
-                    <div class="navbar-brand">
-                        <a href="{{ url('/ ') }}">
-                            <img src="{{ asset('img/logo.png') }}" alt="">
-                        </a>
-                    </div> --}}
-
-            {{-- <ul class="nav nav-main">
-                        <li class="{{ request()->path() === app()->getLocale() ? 'active' : '' }}">
-                            <a href="{{ url('/ ') }}" style="text-transform: uppercase;">@lang('messages.home')</a>
-                        </li> --}}
-
-            {{-- <li
-                            class="dropdown {{ request()->is('/product') || request()->is('/download') || request()->is('/track-trace') ? 'active' : '' }}">
-                            <a href="#" data-bs-toggle="dropdown" data-bs-display="static"
-                                style="text-transform: uppercase;">@lang('messages.products')</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ url('/product') }}"
-                                        style="text-transform: uppercase;">@lang('messages.products')</a></li>
-                                <li><a href="{{ url('/download') }}"
-                                        style="text-transform: uppercase;">@lang('messages.download')</a></li>
-                                <li><a href="{{ url('/track-trace') }}"
-                                        style="text-transform: uppercase;">@lang('messages.track_and_trace')</a></li>
-                            </ul>
-                        </li> --}}
-            {{-- <li class="dropdown {{ request()->is('/service') || request()->is('/faq') ? 'active' : '' }}">
-                            <a href="{{ url('/service') }}" data-bs-toggle="dropdown"
-                                data-bs-display="static">@lang('messages.service')</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ url('/service') }}"
-                                        style="text-transform: uppercase;">@lang('messages.service')</a></li>
-                                <li><a href="{{ url('/faq') }}"
-                                        style="text-transform: uppercase;">@lang('messages.qa')</a></li>
-                            </ul>
-                        </li> --}}
-
-            {{-- </ul> --}}
-            {{-- </div> --}}
-            {{-- </div> --}}
         </header>
-
-        <div class="navbar-slider">
-            <div class="hgroup">
-                <button class="btn btn-icon navbar-toggle" type="button">
-                    <span class="group">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </span>
-                </button>
-
-                <ul class="nav nav-general left">
-                    <li>
-                        {{-- <div class="followus">
-                            <a href="{{ $socialItem->url }}" target="_blank"><img class="svg-js icons"
-                                    src="{{ asset('upload/file/social/' . $socialItem->image) }}" alt=""></a>
-                        </div> --}}
-                    </li>
-
-
-            </div>
-
-            <ul class="nav nav-accordion">
-                <li>
-                    <h5><a href="{{ url('/ ') }}">@lang('messages.home')</a></h5>
-                </li>
-                <li>
-                    <h5><a href="{{ url('/about') }}">@lang('messages.about')</a></h5>
-                </li>
-                <li>
-                    <h5 data-bs-toggle="collapse" data-bs-target="#product-sub"><a href="#">@lang('messages.products')</a>
-                    </h5>
-                    <div id="product-sub" class="accordion-collapse collapse" data-bs-parent=".nav-accordion">
-                        <ul class="nav">
-                            <li><a href="product">@lang('messages.products')</a></li>
-                            <li><a href="{{ url('/download') }}">@lang('messages.download')</a>
-                            </li>
-                            <li><a href="track-trace">@lang('messages.track_and_trace')</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <h5 data-bs-toggle="collapse" data-bs-target="#service-sub"><a
-                            href="{{ url('/service') }}">@lang('messages.service')</a></h5>
-                    <div id="service-sub" class="accordion-collapse collapse" data-bs-parent=".nav-accordion">
-                        <ul class="nav">
-                            <li><a href="{{ url('/service') }}">@lang('messages.service')</a>
-                            </li>
-                            <li><a href="{{ url('/faq') }}">@lang('messages.qa')</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <h5><a href="{{ url('/promotion') }}">@lang('messages.promotion')</a></h5>
-                </li>
-                <li>
-                    <h5><a href="{{ url('/news') }}">@lang('messages.news')</a></h5>
-                </li>
-                <li>
-                    <h5><a href="{{ url('/contact') }}">@lang('messages.contact')</a></h5>
-                </li>
-            </ul>
-        </div>
 
         <div class="section section-column">
             <div class="container">
@@ -383,9 +268,9 @@ maximum-scale=1.0, user-scalable=no" />
                         <div class="boxed me-lg-0">
                             <div class="article pb-3" style="--font-size: 14px; --color: #375b51">
                                 <h2>@lang('messages.login')</h2>
-
-                                <p>
-                                    @lang('messages.login_area_info')
+                                <p> @lang('messages.login_area_info')
+                                    @lang('messages.login_area_details')
+                                    @lang('messages.login_area_instruction')
                                 </p>
                             </div>
                             <form class="form" method="POST" action="{{ route('login.submit') }}">
@@ -395,8 +280,7 @@ maximum-scale=1.0, user-scalable=no" />
                                         <div class="form-group">
                                             <label class="title">@lang('messages.email')/@lang('messages.phone_number')</label>
                                             <input type="text" class="form-control" name="email_or_phone"
-                                                value="{{ old('email_or_phone') }}"
-                                                placeholder="@lang('messages.input_email_or_phone')" />
+                                                value="{{ old('email_or_phone') }}" placeholder="@lang('messages.input_email_or_phone')" />
                                             @error('email_or_phone')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -447,93 +331,9 @@ maximum-scale=1.0, user-scalable=no" />
             <!--container-->
         </div>
         <!--section-->
-        {{-- <footer class="footer">
-            <div class="container">
-                <div class="cols footer-info">
-                    <div class="group">
-                        <p>
-                            <span class="fs-24">©</span><br class="d-none d-lg-block">
-                            2024<br>
-                            ALL RIGHTS RESERVED
-                        </p>
-                        <hr>
-                        <p>
-                            KMUTNB<br class="d-none d-lg-block">
-                            THAILAND
-                        </p>
-                    </div>
-                </div><!--cols-->
-                <div class="cols footer-links">
-                    <div class="group">
-                        <ul class="nav">
-                            <li><a href="{{ url('/about') }}">@lang('messages.about')</a></li>
-                            <li><a href="{{ url('/products') }}">@lang('messages.products')</a>
-                            </li>
-                            <li><a href="{{ url('/service') }}">@lang('messages.service')</a>
-                            </li>
-                        </ul>
+        <footer class="footer">
 
-                        <ul class="nav">
-                            <li><a href="{{ url('/promotion') }}">@lang('messages.promotion')</a>
-                            </li>
-                            <li><a href="{{ url('/news') }}">@lang('messages.news')</a></li>
-                            <li><a href="{{ url('/contact') }}">@lang('messages.contact')</a>
-                            </li>
-                        </ul>
-
-                        <ul class="nav">
-                            <li><a href="{{ url('/term-condition') }}">@lang('messages.term_and_condition')</a>
-                            </li>
-                            <li><a href="{{ url('/privacy-policy') }}">@lang('messages.privacy_policy')</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div><!--cols--> --}}
-        {{-- <div class="cols footer-contact">
-                    <div class="group">
-
-                        <div class="followus"> --}}
-        {{-- @foreach ($social as $socialItem)
-                                <a href="{{ strip_tags($socialItem->html) }}" target="_blank"><img
-                                        class="svg-js icons"
-                                        src="{{ asset('upload/file/social/' . $socialItem->image) }}"
-                                        alt=""></a>
-                            @endforeach --}}
-        {{-- </div>
-
-                        <ul class="nav nav-contact in-content" style="margin-top: -30px;">
-                            <li>
-                                <img class="icons" src="{{ asset('img/icons/icon-map.svg') }}" alt="">
-                                <span>{{ $contact->address ?? null }}</span>
-                            </li>
-
-                            <li>
-                                <img class="icons" src="{{ asset('img/icons/icon-call.svg') }}" alt="">
-                                <a href="tel:{{ $contact->phone ?? null }}">{{ $contact->phone ?? null }}</a>
-
-                            </li>
-
-                            <li>
-                                <img class="icons" src="{{ asset('img/icons/icon-notebook.svg') }}" alt="">
-                                <a href="tel:{{ $contact->fax ?? null }}">{{ $contact->fax ?? null }}</a>
-                            </li>
-
-                            <li>
-                                <img class="icons" src="{{ asset('img/icons/icon-sms.svg') }}" alt="">
-                                <a href="mailto:{{ $contact->email ?? null }}">{{ $contact->email ?? null }}</a>
-                            </li>
-                        </ul>
-
-    {{-- </div><!--group-->
-    </div><!--cols-->
-    </div><!--container--> --}}
-
-        {{-- <div class="totop">
-                <a class="icons" href="#">
-                    <img class="svg-js" src="{{ asset('img/icons/icon-totop.svg') }}" alt="">
-                </a>
-            </div>
-        </footer> --}}
+        </footer>
 
         <div id="cookiePolicyPopup" class="cookie-policy">
             <div class="container-fluid">
