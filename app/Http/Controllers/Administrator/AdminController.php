@@ -15,10 +15,16 @@ class AdminController extends Controller
     {
         $query = $request->input('query');
 
-        $userQuery = Member::where('role', 'admin');
+        $userQuery = Member::with('info')->where('role', 'admin');
 
         if ($query) {
-            $userQuery->where('name', 'LIKE', "%{$query}%");
+            $userQuery->where(function ($queryBuilder) use ($query) {
+                $queryBuilder->where('email', 'LIKE', "%{$query}%")
+                    ->orWhereHas('info', function ($infoQuery) use ($query) {
+                        $infoQuery->where('first_name', 'LIKE', "%{$query}%")
+                            ->orWhere('last_name', 'LIKE', "%{$query}%");
+                    });
+            });
         }
 
         $users = $userQuery->paginate(10)->appends([

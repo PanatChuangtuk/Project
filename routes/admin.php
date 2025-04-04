@@ -12,10 +12,10 @@ use App\Http\Controllers\Administrator\{
 };
 
 Route::prefix('administrator')->group(function () {
-    Route::group(['middleware' => 'guest'], function () {
-        Route::get('/login', [AuthController::class, 'login'])->name('administrator.login');
-        Route::post('/login', [AuthController::class, 'loginPost'])->name('administrator.login');
-    });
+    // Route::group(['middleware' => 'guest'], function () {
+    //     Route::get('/login', [AuthController::class, 'login'])->name('administrator.login');
+    //     Route::post('/login', [AuthController::class, 'loginPost'])->name('administrator.login');
+    // });
 
     Route::middleware(['auth:web'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('administrator.dashboard');

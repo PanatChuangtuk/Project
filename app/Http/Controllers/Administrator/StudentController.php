@@ -19,7 +19,10 @@ class StudentController extends Controller
         $userQuery = Student::query();
 
         if ($query) {
-            $userQuery->where('firstname', 'LIKE', "%{$query}%");
+            $userQuery->where('first_name', 'LIKE', "%{$query}%")
+                ->orWhere('last_name', 'LIKE', "%{$query}%")
+                ->orWhere('student_number', 'LIKE', "%{$query}%")
+                ->orWhere('email', 'LIKE', "%{$query}%");
         }
 
         $users = $userQuery->paginate(10)->appends([

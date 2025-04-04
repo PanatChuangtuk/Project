@@ -124,7 +124,7 @@
         }
 
         .select2-container {
-            width: 300px !important;
+            width: 335px !important;
             height: 50px !important;
             display: block;
             margin: 0 auto;
@@ -277,15 +277,27 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="fw-bold text-center w-100 d-block">รหัสนักศึกษา <span
+                                        <label class="fw-bold w-100 d-block">รหัสนักศึกษา <span
                                                 class="text-danger">*</span></label>
                                         <select name="student_id" id="studentSelect"class="form-control">
                                             <option value="">รหัสนักศึกษา</option>
                                         </select>
                                         @error('student_id')
-                                            <span class="text-danger d-block text-center w-100">{{ $message }}</span>
+                                            <span class="text-danger  w-100">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="fw-bold">เบอร์โทรศัพท์ <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" name="mobile_phone" class="form-control"
+                                            placeholder="กรอกเบอร์โทรศัพท์" value="{{ old('mobile_phone') }}" />
+                                        @error('mobile_phone')
+                                            <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
