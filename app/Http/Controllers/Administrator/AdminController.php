@@ -33,8 +33,6 @@ class AdminController extends Controller
         return view('administrator.admin.index', compact('users', 'query'));
     }
 
-
-
     public function add()
     {
         return view('administrator.admin.add');

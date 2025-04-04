@@ -31,8 +31,6 @@ class UserController extends Controller
         return view('administrator.users.index', compact('users', 'query'));
     }
 
-
-
     public function add()
     {
         return view('administrator.users.add');

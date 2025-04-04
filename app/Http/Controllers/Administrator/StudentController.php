@@ -28,11 +28,8 @@ class StudentController extends Controller
         $users = $userQuery->paginate(10)->appends([
             'query' => $query,
         ]);
-
-
         return view('administrator.student.index', compact('users', 'query'));
     }
-
 
     public function add()
     {
@@ -84,17 +81,18 @@ class StudentController extends Controller
         ini_set('max_execution_time', 180);
         $file = $request->file('file');
 
-        $filePath = $file->storeAs('file/product', $file->getClientOriginalName(), 'public');
+        $filePath = $file->storeAs('file/student', $file->getClientOriginalName(), 'public');
         $filePath = public_path('upload/' . $filePath);
 
         (new FastExcel)->import($filePath, function ($line) {
+            $line = array_change_key_case($line, CASE_LOWER);
             return Student::updateOrCreate(
-                ['student_number' => $line['StudentNumber']],
+                ['student_number' => $line['studentnumber']],
                 [
-                    'first_name'   => $line['FirstName'] ?? null,
-                    'last_name'    => $line['LastName'] ?? null,
-                    'mobile_phone' => $line['MobilePhone'] ?? null,
-                    'email' => $line['Email'] ?? null,
+                    'first_name'   => $line['firstname'] ?? null,
+                    'last_name'    => $line['lastname'] ?? null,
+                    'mobile_phone' => $line['mobilephone'] ?? null,
+                    'email'        => $line['email'] ?? null,
                     'status'       => 1,
                     'created_at'   => now(),
                 ]

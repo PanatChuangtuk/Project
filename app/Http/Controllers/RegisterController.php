@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\MainController;
-use Illuminate\Support\Facades\{Hash, Auth, Validator, Storage};
+use Illuminate\Support\Facades\{Hash, Auth, Storage};
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Http\Requests\{RegisterMemberRequest};
