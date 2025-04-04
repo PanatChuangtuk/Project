@@ -14,7 +14,6 @@ class Member extends Authenticatable
     protected $table = 'member';
 
     protected $fillable = [
-        
         'role',
         'password',
         'email',

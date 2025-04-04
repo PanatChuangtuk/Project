@@ -37,66 +37,115 @@ class AdminController extends Controller
 
     public function edit($id)
     {
-        $user = Member::find($id);
-        return view('administrator.admin.edit', compact('user'));
+        $admin = Member::find($id);
+        return view('administrator.admin.edit', compact('admin'));
     }
 
     public function submit(Request $request)
     {
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            // 'username' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:member,email',
             'password' => 'required|string|min:8|confirmed',
-            'role_id' => 'required|exists:roles,id',
+            'image' => 'required|mimes:jpeg,png,jpg|max:2048',
+        ], [
+            // 'username.required' => 'กรุณากรอกชื่อผู้ใช้',
+            // 'username.string' => 'ชื่อผู้ใช้ต้องเป็นตัวอักษร',
+            // 'username.max' => 'ชื่อผู้ใช้ต้องไม่เกิน 255 ตัวอักษร',
+            'email.required' => 'กรุณากรอกอีเมล์',
+            'email.email' => 'กรุณากรอกอีเมล์ให้ถูกต้อง',
+            'email.max' => 'อีเมล์ต้องไม่เกิน 255 ตัวอักษร',
+            'email.unique' => 'อีเมล์นี้ถูกใช้งานแล้ว',
+            'password.required' => 'กรุณากรอกรหัสผ่าน',
+            'password.string' => 'รหัสผ่านต้องเป็นตัวอักษร',
+            'password.min' => 'รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร',
+            'password.confirmed' => 'การยืนยันรหัสผ่านไม่ตรงกัน',
+            'image.required' => 'กรุณาอัพโหลดภาพ',
+            'image.mimes' => 'ภาพที่อัพโหลดต้องเป็นไฟล์ประเภท jpeg, png, jpg',
+            'image.max' => 'ขนาดไฟล์ภาพต้องไม่เกิน 2MB',
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
         $member = Member::create([
-            'name' => $request->name,
+            // 'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 'admin',
-            'status' => 1,
+            'status' => $request->status ?? 0,
         ]);
         $filename = null;
         if ($request->hasFile('image')) {
             $filename = $this->uploadsImage($request->file('image'), 'admin');
         }
         MemberInfo::create([
-            'user_id' => $member->id,
+            'member_id' => $member->id,
             'adviser_id' => 0,
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            // 'mobile' => $request->mobile,
+            'student_id' => 0,
+            'first_name' =>  $request->first_name,
+            'last_name' =>  $request->last_name,
+            'mobile' => $request->mobile_phone,
             'avatar' => $filename
         ]);
-        return redirect()->route('administrator.admin');
+        return redirect()->back()
+            ->with('success', 'ข้อมูลถูกบันทึกเรียบร้อยแล้ว');
     }
 
     public function update(Request $request, $id)
     {
-        $user = Member::find($id);
+        $member = Member::find($id);
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            // 'username' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'password' => 'nullable|string|min:8|confirmed',
-            'role_id' => 'required|exists:roles,id',
+            'image' => 'nullable|mimes:jpeg,png,jpg|max:2048',
+        ], [
+            // 'username.required' => 'กรุณากรอกชื่อผู้ใช้',
+            // 'username.string' => 'ชื่อผู้ใช้ต้องเป็นตัวอักษร',
+            // 'username.max' => 'ชื่อผู้ใช้ต้องไม่เกิน 255 ตัวอักษร',
+            'email.required' => 'กรุณากรอกอีเมล์',
+            'email.email' => 'กรุณากรอกอีเมล์ให้ถูกต้อง',
+            'email.max' => 'อีเมล์ต้องไม่เกิน 255 ตัวอักษร',
+            'password.required' => 'กรุณากรอกรหัสผ่าน',
+            'password.string' => 'รหัสผ่านต้องเป็นตัวอักษร',
+            'password.min' => 'รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร',
+            'password.confirmed' => 'การยืนยันรหัสผ่านไม่ตรงกัน',
+            'image.mimes' => 'ภาพที่อัพโหลดต้องเป็นไฟล์ประเภท jpeg, png, jpg',
+            'image.max' => 'ขนาดไฟล์ภาพต้องไม่เกิน 2MB',
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        $user->update([
-            'name' => $request->name,
+        $member->update([
+            // 'username' => $request->username,
             'email' => $request->email,
-            'role_id' => $request->role_id,
-            'password' => $request->password ? Hash::make($request->password) : $user->password,
+            'password' => $request->filled('password') ? Hash::make($request->password) : $member->password,
+            'role' => 'admin',
+            'status' => $request->status ?? 0,
         ]);
 
-        return redirect()->route('administrator.admin');
+        $filename = $member->info->avatar;
+        if ($request->hasFile('image')) {
+            $filename = $this->uploadsImage($request->file('image'), 'admin');
+        }
+
+        $member->info->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'mobile' => $request->mobile_phone,
+            'avatar' => $filename,
+        ]);
+
+        return redirect()->back()
+            ->with('success', 'ข้อมูลถูกอัพเดตเรียบร้อยแล้ว');
     }
 }

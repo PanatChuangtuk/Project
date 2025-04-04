@@ -71,7 +71,8 @@ class StudentController extends Controller
             'status' =>  $request->input('status', 0),
         ]);
 
-        return redirect()->route('administrator.student');
+        return redirect()->back()
+            ->with('success', 'ข้อมูลถูกบันทึกเรียบร้อยแล้ว');
     }
 
     public function update(Request $request, $id)
@@ -87,11 +88,7 @@ class StudentController extends Controller
             'name.string' => 'ชื่อต้องเป็นตัวอักษร',
             'name.max' => 'ชื่อต้องไม่เกิน 255 ตัวอักษร',
             'student_number.required' => 'กรุณากรอกรหัสนักศึกษา',
-
         ]);
-
-
-
         $student->update([
             'name' => $request->name,
             'email' => $request->email,
@@ -101,8 +98,8 @@ class StudentController extends Controller
             'student_number' => $request->student_number,
             'status' =>  $status
         ]);
-
-        return redirect()->route('administrator.student')->with('success', 'อัปเดตข้อมูลเรียบร้อย');
+        return redirect()->back()
+            ->with('success', 'ข้อมูลถูกอัพเดตเรียบร้อยแล้ว');
     }
     public function import(Request $request)
     {
@@ -126,7 +123,8 @@ class StudentController extends Controller
                 ]
             );
         });
-        return redirect()->back()->with('success', 'Data imported successfully.');
+        return redirect()->back()
+            ->with('success', 'ข้อมูลถูกอัพเดตเรียบร้อยแล้ว');
     }
     public function destroy($id, Request $request)
     {

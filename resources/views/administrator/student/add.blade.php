@@ -99,3 +99,17 @@
         </div>
     </div>
 @endsection
+@section('script')
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: 'สำเร็จ!',
+                text: "{{ session('success') }}",
+                icon: 'success',
+                confirmButtonText: 'ตกลง'
+            }).then(function() {
+                window.location.href = '{{ route('administrator.student') }}';
+            });
+        </script>
+    @endif
+@endsection
