@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use Rap2hpoutre\FastExcel\FastExcel;
+use App\Http\Requests\{StudentUpdateRequest, StudentCreatRequest};
 
 class StudentController extends Controller
 {
@@ -41,26 +42,8 @@ class StudentController extends Controller
         return view('administrator.student.edit', compact('student'));
     }
 
-    public function submit(Request $request)
+    public function submit(StudentCreatRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'student_number' => 'required|string|max:20|unique:student,student_number',
-        ], [
-            'name.required' => 'กรุณากรอกชื่อ',
-            'name.string' => 'ชื่อต้องเป็นตัวอักษร',
-            'name.max' => 'ชื่อต้องไม่เกิน 255 ตัวอักษร',
-
-            'student_number.required' => 'กรุณากรอกรหัสนักศึกษา',
-            'student_number.string' => 'รหัสนักศึกษาต้องเป็นตัวอักษร',
-            'student_number.max' => 'รหัสนักศึกษาต้องไม่เกิน 20 ตัวอักษร',
-            'student_number.unique' => 'รหัสนักศึกษานี้ถูกใช้งานแล้ว กรุณาใช้รหัสอื่น',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
         Student::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -75,20 +58,11 @@ class StudentController extends Controller
             ->with('success', 'ข้อมูลถูกบันทึกเรียบร้อยแล้ว');
     }
 
-    public function update(Request $request, $id)
+    public function update(StudentUpdateRequest $request, $id)
     {
         // dd($request->all());
         $status = $request->input('status', 0);
         $student = Student::find($id);
-        Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'student_number' => 'required',
-        ], [
-            'name.required' => 'กรุณากรอกชื่อ',
-            'name.string' => 'ชื่อต้องเป็นตัวอักษร',
-            'name.max' => 'ชื่อต้องไม่เกิน 255 ตัวอักษร',
-            'student_number.required' => 'กรุณากรอกรหัสนักศึกษา',
-        ]);
         $student->update([
             'name' => $request->name,
             'email' => $request->email,

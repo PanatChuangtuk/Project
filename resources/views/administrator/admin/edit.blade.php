@@ -1,6 +1,6 @@
 @extends('administrator.layouts.main')
 
-@section('title', 'Update Admin')
+@section('title')
 
 @section('content')
     <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
@@ -25,7 +25,7 @@
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
                             <input type="text" id="username" name="username" class="form-control border-0 shadow-sm"
-                                value="{{ old('username', $admin->username) }}" required />
+                                value="{{ old('username', $admin->username) }}"  />
                         </div>
                         @error('username')
                             <div class="text-danger small mt-1">{{ $message }}</div>
@@ -38,7 +38,7 @@
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-envelope"></i></span>
                             <input type="email" id="email" name="email" class="form-control border-0 shadow-sm"
-                                value="{{ old('email', $admin->email) }}" required />
+                                value="{{ old('email', $admin->email) }}" />
                         </div>
                         @error('email')
                             <div class="text-danger small mt-1">{{ $message }}</div>
@@ -51,7 +51,7 @@
                             <span class="input-group-text bg-light"><i class="fas fa-phone"></i></span>
                             <input type="text" id="mobile_phone" name="mobile_phone"
                                 class="form-control border-0 shadow-sm"
-                                value="{{ old('mobile_phone', $admin->info->mobile_phone) }}" required />
+                                value="{{ old('mobile_phone', $admin->info->mobile_phone) }}" />
                         </div>
                         @error('mobile_phone')
                             <div class="text-danger small mt-1">{{ $message }}</div>
@@ -63,7 +63,7 @@
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
                             <input type="text" id="first_name" name="first_name" class="form-control border-0 shadow-sm"
-                                value="{{ old('first_name', $admin->info->first_name) }}" required />
+                                value="{{ old('first_name', $admin->info->first_name) }}" />
                         </div>
                         @error('first_name')
                             <div class="text-danger small mt-1">{{ $message }}</div>
@@ -75,7 +75,7 @@
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
                             <input type="text" id="last_name" name="last_name" class="form-control border-0 shadow-sm"
-                                value="{{ old('last_name', $admin->info->last_name) }}" required />
+                                value="{{ old('last_name', $admin->info->last_name) }}" />
                         </div>
                         @error('last_name')
                             <div class="text-danger small mt-1">{{ $message }}</div>

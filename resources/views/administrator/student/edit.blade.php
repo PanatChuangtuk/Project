@@ -24,7 +24,7 @@
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
                             <input type="text" id="first_name" name="first_name" class="form-control border-0 shadow-sm"
-                                value="{{ $student->first_name }}" required>
+                                value="{{ $student->first_name }}">
                         </div>
                         @error('first_name')
                             <div class="text-danger small mt-1">{{ $message }}</div>
@@ -36,7 +36,7 @@
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
                             <input type="text" id="last_name" name="last_name" class="form-control border-0 shadow-sm"
-                                value="{{ $student->last_name }}" required>
+                                value="{{ $student->last_name }}">
                         </div>
                         @error('last_name')
                             <div class="text-danger small mt-1">{{ $message }}</div>
@@ -48,7 +48,7 @@
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-id-card"></i></span>
                             <input type="text" id="student_number" name="student_number"
-                                class="form-control border-0 shadow-sm" value="{{ $student->student_number }}" required>
+                                class="form-control border-0 shadow-sm" value="{{ $student->student_number }}">
                         </div>
                         @error('student_number')
                             <div class="text-danger small mt-1">{{ $message }}</div>
@@ -60,7 +60,7 @@
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-phone"></i></span>
                             <input type="text" id="mobile_phone" name="mobile_phone"
-                                class="form-control border-0 shadow-sm" value="{{ $student->mobile_phone }}" required>
+                                class="form-control border-0 shadow-sm" value="{{ $student->mobile_phone }}">
                         </div>
                         @error('mobile_phone')
                             <div class="text-danger small mt-1">{{ $message }}</div>
@@ -72,7 +72,7 @@
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-envelope"></i></span>
                             <input type="email" id="email" name="email" class="form-control border-0 shadow-sm"
-                                value="{{ $student->email }}" required>
+                                value="{{ $student->email }}">
                         </div>
                         @error('email')
                             <div class="text-danger small mt-1">{{ $message }}</div>

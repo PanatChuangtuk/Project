@@ -53,7 +53,7 @@
                                         </div>
                                     </th>
                                     {{-- <th>ID</th> --}}
-                                    <th class="text-center">UserName</th>
+                                    <th class="text-center">Name</th>
                                     <th class="text-center">Email</th>
                                     <th class="text-center">Created Date</th>
                                     <th class="text-center">Actions</th>

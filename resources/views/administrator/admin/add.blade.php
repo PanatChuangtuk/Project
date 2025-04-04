@@ -24,7 +24,7 @@
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
                             <input type="text" id="username" name="username" class="form-control border-0 shadow-sm"
-                                required />
+                                 />
                         </div>
                         @error('username')
                             <div class="text-danger small mt-1">{{ $message }}</div>
@@ -36,8 +36,7 @@
                         <label for="email" class="form-label fw-semibold">Email</label>
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-envelope"></i></span>
-                            <input type="email" id="email" name="email" class="form-control border-0 shadow-sm"
-                                required />
+                            <input type="email" id="email" name="email" class="form-control border-0 shadow-sm" />
                         </div>
                         @error('email')
                             <div class="text-danger small mt-1">{{ $message }}</div>
@@ -49,7 +48,7 @@
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-phone"></i></span>
                             <input type="text" id="mobile_phone" name="mobile_phone"
-                                class="form-control border-0 shadow-sm" required />
+                                class="form-control border-0 shadow-sm" />
                         </div>
                         @error('mobile_phone')
                             <div class="text-danger small mt-1">{{ $message }}</div>
@@ -60,8 +59,8 @@
                         <label for="first_name" class="form-label fw-semibold">First Name</label>
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
-                            <input type="text" id="first_name" name="first_name" class="form-control border-0 shadow-sm"
-                                required />
+                            <input type="text" id="first_name" name="first_name"
+                                class="form-control border-0 shadow-sm" />
                         </div>
                         @error('first_name')
                             <div class="text-danger small mt-1">{{ $message }}</div>
@@ -72,8 +71,7 @@
                         <label for="last_name" class="form-label fw-semibold">Last Name</label>
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
-                            <input type="text" id="last_name" name="last_name" class="form-control border-0 shadow-sm"
-                                required />
+                            <input type="text" id="last_name" name="last_name" class="form-control border-0 shadow-sm" />
                         </div>
                         @error('last_name')
                             <div class="text-danger small mt-1">{{ $message }}</div>
@@ -85,8 +83,7 @@
                         <label for="password" class="form-label fw-semibold">Password</label>
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-lock"></i></span>
-                            <input type="password" id="password" name="password" class="form-control border-0 shadow-sm"
-                                required />
+                            <input type="password" id="password" name="password" class="form-control border-0 shadow-sm" />
                         </div>
                         @error('password')
                             <div class="text-danger small mt-1">{{ $message }}</div>
@@ -99,7 +96,7 @@
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-key"></i></span>
                             <input type="password" id="password_confirmation" name="password_confirmation"
-                                class="form-control border-0 shadow-sm" required />
+                                class="form-control border-0 shadow-sm" />
                         </div>
                         @error('password_confirmation')
                             <div class="text-danger small mt-1">{{ $message }}</div>
@@ -110,8 +107,7 @@
                         <label for="image" class="form-label fw-semibold">Upload Image</label>
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-image"></i></span>
-                            <input type="file" id="image" name="image" class="form-control border-0 shadow-sm"
-                                required />
+                            <input type="file" id="image" name="image" class="form-control border-0 shadow-sm" />
                         </div>
                         @error('image')
                             <div class="text-danger small mt-1">{{ $message }}</div>
