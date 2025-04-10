@@ -50,6 +50,13 @@
                 <div class="menu-text"> Student </div>
             </a>
         </li>
-    </ul>d
+
+        <li class="menu-item">
+            <a href="{{ route('administrator.user') }}" class="menu-link">
+                <i class='menu-icon tf-icons bx bxs-school'></i>
+                <div class="menu-text"> User </div>
+            </a>
+        </li>
+    </ul>
 </aside>
 <!-- / Menu -->

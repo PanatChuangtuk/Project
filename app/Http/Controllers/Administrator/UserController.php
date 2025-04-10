@@ -5,11 +5,9 @@ namespace App\Http\Controllers\Administrator;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Models\User;
+use App\Models\{Member, MemberInfo};
 use Illuminate\Http\Request;
-use App\Models\Member;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\MembersImport;
+use App\Http\Requests\{MemberCreateRequest, MemberUpdateRequest};
 
 class UserController extends Controller
 {
@@ -17,88 +15,118 @@ class UserController extends Controller
     {
         $query = $request->input('query');
 
-        $userQuery = Member::where('role', 'user');
+        $userQuery = Member::with('info')->where('role', 'user');
 
         if ($query) {
-            $userQuery->where('name', 'LIKE', "%{$query}%");
+            $userQuery->where(function ($queryBuilder) use ($query) {
+                $queryBuilder->where('email', 'LIKE', "%{$query}%")
+                    ->orWhereHas('info', function ($infoQuery) use ($query) {
+                        $infoQuery->where('first_name', 'LIKE', "%{$query}%")
+                            ->orWhere('last_name', 'LIKE', "%{$query}%");
+                    });
+            });
         }
 
         $users = $userQuery->paginate(10)->appends([
             'query' => $query,
         ]);
-
-
-        return view('administrator.users.index', compact('users', 'query'));
+        return view('administrator.admin.index', compact('users', 'query'));
     }
 
     public function add()
     {
-        return view('administrator.users.add');
+        return view('administrator.user.add');
     }
 
     public function edit($id)
     {
-        $user = Member::find($id);
-        return view('administrator.users.edit', compact('user'));
+        $admin = Member::find($id);
+        return view('administrator.user.edit', compact('admin'));
     }
 
-    public function submit(Request $request)
+    public function submit(MemberCreateRequest  $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'role_id' => 'required|exists:roles,id',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        Member::create([
-            'name' => $request->name,
+        // dd($request->all());
+        $member = Member::create([
+            // 'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => $request->role_id,
+            'role' => 'admin',
+            'status' => $request->status ?? 0,
         ]);
-
-        return redirect()->route('administrator.users');
+        $filename = null;
+        if ($request->hasFile('image')) {
+            $filename = $this->uploadsImage($request->file('image'), 'admin');
+        }
+        MemberInfo::create([
+            'member_id' => $member->id,
+            'adviser_id' => 0,
+            'student_id' => 0,
+            'first_name' =>  $request->first_name,
+            'last_name' =>  $request->last_name,
+            'mobile' => $request->mobile_phone,
+            'avatar' => $filename
+        ]);
+        return redirect()->back()
+            ->with('success', 'ข้อมูลถูกบันทึกเรียบร้อยแล้ว');
     }
 
-    public function update(Request $request, $id)
+    public function update(MemberUpdateRequest $request, $id)
     {
-        $user = Member::find($id);
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'password' => 'nullable|string|min:8|confirmed',
-            'role_id' => 'required|exists:roles,id',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        $user->update([
-            'name' => $request->name,
+        $member = Member::find($id);
+        $member->update([
+            // 'username' => $request->username,
             'email' => $request->email,
-            'role_id' => $request->role_id,
-            'password' => $request->password ? Hash::make($request->password) : $user->password,
+            'password' => $request->filled('password') ? Hash::make($request->password) : $member->password,
+            'role' => 'admin',
+            'status' => $request->status ?? 0,
         ]);
 
-        return redirect()->route('administrator.users');
-    }
-    public function import(Request $request)
-    {
-        if ($request->hasFile('file') && $request->file('file')->isValid()) {
-
-            $path = $request->file('file')->getRealPath();
-
-            Excel::import(new MembersImport, $path);
-
-            return redirect()->back()->with('success', 'Data imported successfully.');
+        $filename = $member->info->avatar;
+        if ($request->hasFile('image')) {
+            $filename = $this->uploadsImage($request->file('image'), 'admin');
         }
 
-        return redirect()->back()->with('error', 'No valid file selected.');
+        $member->info->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'mobile' => $request->mobile_phone,
+            'avatar' => $filename,
+        ]);
+
+        return redirect()->back()
+            ->with('success', 'ข้อมูลถูกอัพเดตเรียบร้อยแล้ว');
+    }
+    public function destroy($id, Request $request)
+    {
+        $about = Member::findOrFail($id);
+        $about->delete();
+
+        $currentPage = $request->query('page', 1);
+
+        return redirect()->route('administrator.user', ['page' => $currentPage])->with([
+            'success' => 'About deleted successfully!',
+            'id' => $id
+        ]);
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (is_array($ids) && count($ids) > 0) {
+            Member::whereIn('id', $ids)->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Selected about have been deleted successfully.',
+                'deleted_ids' => $ids
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'No about selected for deletion.'
+        ], 400);
     }
 }

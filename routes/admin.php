@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CkeditorController;
 use App\Http\Controllers\Administrator\{
-    AboutController,
+    UserController,
     AuthController,
     UserController,
     AdminController,
@@ -33,6 +33,7 @@ Route::prefix('administrator')->group(function () {
             Route::delete('/{id}', [AdminController::class, 'destroy'])->name('admin.destroy');
             Route::post('/bulk-delete', [AdminController::class, 'bulkDelete'])->name('admin.bulk.delete');
         });
+
         Route::group(['prefix' => 'users', 'as' => 'administrator.'], function () {
             Route::get('/', [UserController::class, 'index'])->name('users');
             Route::get('/add', [UserController::class, 'add'])->name('users.add');
@@ -42,6 +43,7 @@ Route::prefix('administrator')->group(function () {
             Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.destroy');
             Route::post('/bulk-delete', [UserController::class, 'bulkDelete'])->name('users.bulk.delete');
         });
+
         Route::group(['prefix' => 'student', 'as' => 'administrator.'], function () {
             Route::get('/', [StudentController::class, 'index'])->name('student');
             Route::get('/add', [StudentController::class, 'add'])->name('student.add');
@@ -54,6 +56,16 @@ Route::prefix('administrator')->group(function () {
             Route::get('/export', [StudentController::class, 'exportPage'])->name('student.export');
             Route::post('/import/submit', [StudentController::class, 'import'])->name('student.import.submit');
             Route::post('/export/submit', [StudentController::class, 'export'])->name('student.export.submit');
+        });
+
+        Route::group(['prefix' => 'user', 'as' => 'administrator.'], function () {
+            Route::get('/', [AdminController::class, 'index'])->name('user');
+            Route::get('/add', [AdminController::class, 'add'])->name('admin.add');
+            Route::post('/submit', [AdminController::class, 'submit'])->name('admin.submit');
+            Route::get('/edit/{id}', [AdminController::class, 'edit'])->name('admin.edit');
+            Route::post('/update/{id}', [AdminController::class, 'update'])->name('admin.update');
+            Route::delete('/{id}', [AdminController::class, 'destroy'])->name('admin.destroy');
+            Route::post('/bulk-delete', [AdminController::class, 'bulkDelete'])->name('admin.bulk.delete');
         });
     });
 });

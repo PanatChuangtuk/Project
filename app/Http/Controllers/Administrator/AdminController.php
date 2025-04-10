@@ -97,4 +97,36 @@ class AdminController extends Controller
         return redirect()->back()
             ->with('success', 'ข้อมูลถูกอัพเดตเรียบร้อยแล้ว');
     }
+    public function destroy($id, Request $request)
+    {
+        $about = Member::findOrFail($id);
+        $about->delete();
+
+        $currentPage = $request->query('page', 1);
+
+        return redirect()->route('administrator.admin', ['page' => $currentPage])->with([
+            'success' => 'About deleted successfully!',
+            'id' => $id
+        ]);
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (is_array($ids) && count($ids) > 0) {
+            Member::whereIn('id', $ids)->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Selected about have been deleted successfully.',
+                'deleted_ids' => $ids
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'No about selected for deletion.'
+        ], 400);
+    }
 }
