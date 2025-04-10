@@ -28,6 +28,6 @@ class MemberInfo extends Model
     }
     public function student()
     {
-        return $this->hasOne(Student::class, 'student_id', 'id');
+        return $this->belongsTo(Student::class, 'student_id', 'id');
     }
 }

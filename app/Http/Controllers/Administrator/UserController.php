@@ -15,7 +15,7 @@ class UserController extends Controller
     {
         $query = $request->input('query');
 
-        $userQuery = Member::with('info')->where('role', 'user');
+        $userQuery = Member::with('info')->where('role', 'user')->where('status', 1);
 
         if ($query) {
             $userQuery->where(function ($queryBuilder) use ($query) {
@@ -30,7 +30,7 @@ class UserController extends Controller
         $users = $userQuery->paginate(10)->appends([
             'query' => $query,
         ]);
-        return view('administrator.admin.index', compact('users', 'query'));
+        return view('administrator.user.index', compact('users', 'query'));
     }
 
     public function add()

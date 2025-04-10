@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CkeditorController;
 use App\Http\Controllers\Administrator\{
-    UserController,
+    ApproveUserController,
     AuthController,
     UserController,
     AdminController,
@@ -59,13 +59,17 @@ Route::prefix('administrator')->group(function () {
         });
 
         Route::group(['prefix' => 'user', 'as' => 'administrator.'], function () {
-            Route::get('/', [AdminController::class, 'index'])->name('user');
-            Route::get('/add', [AdminController::class, 'add'])->name('admin.add');
-            Route::post('/submit', [AdminController::class, 'submit'])->name('admin.submit');
-            Route::get('/edit/{id}', [AdminController::class, 'edit'])->name('admin.edit');
-            Route::post('/update/{id}', [AdminController::class, 'update'])->name('admin.update');
-            Route::delete('/{id}', [AdminController::class, 'destroy'])->name('admin.destroy');
-            Route::post('/bulk-delete', [AdminController::class, 'bulkDelete'])->name('admin.bulk.delete');
+            Route::get('/', [UserController::class, 'index'])->name('user');
+            Route::get('/add', [UserController::class, 'add'])->name('user.add');
+            Route::post('/submit', [UserController::class, 'submit'])->name('user.submit');
+            Route::get('/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
+            Route::post('/update/{id}', [UserController::class, 'update'])->name('user.update');
+            Route::delete('/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+            Route::post('/bulk-delete', [UserController::class, 'bulkDelete'])->name('user.bulk.delete');
+        });
+
+        Route::group(['prefix' => 'approve-user', 'as' => 'administrator.'], function () {
+            Route::get('/', [ApproveUserController::class, 'index'])->name('approve-user');
         });
     });
 });

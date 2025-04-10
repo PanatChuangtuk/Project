@@ -57,6 +57,13 @@
                 <div class="menu-text"> User </div>
             </a>
         </li>
+
+        <li class="menu-item">
+            <a href="{{ route('administrator.approve-user') }}" class="menu-link">
+                <i class='menu-icon tf-icons bx bxs-school'></i>
+                <div class="menu-text"> Approve User </div>
+            </a>
+        </li>
     </ul>
 </aside>
 <!-- / Menu -->
