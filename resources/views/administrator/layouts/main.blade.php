@@ -187,7 +187,19 @@ data-template="vertical-menu-template-free"
     line-height: 1.6em;
     padding-top: 0.2em;
     margin-bottom: var(--ck-spacing-large);
-  }</style>
+  }
+
+
+        .select2-container .select2-selection__arrow {
+            display: none !important;
+        }
+
+        .select2-container .select2-selection__clear {
+            display: none !important;
+        }
+
+     
+      </style>
 
     <!-- Helpers -->
     <script src="{{ URL::asset('administrator') }}/assets/vendor/js/helpers.js"></script>

@@ -1,7 +1,7 @@
 @extends('administrator.layouts.main')
 
 @section('title')
-
+@endsection
 @section('content')
     <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
         <li class="breadcrumb-item"><a href="{{ route('administrator.dashboard') }}">Home</a></li>
@@ -114,6 +114,17 @@
                         @enderror
                     </div>
 
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="fw-bold w-100 d-block">รหัสนักศึกษา <span class="text-danger">*</span></label>
+                            <select name="student_id" id="studentSelect" class="form-control select2">
+                                <option value="">รหัสนักศึกษา</option>
+                            </select>
+                            @error('student_id')
+                                <span class="text-danger  w-100">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
                     <!-- Status Toggle -->
                     <div class="col-md-12 mt-3">
                         <div class="form-check form-switch">
@@ -149,4 +160,29 @@
             });
         </script>
     @endif
+    <script>
+        $('#studentSelect').select2({
+            ajax: {
+                url: 'http://127.0.0.1:8000/api/get-user',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        query: params.term,
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data.results.map(function(item) {
+                            return {
+                                id: item.id,
+                                text: item.student_number
+                            };
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+    </script>
 @endsection

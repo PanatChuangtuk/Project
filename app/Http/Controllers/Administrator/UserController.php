@@ -100,7 +100,7 @@ class UserController extends Controller
     public function destroy($id, Request $request)
     {
         $about = Member::findOrFail($id);
-        $about->delete();
+        $about->forceDelete();
 
         $currentPage = $request->query('page', 1);
 
@@ -115,7 +115,7 @@ class UserController extends Controller
         $ids = $request->input('ids');
 
         if (is_array($ids) && count($ids) > 0) {
-            Member::whereIn('id', $ids)->delete();
+            Member::whereIn('id', $ids)->forceDelete();
 
             return response()->json([
                 'status' => 'success',
