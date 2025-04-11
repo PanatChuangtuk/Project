@@ -275,11 +275,13 @@
                                                 data-bs-target=".disapproveBtn" data-id="{{ $item->id }}"
                                                 data-name-new="{{ $item->info->first_name ?? '' }} {{ $item->info->last_name ?? '' }}"
                                                 data-email-new="{{ $item->email }}"
+                                                data-student-new="{{ $item->info->student->student_number ?? null }}"
                                                 data-avatar-new="{{ asset('upload/images/' . $item->info->avatar) }}"
                                                 data-phone-new="{{ $item->info->mobile_phone ?? '' }}"
                                                 data-name-old="{{ $item->info->student->first_name ?? '' }} {{ $item->info->student->last_name ?? '' }}"
                                                 data-email-old="{{ $item->info->student->email ?? '' }}"
-                                                data-phone-old="{{ $item->info->student->mobile_phone ?? '' }}">
+                                                data-phone-old="{{ $item->info->student->mobile_phone ?? '' }}"
+                                                data-student-old="{{ $item->info->student->student_number ?? null }}">
                                                 <i class='bx bx-user'></i>
                                             </button>
                                         </td>
@@ -334,6 +336,10 @@
                                         <div class="info-label"><i class="fas fa-phone-alt info-icon"></i>เบอร์โทร:</div>
                                         <div class="info-value" id="newPhone">ไม่มีข้อมูล</div>
                                     </div>
+                                    {{-- <div class="info-item mt-3">
+                                        <div class="info-label"><i class="fas fa-id-card info-icon"></i>รหัสนักศึกษา:</div>
+                                        <div class="info-value fw-bold" id="newStudent">ไม่มีข้อมูล</div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -362,6 +368,11 @@
                                     <div class="info-item">
                                         <div class="info-label"><i class="fas fa-phone-alt info-icon"></i>เบอร์โทร:</div>
                                         <div class="info-value" id="oldPhone">ไม่มีข้อมูล</div>
+                                    </div>
+                                    <div class="info-item mt-3">
+                                        <div class="info-label"><i class="fas fa-id-card info-icon"></i>รหัสนักศึกษา:
+                                        </div>
+                                        <div class="info-value fw-bold" id="oldStudent">ไม่มีข้อมูล</div>
                                     </div>
                                 </div>
                             </div>
@@ -398,18 +409,22 @@
                 const newName = $(this).data('name-new');
                 const newEmail = $(this).data('email-new');
                 const newPhone = $(this).data('phone-new');
+                // const newStudent = $(this).data('student-new');
                 const newAvatar = $(this).data('avatar-new');
                 const oldName = $(this).data('name-old');
                 const oldEmail = $(this).data('email-old');
                 const oldPhone = $(this).data('phone-old');
                 const oldAvatar = $(this).data('avatar-old');
+                const oldStudent = $(this).data('student-old');
 
                 $('#newName').text(newName || 'ไม่มีข้อมูล');
+                // $('#newStudent').text(newStudent || 'ไม่มีข้อมูล');
                 $('#newEmail').text(newEmail || 'ไม่มีข้อมูล');
                 $('#newPhone').text(newPhone || 'ไม่มีข้อมูล');
                 $('#oldName').text(oldName || 'ไม่มีข้อมูล');
                 $('#oldEmail').text(oldEmail || 'ไม่มีข้อมูล');
                 $('#oldPhone').text(oldPhone || 'ไม่มีข้อมูล');
+                $('#oldStudent').text(oldStudent || 'ไม่มีข้อมูล');
 
                 // ตั้งค่ารูปภาพ
                 if (newAvatar) {

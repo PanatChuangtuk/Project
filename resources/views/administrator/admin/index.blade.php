@@ -52,7 +52,7 @@
                                             <input class="form-check-input check-item" type="checkbox" id="checkAll" />
                                         </div>
                                     </th>
-                                    {{-- <th>ID</th> --}}
+                                    <th>NO</th>
                                     <th class="text-center">Name</th>
                                     <th class="text-center">Email</th>
                                     <th class="text-center">Created Date</th>
@@ -69,7 +69,7 @@
                                                     value="{{ $item->id }}">
                                             </div>
                                         </td>
-                                        {{-- <td>{{ $item->id }}</td> --}}
+                                        <td>{{ $item->id }}</td>
                                         <td>
                                             <div class="text-center">
                                                 <div class="flex-grow-1">
