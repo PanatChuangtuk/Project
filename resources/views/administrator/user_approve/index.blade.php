@@ -444,7 +444,7 @@
                     $(this).attr('disabled', true);
 
                     $.ajax({
-                        url: `/administrator/approve-user/approve `,
+                        url: `/administrator/approve-user/approve`,
                         type: 'POST',
                         data: {
                             _token: '{{ csrf_token() }}',

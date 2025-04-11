@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
 class MemberCreateRequest extends FormRequest
@@ -21,8 +22,9 @@ class MemberCreateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
+        dd($request->all());
         return [
             'email' => 'required|string|email|max:255|unique:member,email',
             'mobile_phone' => 'required',

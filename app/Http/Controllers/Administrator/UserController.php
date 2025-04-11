@@ -46,12 +46,12 @@ class UserController extends Controller
 
     public function submit(MemberCreateRequest  $request)
     {
-        // dd($request->all());
+        dd($request->all());
         $member = Member::create([
             // 'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'admin',
+            'role' => 'user',
             'status' => $request->status ?? 0,
         ]);
         $filename = null;
@@ -61,7 +61,7 @@ class UserController extends Controller
         MemberInfo::create([
             'member_id' => $member->id,
             'adviser_id' => 0,
-            'student_id' => 0,
+            'student_id' => $request->student_id,
             'first_name' =>  $request->first_name,
             'last_name' =>  $request->last_name,
             'mobile' => $request->mobile_phone,
@@ -78,7 +78,7 @@ class UserController extends Controller
             // 'username' => $request->username,
             'email' => $request->email,
             'password' => $request->filled('password') ? Hash::make($request->password) : $member->password,
-            'role' => 'admin',
+            'role' => 'user',
             'status' => $request->status ?? 0,
         ]);
 

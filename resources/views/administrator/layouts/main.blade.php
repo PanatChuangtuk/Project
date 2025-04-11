@@ -253,7 +253,9 @@ data-template="vertical-menu-template-free"
                 href="javascript:void(0);"
                 data-bs-toggle="dropdown">
                 <div class="avatar avatar-online">
-                  <img src="{{ URL::asset('') }}administrator/assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                    <img src="{{ asset('upload/file/admin/' . Auth::user()->info->avatar) }}"
+                    alt="Avatar"
+                    style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" />
                 </div>
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
@@ -262,11 +264,13 @@ data-template="vertical-menu-template-free"
                     <div class="d-flex">
                       <div class="flex-shrink-0 me-3">
                         <div class="avatar avatar-online">
-                          {{-- <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" /> --}}
+                            <img src="{{ asset('upload/file/admin/' . Auth::user()->info->avatar) }}"
+                            alt="Avatar"
+                            style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" />
                         </div>
                       </div>
                       <div class="flex-grow-1">
-                        <h6 class="mb-0">John Doe</h6>
+                        <h6 class="mb-0">{{Auth::user()->info->first_name . ' '. Auth::user()->info->last_name}}</h6>
                         <small class="text-muted">Admin</small>
                       </div>
                     </div>

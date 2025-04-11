@@ -163,7 +163,7 @@
     <script>
         $('#studentSelect').select2({
             ajax: {
-                url: 'http://127.0.0.1:8000/api/get-user',
+                url: '{{ url('api/get-user') }}',
                 dataType: 'json',
                 delay: 250,
                 data: function(params) {

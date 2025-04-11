@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class MemberUpdateRequest extends FormRequest
 {
@@ -21,13 +22,14 @@ class MemberUpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
+        // dd($request->all());
         $id = $this->route('id');
         return [
             'email' => 'required|string|email|max:255|unique:member,email,' . $id,
             'mobile_phone' => 'required',
-            'password' => 'nullable|string|min:8|confirmed',
+            // 'password' => 'nullable|string|min:8|confirmed',
             'image' => 'nullable|mimes:jpeg,png,jpg|max:2048',
         ];
     }
@@ -45,10 +47,10 @@ class MemberUpdateRequest extends FormRequest
             'email.max' => 'อีเมล์ต้องไม่เกิน 255 ตัวอักษร',
             'email.unique' => 'อีเมล์นี้ถูกใช้งานแล้ว',
             'mobile_phone' => 'กรุณากรอกเบอร์โทรศัพท์มือถือ',
-            'password.required' => 'กรุณากรอกรหัสผ่าน',
-            'password.string' => 'รหัสผ่านต้องเป็นตัวอักษร',
-            'password.min' => 'รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร',
-            'password.confirmed' => 'การยืนยันรหัสผ่านไม่ตรงกัน',
+            // 'password.required' => 'กรุณากรอกรหัสผ่าน',
+            // 'password.string' => 'รหัสผ่านต้องเป็นตัวอักษร',
+            // 'password.min' => 'รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร',
+            // 'password.confirmed' => 'การยืนยันรหัสผ่านไม่ตรงกัน',
             'image.required' => 'กรุณาอัพโหลดภาพ',
             'image.mimes' => 'ภาพที่อัพโหลดต้องเป็นไฟล์ประเภท jpeg, png, jpg',
             'image.max' => 'ขนาดไฟล์ภาพต้องไม่เกิน 2MB',

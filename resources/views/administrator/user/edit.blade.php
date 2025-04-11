@@ -124,7 +124,8 @@
                         <div class="form-group">
                             <label class="fw-bold w-100 d-block">รหัสนักศึกษา <span class="text-danger">*</span></label>
                             <select name="student_id" id="studentSelect" class="form-control select2">
-                                <option value="">รหัสนักศึกษา</option>
+                                <option value="">{{ $admin->info?->student?->student_number ?? 'รหัสนักศึกษา' }}
+                                </option>
                             </select>
                             @error('student_id')
                                 <span class="text-danger  w-100">{{ $message }}</span>
@@ -170,7 +171,7 @@
     <script>
         $('#studentSelect').select2({
             ajax: {
-                url: 'api/get-user',
+                url: '{{ url('api/get-user') }}',
                 type: "GET",
                 dataType: 'json',
                 delay: 250,
