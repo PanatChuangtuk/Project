@@ -27,13 +27,13 @@
                     <form class="form pt-3" method="POST" action="{{ route('profile.submit') }}">
                         @csrf
                         <div class="row form-row">
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="title">@lang('messages.username')</label>
                                     <input type="text" class="form-control"name="username" 4t
                                         value="{{ $profile->username ?? null }}" />
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -66,8 +66,8 @@
                                 <div class="form-group">
                                     <label class="title">@lang('messages.mobile_phone')</label>
                                     <input type="text" class="form-control"name="mobile_phone"
-                                        value="{{ $profile->mobile_phone ?? null }}" pattern="[0-9]*" maxlength="10"
-                                        readonly />
+                                        value="{{ $profile->info->mobile_phone ?? null }}" pattern="[0-9]*"
+                                        maxlength="10" />
                                     @error('mobile_phone')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -76,28 +76,36 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
+                                    <label class="title">Student Number</label>
+                                    <input type="text" class="form-control"
+                                        value="{{ $profile->info->student->student_number ?? null }}" />
+                                </div>
+                            </div>
+
+                            {{-- <div class="col-md-6">
+                                <div class="form-group">
                                     <label class="title">@lang('messages.company')</label>
                                     <input type="text" value="{{ $profile->company ?? null }}" name="company"
                                         class="form-control" />
                                 </div>
-                            </div>
+                            </div> --}}
 
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="title">Line ID</label>
                                     <input type="text" value="{{ $profile->line_id ?? null }}" name="line_id"
                                         class="form-control" />
                                 </div>
-                            </div>
+                            </div> --}}
 
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="title">@lang('messages.vat_register_number')</label>
                                     <input type="text" class="form-control" placeholder="VAT Register Number"
                                         name="vat_register_number" value="{{ $profile->vat_register_number ?? null }}"
                                         maxlength="13" />
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary" id="confirmSave">@lang('messages.save')</button>

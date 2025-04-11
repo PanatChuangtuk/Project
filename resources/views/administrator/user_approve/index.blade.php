@@ -329,9 +329,9 @@
                         <button type="button" id="approveBtn" class="btn btn-success px-4 py-2">
                             <i class="fas fa-check-circle me-2"></i>อนุมัติ
                         </button>
-                        <button type="button" id="disapproveBtn" class="btn btn-danger px-4 py-2">
+                        {{-- <button type="button" id="disapproveBtn" class="btn btn-danger px-4 py-2">
                             <i class="fas fa-times-circle me-2"></i>ไม่อนุมัติ
-                        </button>
+                        </button> --}}
                     </div>
                     <button type="button" class="btn btn-close-modal text-white" data-bs-dismiss="modal">ปิด</button>
                 </div>
@@ -385,6 +385,7 @@
             });
 
             $('#approveBtn').on('click', function() {
+                console.log(currentUserId);
                 if (currentUserId) {
                     Swal.fire({
                         icon: 'info',
@@ -403,10 +404,11 @@
                     $(this).attr('disabled', true);
 
                     $.ajax({
-                        url: `/administrator/user/approve/${currentUserId}`,
+                        url: `/administrator/approve-user/approve `,
                         type: 'POST',
                         data: {
-                            _token: '{{ csrf_token() }}'
+                            _token: '{{ csrf_token() }}',
+                            query: currentUserId
                         },
                         success: function(response) {
                             Swal.fire({

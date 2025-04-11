@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Administrator;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\{Hash, DB};
 use App\Models\{Member, MemberInfo};
 use Illuminate\Http\Request;
 use App\Http\Requests\{MemberCreateRequest, MemberUpdateRequest};
@@ -30,5 +29,17 @@ class ApproveUserController extends Controller
             'query' => $query,
         ]);
         return view('administrator.user_approve.index', compact('users', 'query'));
+    }
+    public function updateApprove(Request $request)
+    {
+        // dd($request->all());
+        $query = $request->get('query');
+        $student =  DB::table('member')
+            ->where('id', $query)
+            ->update([
+                'status' => 1,
+            ]);
+
+        return response()->json(['results' => $student]);
     }
 }

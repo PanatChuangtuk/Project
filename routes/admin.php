@@ -70,6 +70,7 @@ Route::prefix('administrator')->group(function () {
 
         Route::group(['prefix' => 'approve-user', 'as' => 'administrator.'], function () {
             Route::get('/', [ApproveUserController::class, 'index'])->name('approve-user');
+            Route::post('/approve', [ApproveUserController::class, 'updateApprove'])->name('approve-user.approve');
         });
     });
 });
