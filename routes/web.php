@@ -11,6 +11,7 @@ use App\Http\Controllers\{
 };
 
 require base_path('routes/admin.php');
+require base_path('routes/api.php');
 
 
 Route::get('login', [LoginController::class, 'loginIndex'])->name('login');

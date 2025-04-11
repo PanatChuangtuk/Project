@@ -60,7 +60,7 @@ class StudentController extends Controller
 
     public function update(StudentUpdateRequest $request, $id)
     {
-        // dd($request->all());
+
         $status = $request->input('status', 0);
         $student = Student::find($id);
         $student->update([

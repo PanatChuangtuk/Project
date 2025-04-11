@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class StudentUpdateRequest extends FormRequest
 {
@@ -21,14 +22,14 @@ class StudentUpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
         // หาค่าของ $id จาก URL (ถ้าใช้ใน Controller เช่น {id} สำหรับอัปเดต)
         $id = $this->route('id');
-
+        // dd($request->all());
         return [
-            'name' => 'required|string|max:255',
-            'student_number' => 'required|string|max:20|unique:student,student_number,' . $id, // ยกเว้นตรวจสอบตัวเอง
+            'email' => 'required|string|email|max:255|unique:student,email,' . $id,
+            'student_number' => 'required|string|max:20|unique:student,student_number,' . $id,
         ];
     }
 
@@ -40,10 +41,9 @@ class StudentUpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'กรุณากรอกชื่อ',
-            'name.string' => 'ชื่อต้องเป็นตัวอักษร',
-            'name.max' => 'ชื่อต้องไม่เกิน 255 ตัวอักษร',
-
+            'email.required' => 'กรุณากรอกอีเมล',
+            'email.email' => 'กรุณากรอกอีเมลที่ถูกต้อง',
+            'email.unique' => 'อีเมลนี้มีผู้ใช้งานแล้ว',
             'student_number.required' => 'กรุณากรอกรหัสนักศึกษา',
             'student_number.string' => 'รหัสนักศึกษาต้องเป็นตัวอักษร',
             'student_number.max' => 'รหัสนักศึกษาต้องไม่เกิน 20 ตัวอักษร',

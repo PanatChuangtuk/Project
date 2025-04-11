@@ -162,6 +162,50 @@
         .modal {
             z-index: 999998 !important;
         }
+
+        /* เพิ่มสไตล์ให้กับปุ่ม */
+        #editLink {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 30px;
+            background-color: #17a2b8;
+            /* สีของปุ่ม */
+            color: white;
+            transition: background-color 0.3s, transform 0.3s ease;
+            /* เพิ่มการเปลี่ยนแปลงเมื่อ hover */
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #editLink i {
+            margin-right: 8px;
+            /* เว้นช่องระหว่างไอคอนกับข้อความ */
+        }
+
+        /* เปลี่ยนสีเมื่อเลื่อนเมาส์ (hover) */
+        #editLink:hover {
+            background-color: #138496;
+            /* สีเข้มเมื่อ hover */
+            transform: scale(1.05);
+            /* ขยายขนาดเล็กน้อยเมื่อ hover */
+        }
+
+        /* เพิ่มเงาให้ปุ่ม */
+        #editLink:active {
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #117a8b;
+            /* สีเข้มขึ้นเมื่อคลิก */
+        }
+
+        /* เพิ่มการรองรับฟังก์ชันเมื่อปุ่มถูกเลือก */
+        #editLink:focus {
+            outline: none;
+            /* ลบขอบของปุ่มที่ถูกเลือก */
+            box-shadow: 0px 0px 5px rgba(38, 143, 255, 0.5);
+        }
     </style>
 @endsection
 
@@ -228,6 +272,7 @@
                                         <td class="text-center">
                                             <button class="btn btn-info mb-3 show-modal-btn" data-bs-toggle="modal"
                                                 data-bs-target="#twoColumnModal" data-id="{{ $item->id }}"
+                                                data-bs-target=".disapproveBtn" data-id="{{ $item->id }}"
                                                 data-name-new="{{ $item->info->first_name ?? '' }} {{ $item->info->last_name ?? '' }}"
                                                 data-email-new="{{ $item->email }}"
                                                 data-avatar-new="{{ asset('upload/images/' . $item->info->avatar) }}"
@@ -329,9 +374,12 @@
                         <button type="button" id="approveBtn" class="btn btn-success px-4 py-2">
                             <i class="fas fa-check-circle me-2"></i>อนุมัติ
                         </button>
-                        {{-- <button type="button" id="disapproveBtn" class="btn btn-danger px-4 py-2">
-                            <i class="fas fa-times-circle me-2"></i>ไม่อนุมัติ
-                        </button> --}}
+
+                        <a id="editLink" class="btn btn-info disapproveBtn">
+                            <i class="bx bx-edit bx"></i> แก้ไข
+                        </a>
+
+
                     </div>
                     <button type="button" class="btn btn-close-modal text-white" data-bs-dismiss="modal">ปิด</button>
                 </div>
@@ -341,13 +389,6 @@
 @endsection
 
 @section('script')
-    <script>
-        const currentPath = window.location.pathname;
-        const bulkDeleteUrl = currentPath.endsWith('/') ? currentPath + 'bulk-delete' : currentPath + '/bulk-delete';
-    </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('js/delete.js') }}"></script>
     <script>
         $(document).ready(function() {
             let currentUserId;
@@ -385,7 +426,6 @@
             });
 
             $('#approveBtn').on('click', function() {
-                console.log(currentUserId);
                 if (currentUserId) {
                     Swal.fire({
                         icon: 'info',
@@ -440,6 +480,12 @@
                     });
 
                 }
+            });
+            $('.disapproveBtn').on('click', function() {
+                const editUrl = "{{ route('administrator.user.edit', ['id' => ':id']) }}".replace(':id',
+                    currentUserId);
+                $('#editLink').attr('href', editUrl);
+                window.location.href = editUrl;
             });
         });
     </script>

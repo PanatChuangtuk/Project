@@ -19,9 +19,11 @@ class RegisterMemberRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('id');
         return [
             'username' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:member',
+            'email' => 'required|string|email|max:255|unique:member' .
+                $id,
             'password' => 'required|string|min:8|confirmed',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',

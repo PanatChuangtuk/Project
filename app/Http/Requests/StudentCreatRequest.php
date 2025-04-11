@@ -23,9 +23,10 @@ class StudentCreatRequest extends FormRequest
      */
     public function rules()
     {
+        $id = $this->route('id');
         return [
-            'name' => 'required|string|max:255',
-            'student_number' => 'required|string|max:20|unique:students,student_number',
+            'email' => 'required|string|email|max:255|unique:student,email,' . $id,
+            'student_number' => 'required|string|max:20|unique:student,student_number,' . $id,
         ];
     }
 
@@ -37,10 +38,9 @@ class StudentCreatRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'กรุณากรอกชื่อ',
-            'name.string' => 'ชื่อต้องเป็นตัวอักษร',
-            'name.max' => 'ชื่อต้องไม่เกิน 255 ตัวอักษร',
-
+            'email.required' => 'กรุณากรอกอีเมล',
+            'email.email' => 'กรุณากรอกอีเมลที่ถูกต้อง',
+            'email.unique' => 'อีเมลนี้มีผู้ใช้งานแล้ว',
             'student_number.required' => 'กรุณากรอกรหัสนักศึกษา',
             'student_number.string' => 'รหัสนักศึกษาต้องเป็นตัวอักษร',
             'student_number.max' => 'รหัสนักศึกษาต้องไม่เกิน 20 ตัวอักษร',
