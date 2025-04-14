@@ -9,7 +9,7 @@ class EquipmentType extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'types';
+    protected $table = 'equipment_type';
 
     protected $fillable = [
         'name',
