@@ -360,11 +360,11 @@
                                         <div class="info-label"><i class="fas fa-phone-alt info-icon"></i>เบอร์โทร:</div>
                                         <div class="info-value" id="newPhone">ไม่มีข้อมูล</div>
                                     </div>
-                                    <div class="info-item mt-3">
+                                    {{-- <div class="info-item mt-3">
                                         <div class="info-label"><i class="fas fa-id-card info-icon"></i>รหัสนักศึกษา:
                                         </div>
                                         <div class="info-value fw-bold" id="oldStudent">ไม่มีข้อมูล</div>
-                                    </div>
+                                    </div> --}}
                                     <div class="info-item mt-1">
                                         <div class="info-label"><i class="fas fa-id-card info-icon"></i>อาจารย์ที่ปรึกษา:
                                         </div>
@@ -402,16 +402,17 @@
                                         <div class="info-label"><i class="fas fa-phone-alt info-icon"></i>เบอร์โทร:</div>
                                         <div class="info-value" id="oldPhone">ไม่มีข้อมูล</div>
                                     </div>
-                                    <div class="info-item mt-3">
-                                        <div class="info-label"><i class="fas fa-id-card info-icon"></i>รหัสนักศึกษา:
-                                        </div>
-                                        <div class="info-value fw-bold" id="oldStudent">ไม่มีข้อมูล</div>
-                                    </div>
                                     <div class="info-item mt-1">
                                         <div class="info-label"><i class="fas fa-id-card info-icon"></i>อาจารย์ที่ปรึกษา:
                                         </div>
                                         <div class="info-value fw-bold" id="oldAdviser">ไม่มีข้อมูล</div>
                                     </div>
+                                    <div class="info-item mt-3">
+                                        <div class="info-label"><i class="fas fa-id-card info-icon"></i>รหัสนักศึกษา:
+                                        </div>
+                                        <div class="info-value fw-bold" id="oldStudent">ไม่มีข้อมูล</div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -446,7 +447,7 @@
         const button = $(this);
         setTimeout(() => {
             $('#overlay-loading').fadeOut();
-        }, 900);
+        }, 250);
         $(document).ready(function() {
             let currentUserId;
 

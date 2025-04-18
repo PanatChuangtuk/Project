@@ -379,7 +379,7 @@
 
                             <div class="col-md-6 mb-4">
                                 <div class="form-group">
-                                    <label class="title">Purchase Date</label>
+                                    <label class="title">Borrow Date</label>
                                     <input type="date" class="form-control" name="purchase_date"
                                         value="{{ old('purchase_date') }}" />
                                     @error('purchase_date')
@@ -433,7 +433,8 @@
                     if (DIFFERENT_CATEGORIES && selectedCategories.includes(category) && currentSelections >
                         0) {
                         alert(
-                            'You can only select one item per category. Please deselect the previous item from this category first.');
+                            'You can only select one item per category. Please deselect the previous item from this category first.'
+                            );
                         $this.prop('checked', false);
                         return;
                     }
