@@ -139,15 +139,18 @@
 
         .avatar-wrapper {
             width: 160px;
-            /* ปรับขนาดความกว้าง */
             height: 160px;
-            /* ปรับขนาดความสูง */
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             border: 3px solid #fff;
             background-color: #f8f9fa;
             transition: all 0.3s ease;
             margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
+
 
         .avatar-wrapper:hover {
             transform: scale(1.05);
@@ -155,12 +158,12 @@
         }
 
         .swal2-container {
-            z-index: 999999 !important;
+            z-index: 999990 !important;
         }
 
         /* ให้ Modal มี z-index ต่ำกว่า SweetAlert */
         .modal {
-            z-index: 999998 !important;
+            z-index: 999980 !important;
         }
 
         /* เพิ่มสไตล์ให้กับปุ่ม */
@@ -343,9 +346,9 @@
                                 <div class="card-body">
 
                                     <div class="text-center mb-3">
-                                        <div class="avatar-wrapper rounded-circle overflow-hidden mx-auto"
-                                            style="width: 160px; height: 160px; object-fit: cover;">
+                                        <div class="avatar-wrapper rounded-circle overflow-hidden mx-auto">
                                             <img src="" id="newAvatar" class="img-fluid" alt="Avatar"
+                                                onclick="showFullScreen(this)"
                                                 onerror="this.src='{{ asset('images/default-avatar.png') }}'; this.onerror=null;">
                                         </div>
                                     </div>
@@ -387,8 +390,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="text-center mb-3">
-                                        <div class="avatar-wrapper rounded-circle overflow-hidden mx-auto"
-                                            style="width: 160px; height: 160px; object-fit: cover;">
+                                        <div class="avatar-wrapper rounded-circle overflow-hidden mx-auto">
                                             <img src="" id="oldAvatar" class="img-fluid" alt="Avatar"
                                                 onerror="this.src='{{ asset('images/default-avatar.png') }}'; this.onerror=null;">
                                         </div>
@@ -437,6 +439,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div id="fullscreenModal" onclick="hideFullScreen()" style="display: none;">
+        <img id="fullscreenImage" src="" alt="Full Image">
     </div>
 @endsection
 
@@ -552,5 +557,51 @@
                 window.location.href = editUrl;
             });
         });
+    </script>
+    <script>
+        function showFullScreen(img) {
+            const fullScreenImg = document.createElement('img');
+            fullScreenImg.src = img.src;
+            fullScreenImg.style.maxWidth = '100%';
+            fullScreenImg.style.maxHeight = '100%';
+            fullScreenImg.style.objectFit = 'contain';
+            fullScreenImg.style.zIndex = '1000001';
+
+            const fullScreenContainer = document.createElement('div');
+            fullScreenContainer.style.position = 'fixed';
+            fullScreenContainer.style.top = '0';
+            fullScreenContainer.style.left = '0';
+            fullScreenContainer.style.width = '100vw';
+            fullScreenContainer.style.height = '100vh';
+            fullScreenContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.95)';
+            fullScreenContainer.style.display = 'flex';
+            fullScreenContainer.style.alignItems = 'center';
+            fullScreenContainer.style.justifyContent = 'center';
+            fullScreenContainer.style.zIndex = '1000000';
+
+            const closeButton = document.createElement('div');
+            closeButton.innerHTML = '&times;';
+            closeButton.style.position = 'absolute';
+            closeButton.style.top = '20px';
+            closeButton.style.right = '30px';
+            closeButton.style.fontSize = '40px';
+            closeButton.style.color = '#fff';
+            closeButton.style.cursor = 'pointer';
+            closeButton.style.zIndex = '1000002';
+
+            closeButton.addEventListener('click', function() {
+                document.body.removeChild(fullScreenContainer);
+            });
+
+            fullScreenContainer.addEventListener('click', function(e) {
+                if (e.target === fullScreenContainer) {
+                    document.body.removeChild(fullScreenContainer);
+                }
+            });
+
+            fullScreenContainer.appendChild(closeButton);
+            fullScreenContainer.appendChild(fullScreenImg);
+            document.body.appendChild(fullScreenContainer);
+        }
     </script>
 @endsection
