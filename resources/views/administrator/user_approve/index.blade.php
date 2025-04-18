@@ -257,9 +257,9 @@
                             <thead>
                                 <tr>
                                     <th style="font-size: 1rem;">
-                                        <div class="form-check">
+                                        {{-- <div class="form-check">
                                             <input class="form-check-input check-item" type="checkbox" id="checkAll" />
-                                        </div>
+                                        </div> --}}
                                     </th>
                                     <th>NO</th>
                                     <th class="text-center">Name</th>
@@ -273,10 +273,10 @@
                                 @foreach ($users as $item)
                                     <tr>
                                         <td>
-                                            <div class="form-check" style="font-size: 1rem;">
+                                            {{-- <div class="form-check" style="font-size: 1rem;">
                                                 <input type="checkbox" class="form-check-input check-item"
                                                     value="{{ $item->id }}">
-                                            </div>
+                                            </div> --}}
                                         </td>
                                         <td>{{ $item->id }}</td>
                                         <td>
