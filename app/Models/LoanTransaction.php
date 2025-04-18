@@ -15,7 +15,9 @@ class LoanTransaction extends Model
     protected $fillable = [
         'member_id',
         'status_type',
-        'status'
+        'status',
+        'borrowed_at',
+        'returned_at'
     ];
 
 
