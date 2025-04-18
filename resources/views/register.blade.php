@@ -200,10 +200,12 @@
                         </div>
                         <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
                         <img id="capturedImage" class="mt-4 rounded shadow-lg" width="100%" style="display:none;" />
-
+                        @error('imageData')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                         <div class="capture-btn-container mt-4">
-                            <button id="capture" class="capture-btn">Capture Image</button>
-                            <button id="retake" style="display: none;">ถ่ายใหม่</button>
+                            <button id="capture" class="capture-btn">อัปโหลดรูปภาพ</button>
+                            <button id="retake" class="capture-btn"style="display: none;">อัปโหลดรูปภาพใหม่</button>
                         </div>
                     </div>
                 </div>
@@ -213,7 +215,7 @@
                         <form class="form" method="post" action="{{ route('register.submit') }}">
                             @csrf
                             <div class="row form-row">
-                                <div class="col-md-6">
+                                {{-- <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="fw-bold">ชื่อผู้ใช้ <span class="text-danger">*</span></label>
                                         <input type="text" name="username" class="form-control"
@@ -222,13 +224,24 @@
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="fw-bold">อีเมล <span class="text-danger">*</span></label>
                                         <input type="email" name="email" class="form-control"
                                             placeholder="กรอกอีเมล" value="{{ old('email') }}" />
                                         @error('email')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="fw-bold">เบอร์โทรศัพท์ <span class="text-danger">*</span></label>
+                                        <input type="text" name="mobile_phone" class="form-control"
+                                            placeholder="กรอกเบอร์โทรศัพท์" value="{{ old('mobile_phone') }}" />
+                                        @error('mobile_phone')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
@@ -292,12 +305,13 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="fw-bold">เบอร์โทรศัพท์ <span
+                                        <label class="fw-bold w-100 d-block">อาจารย์ที่ปรึกษา <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" name="mobile_phone" class="form-control"
-                                            placeholder="กรอกเบอร์โทรศัพท์" value="{{ old('mobile_phone') }}" />
-                                        @error('mobile_phone')
-                                            <span class="text-danger">{{ $message }}</span>
+                                        <select name="adviser_id" id="adviserSelect"class="form-control">
+                                            <option value="">อาจารย์ที่ปรึกษา</option>
+                                        </select>
+                                        @error('adviser_id')
+                                            <span class="text-danger  w-100">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
@@ -329,6 +343,18 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: 'สำเร็จ!',
+                text: "{{ session('success') }}",
+                icon: 'success',
+                confirmButtonText: 'ตกลง'
+            }).then(function() {
+                window.location.href = '{{ route('login') }}';
+            });
+        </script>
+    @endif
     <script>
         $(document).ready(function() {
             const $video = $('#video');
@@ -407,7 +433,31 @@
             }
         });
     </script>
-
+    <script>
+        $('#adviserSelect').select2({
+            ajax: {
+                url: '{{ url('api/get-adviser') }}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        query: params.term,
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data.results.map(function(item) {
+                            return {
+                                id: item.id,
+                                text: item.first_name + ' ' + item.last_name,
+                            };
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+    </script>
 
 
 

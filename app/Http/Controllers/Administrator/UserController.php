@@ -46,7 +46,7 @@ class UserController extends Controller
 
     public function submit(MemberCreateRequest  $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $member = Member::create([
             // 'username' => $request->username,
             'email' => $request->email,
@@ -60,11 +60,11 @@ class UserController extends Controller
         }
         MemberInfo::create([
             'member_id' => $member->id,
-            'adviser_id' => 0,
+            'adviser_id' => $request->adviser_id,
             'student_id' => $request->student_id,
             'first_name' =>  $request->first_name,
             'last_name' =>  $request->last_name,
-            'mobile' => $request->mobile_phone,
+            'mobile_phone' => $request->mobile_phone,
             'avatar' => $filename
         ]);
         return redirect()->back()
@@ -73,6 +73,7 @@ class UserController extends Controller
 
     public function update(MemberUpdateRequest $request, $id)
     {
+        // dd($request->all());
         $member = Member::find($id);
         $member->update([
             // 'username' => $request->username,
@@ -88,9 +89,11 @@ class UserController extends Controller
         }
 
         $member->info->update([
+            'adviser_id' => $request->adviser_id ?? $member->info->adviser_id,
+            'student_id' => $request->student_id ?? $member->info->student_id,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
-            'mobile' => $request->mobile_phone,
+            'mobile_phone' => $request->mobile_phone,
             'avatar' => $filename,
         ]);
 

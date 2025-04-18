@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-use App\Models\Student;
+use App\Models\{Student, Adviser};
 use Rap2hpoutre\FastExcel\FastExcel;
 use App\Http\Requests\{StudentUpdateRequest, StudentCreatRequest};
 
@@ -44,6 +44,7 @@ class StudentController extends Controller
 
     public function submit(StudentCreatRequest $request)
     {
+        // dd($request->all());
         Student::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -52,6 +53,7 @@ class StudentController extends Controller
             'mobile_phone' => $request->mobile_phone,
             'student_number' => $request->student_number,
             'status' =>  $request->input('status', 0),
+            'adviser_id' => $request->input('adviser_id'),
         ]);
 
         return redirect()->back()
@@ -60,12 +62,13 @@ class StudentController extends Controller
 
     public function update(StudentUpdateRequest $request, $id)
     {
-
+        // dd($request->all());
         $status = $request->input('status', 0);
         $student = Student::find($id);
         $student->update([
             'name' => $request->name,
             'email' => $request->email,
+            'adviser_id' => $request->input('adviser_id') ?? $student->adviser_id,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'mobile_phone' => $request->mobile_phone,
@@ -86,6 +89,55 @@ class StudentController extends Controller
 
         (new FastExcel)->import($filePath, function ($line) {
             $line = array_change_key_case($line, CASE_LOWER);
+            $fullName = trim($line['advisername'] ?? '');
+
+            // รายชื่อคำนำหน้าหลายคำ (รองรับทั้งไทยและอังกฤษ)
+            $prefixes = [
+                'นาย',
+                'นาง',
+                'นางสาว',
+                'ดร.',
+                'ดร',
+                'ศ.',
+                'ศ',
+                'อ.',
+                'ผศ.',
+                'รศ.',
+                'ศ.ดร.',
+                'รองศาสตราจารย์',
+                'ผู้ช่วยศาสตราจารย์',
+                'ศาสตราจารย์',
+                'Mr.',
+                'Mrs.',
+                'Miss',
+                'Ms.',
+                'Dr.',
+                'Prof.',
+                'Mr',
+                'Mrs',
+                'Ms',
+                'Dr',
+                'Prof',
+                'Asst.Prof.',
+                'Asst. Prof.',
+                'Assoc.Prof.',
+                'Assoc. Prof.'
+            ];
+            usort($prefixes, fn($a, $b) => strlen($b) - strlen($a));
+
+            $pattern = '/^(' . implode('|', array_map('preg_quote', $prefixes)) . ')\s+/iu';
+            $fullName = preg_replace($pattern, '', $fullName);
+
+            $parts = explode(' ', $fullName, 2);
+            $firstName = $parts[0] ?? null;
+            $lastName = $parts[1] ?? null;
+
+            $adviser = Adviser::firstOrCreate(
+                [
+                    'first_name' => $firstName,
+                    'last_name' => $lastName,
+                ]
+            );
             return Student::updateOrCreate(
                 ['student_number' => $line['studentnumber']],
                 [
@@ -93,6 +145,7 @@ class StudentController extends Controller
                     'last_name'    => $line['lastname'] ?? null,
                     'mobile_phone' => $line['mobilephone'] ?? null,
                     'email'        => $line['email'] ?? null,
+                    'adviser_id'   => $adviser->id,
                     'status'       => 1,
                     'created_at'   => now(),
                 ]

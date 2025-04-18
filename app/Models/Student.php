@@ -15,6 +15,7 @@ class Student extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
+        'adviser_id',
         'student_number',
         'first_name',
         'last_name',
@@ -26,4 +27,8 @@ class Student extends Model
     public $timestamps = true;
 
     protected $dates = ['deleted_at'];
+    public function adviser()
+    {
+        return $this->belongsTo(Adviser::class);
+    }
 }

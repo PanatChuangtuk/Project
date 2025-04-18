@@ -333,22 +333,6 @@ maximum-scale=1.0, user-scalable=no" />
         <footer class="footer">
 
         </footer>
-
-        <div id="cookiePolicyPopup" class="cookie-policy">
-            <div class="container-fluid">
-                <div class="cols">
-                    <h6>@lang('messages.website_privacy_policy')</h6>
-                    <p>@lang('messages.website_experience_improvement')<br class="d-none d-lg-block">
-                        @lang('messages.confirm_permission')<a href="#">@lang('messages.privacy_policy')</a></p>
-                </div>
-
-                <div class="cols">
-                    <div class="buttons">
-                        <button class="btn btn-secondary accept" type="button">@lang('messages.accept')</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script src="{{ asset('js/jquery-3.4.1.min.js') }}" defer></script>
@@ -363,42 +347,7 @@ maximum-scale=1.0, user-scalable=no" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
-    <script>
-        function setCookie(name, value, days) {
-            var expires = "";
-            if (days) {
-                var date = new Date();
-                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                expires = "; expires=" + date.toUTCString();
-            }
-            document.cookie = name + "=" + (value || "") + expires + "; path=/";
-        }
 
-        function getCookie(name) {
-            var nameEQ = name + "=";
-            var ca = document.cookie.split(';');
-            for (var i = 0; i < ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-            }
-            return null;
-        }
-
-        function eraseCookie(name) {
-            document.cookie = name + '=; Max-Age=-86400';
-        }
-
-        $(document).ready(function() {
-            if (getCookie('cookieAccepted')) {
-                $('#cookiePolicyPopup').hide();
-            }
-            $('.accept').on('click', function() {
-                setCookie('cookieAccepted', 'true', 1);
-                $('#cookiePolicyPopup').hide();
-            });
-        });
-    </script>
     <script>
         function confirmLogout(event) {
             event.preventDefault();

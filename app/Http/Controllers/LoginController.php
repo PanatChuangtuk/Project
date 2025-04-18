@@ -131,7 +131,7 @@ class LoginController extends MainController
             'email_or_phone' => 'required|string',
             'password' => 'required|string|min:8',
         ], [
-            'email_or_phone.required' => 'กรุณากรอกอีเมลหรือเบอร์โทรศัพท์',
+            'email_or_phone.required' => 'กรุณากรอกอีเมล',
             'password.required' => 'กรุณากรอกรหัสผ่าน',
         ]);
 

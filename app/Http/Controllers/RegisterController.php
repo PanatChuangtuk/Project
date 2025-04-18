@@ -21,10 +21,10 @@ class RegisterController extends MainController
     }
     public function submit(RegisterMemberRequest  $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $fileName = '';
         $user = Member::create([
-            'username' => $request->username,
+            // 'username' => $request->username,
             'role' => 'user',
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -46,10 +46,11 @@ class RegisterController extends MainController
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'student_id' => $request->student_id,
-            'adviser_id' => 1,
+            'adviser_id' => $request->adviser_id,
             'mobile_phone' => $request->mobile_phone,
             'avatar' => $fileName,
         ]);
-        return redirect()->route('login');
+        return redirect()->back()
+            ->with('success', 'สร้างโปรไฟล์เสร็จสมบูรณ์');
     }
 }

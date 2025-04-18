@@ -107,19 +107,6 @@
                         @enderror
                     </div>
 
-                    <!-- Image Field (Optional) -->
-                    <div class="col-md-6">
-                        <label for="image" class="form-label fw-semibold">Upload Image</label>
-                        <div class="input-group shadow-sm">
-                            <span class="input-group-text bg-light"><i class="fas fa-image"></i></span>
-                            <input type="file" id="image" name="image" class="form-control border-0 shadow-sm" />
-                        </div>
-
-                        @error('image')
-                            <div class="text-danger small mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
-
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="fw-bold w-100 d-block">รหัสนักศึกษา <span class="text-danger">*</span></label>
@@ -132,7 +119,34 @@
                             @enderror
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="fw-bold w-100 d-block">อาจารย์ที่ปรึกษา <span
+                                    class="text-danger">*</span></label>
+                            <select name="adviser_id" id="adviserSelect" class="form-control select2">
+                                <option value="">
+                                    {{ $admin->info?->student?->adviser->first_name . ' ' . $admin->info?->student?->adviser->last_name }}
+                                </option>
+                                </option>
+                            </select>
+                            @error('adviser_id')
+                                <span class="text-danger  w-100">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
 
+                    <div class="col-md-6">
+                        <label for="image" class="form-label fw-semibold">Upload Image</label>
+                        <div class="input-group shadow-sm">
+                            <span class="input-group-text bg-light"><i class="fas fa-image"></i></span>
+                            <input type="file" id="image" name="image"
+                                class="form-control border-0 shadow-sm" />
+                        </div>
+
+                        @error('image')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
                     <!-- Status Toggle -->
                     <div class="col-md-12 mt-3">
                         <div class="form-check form-switch">
@@ -186,6 +200,31 @@
                             return {
                                 id: item.id,
                                 text: item.student_number
+                            };
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+    </script>
+    <script>
+        $('#adviserSelect').select2({
+            ajax: {
+                url: '{{ url('api/get-adviser') }}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        query: params.term,
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data.results.map(function(item) {
+                            return {
+                                id: item.id,
+                                text: item.first_name + ' ' + item.last_name,
                             };
                         })
                     };

@@ -64,7 +64,7 @@ class AdminController extends Controller
             'student_id' => 0,
             'first_name' =>  $request->first_name,
             'last_name' =>  $request->last_name,
-            'mobile' => $request->mobile_phone,
+            'mobile_phone' => $request->mobile_phone,
             'avatar' => $filename
         ]);
         return redirect()->back()
@@ -90,7 +90,7 @@ class AdminController extends Controller
         $member->info->update([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
-            'mobile' => $request->mobile_phone,
+            'mobile_phone' => $request->mobile_phone,
             'avatar' => $filename,
         ]);
 

@@ -24,7 +24,7 @@ class MemberCreateRequest extends FormRequest
      */
     public function rules(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         return [
             'email' => 'required|string|email|max:255|unique:member,email',
             'mobile_phone' => 'required',

@@ -206,10 +206,33 @@
             /* ลบขอบของปุ่มที่ถูกเลือก */
             box-shadow: 0px 0px 5px rgba(38, 143, 255, 0.5);
         }
+
+        .custom-modal-xl {
+            max-width: 60%;
+            /* หรือใส่เช่น 1200px */
+        }
     </style>
 @endsection
 
 @section('content')
+    <div id="overlay-loading"
+        style="
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255,255,255,0.7);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <x-bread-crumb />
@@ -275,13 +298,15 @@
                                                 data-bs-target=".disapproveBtn" data-id="{{ $item->id }}"
                                                 data-name-new="{{ $item->info->first_name ?? '' }} {{ $item->info->last_name ?? '' }}"
                                                 data-email-new="{{ $item->email }}"
+                                                data-adviser-new="{{ $item->info->adviser->first_name . ' ' . $item->info->adviser->last_name }}"
                                                 data-student-new="{{ $item->info->student->student_number ?? null }}"
                                                 data-avatar-new="{{ asset('upload/images/' . $item->info->avatar) }}"
                                                 data-phone-new="{{ $item->info->mobile_phone ?? '' }}"
                                                 data-name-old="{{ $item->info->student->first_name ?? '' }} {{ $item->info->student->last_name ?? '' }}"
                                                 data-email-old="{{ $item->info->student->email ?? '' }}"
                                                 data-phone-old="{{ $item->info->student->mobile_phone ?? '' }}"
-                                                data-student-old="{{ $item->info->student->student_number ?? null }}">
+                                                data-student-old="{{ $item->info->student->student_number ?? null }}"
+                                                data-adviser-old="{{ $item->info->student->adviser->first_name . ' ' . $item->info->student->adviser->last_name }}">
                                                 <i class='bx bx-user'></i>
                                             </button>
                                         </td>
@@ -301,21 +326,22 @@
     </div>
 
     <div class="modal fade" id="twoColumnModal" tabindex="-1" aria-labelledby="twoColumnModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered custom-modal-xl">
+
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title fw-bold" id="twoColumnModalLabel">เปรียบเทียบข้อมูล</h5>
                 </div>
                 <div class="modal-body">
                     <div class="row g-4">
-                        <!-- ข้อมูลใหม่ -->
+
                         <div class="col-md-6">
                             <div class="info-card">
                                 <div class="card-header new-data-header text-white">
                                     <i class="fas fa-star-of-life me-2"></i>ข้อมูลผู้สมัครใหม่
                                 </div>
                                 <div class="card-body">
-                                    <!-- เพิ่มส่วนแสดงรูปภาพ Avatar -->
+
                                     <div class="text-center mb-3">
                                         <div class="avatar-wrapper rounded-circle overflow-hidden mx-auto"
                                             style="width: 160px; height: 160px; object-fit: cover;">
@@ -336,6 +362,16 @@
                                         <div class="info-label"><i class="fas fa-phone-alt info-icon"></i>เบอร์โทร:</div>
                                         <div class="info-value" id="newPhone">ไม่มีข้อมูล</div>
                                     </div>
+                                    <div class="info-item mt-3">
+                                        <div class="info-label"><i class="fas fa-id-card info-icon"></i>รหัสนักศึกษา:
+                                        </div>
+                                        <div class="info-value fw-bold" id="oldStudent">ไม่มีข้อมูล</div>
+                                    </div>
+                                    <div class="info-item mt-1">
+                                        <div class="info-label"><i class="fas fa-id-card info-icon"></i>อาจารย์ที่ปรึกษา:
+                                        </div>
+                                        <div class="info-value fw-bold" id="newAdviser">ไม่มีข้อมูล</div>
+                                    </div>
                                     {{-- <div class="info-item mt-3">
                                         <div class="info-label"><i class="fas fa-id-card info-icon"></i>รหัสนักศึกษา:</div>
                                         <div class="info-value fw-bold" id="newStudent">ไม่มีข้อมูล</div>
@@ -343,7 +379,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- ข้อมูลเก่า -->
+
                         <div class="col-md-6">
                             <div class="info-card">
                                 <div class="card-header old-data-header text-white">
@@ -374,6 +410,11 @@
                                         </div>
                                         <div class="info-value fw-bold" id="oldStudent">ไม่มีข้อมูล</div>
                                     </div>
+                                    <div class="info-item mt-1">
+                                        <div class="info-label"><i class="fas fa-id-card info-icon"></i>อาจารย์ที่ปรึกษา:
+                                        </div>
+                                        <div class="info-value fw-bold" id="oldAdviser">ไม่มีข้อมูล</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -401,10 +442,16 @@
 
 @section('script')
     <script>
+        $('#overlay-loading').fadeIn();
+        const button = $(this);
+        setTimeout(() => {
+            $('#overlay-loading').fadeOut();
+        }, 900);
         $(document).ready(function() {
             let currentUserId;
 
             $('.show-modal-btn').on('click', function() {
+
                 currentUserId = $(this).data('id');
                 const newName = $(this).data('name-new');
                 const newEmail = $(this).data('email-new');
@@ -416,7 +463,8 @@
                 const oldPhone = $(this).data('phone-old');
                 const oldAvatar = $(this).data('avatar-old');
                 const oldStudent = $(this).data('student-old');
-
+                const oldAdviser = $(this).data('adviser-old');
+                const newAdviser = $(this).data('adviser-new');
                 $('#newName').text(newName || 'ไม่มีข้อมูล');
                 // $('#newStudent').text(newStudent || 'ไม่มีข้อมูล');
                 $('#newEmail').text(newEmail || 'ไม่มีข้อมูล');
@@ -425,7 +473,8 @@
                 $('#oldEmail').text(oldEmail || 'ไม่มีข้อมูล');
                 $('#oldPhone').text(oldPhone || 'ไม่มีข้อมูล');
                 $('#oldStudent').text(oldStudent || 'ไม่มีข้อมูล');
-
+                $('#oldAdviser').text(oldAdviser || 'ไม่มีข้อมูล');
+                $('#newAdviser').text(newAdviser || 'ไม่มีข้อมูล');
                 // ตั้งค่ารูปภาพ
                 if (newAvatar) {
                     $('#newAvatar').attr('src', newAvatar);

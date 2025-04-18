@@ -67,7 +67,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <label for="email" class="form-label fw-semibold">Email</label>
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-envelope"></i></span>
@@ -77,6 +77,21 @@
                         @error('email')
                             <div class="text-danger small mt-1">{{ $message }}</div>
                         @enderror
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="fw-bold w-100 d-block">อาจารย์ที่ปรึกษา <span class="text-danger">*</span></label>
+                            <select name="adviser_id" id="adviserSelect" class="form-control select2">
+                                <option value="">
+                                    {{ $student->adviser->first_name . ' ' . $student->adviser->last_name }}</option>
+                                </option>
+                            </select>
+                            @error('adviser_id')
+                                <span class="text-danger  w-100">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
 
                     <div class="col-md-12 mt-3">
@@ -113,4 +128,29 @@
             });
         </script>
     @endif
+    <script>
+        $('#adviserSelect').select2({
+            ajax: {
+                url: '{{ url('api/get-adviser') }}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        query: params.term,
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data.results.map(function(item) {
+                            return {
+                                id: item.id,
+                                text: item.first_name + ' ' + item.last_name,
+                            };
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+    </script>
 @endsection

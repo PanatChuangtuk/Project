@@ -12,7 +12,8 @@ class Adviser extends Model
 
     protected $table = 'adviser';
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'avatar',
     ];
 
@@ -21,4 +22,9 @@ class Adviser extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function students()
+    {
+        return $this->hasMany(Student::class);
+    }
 }

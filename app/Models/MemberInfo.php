@@ -14,6 +14,7 @@ class MemberInfo extends Model
     protected $fillable = [
         'first_name',
         'last_name',
+        'mobile_phone',
         'adviser_id',
         'member_id',
         'student_id',
@@ -29,5 +30,9 @@ class MemberInfo extends Model
     public function student()
     {
         return $this->belongsTo(Student::class, 'student_id', 'id');
+    }
+    public function adviser()
+    {
+        return $this->belongsTo(Adviser::class, 'adviser_id', 'id');
     }
 }
