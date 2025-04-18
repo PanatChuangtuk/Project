@@ -92,10 +92,10 @@
                                         </div>
                                     </th>
                                     <th>NO</th>
-                                    <th class="text-center">UserName</th>
-                                    <th class="text-center">Student Number</th>
+                                    <th class="text-center">Fullname</th>
+                                    <th class="text-center">StudentId</th>
                                     <th class="text-center">Email</th>
-                                    <th class="text-center">Created Date</th>
+                                    <th class="text-center">MobilePhone</th>
                                     <th class="text-center">Actions</th>
                                 </tr>
                             </thead>
@@ -112,15 +112,7 @@
                                         <td>{{ $item->id }}</td>
                                         <td>
                                             <div class="text-center">
-                                                <div class="flex-grow-1">
-                                                    <strong class="d-block">
-                                                        {{ $item->first_name ?? null }} |
-                                                        {{ $item->last_name ?? null }}
-                                                    </strong>
-                                                    <span class="text-muted small">
-                                                        {{ $item->mobile_phone ?? null }}
-                                                    </span>
-                                                </div>
+                                                {{ $item->first_name . ' ' . $item->last_name }}
                                             </div>
                                         </td>
                                         <td class="text-center">{{ $item->student_number }}</td>
@@ -148,7 +140,7 @@
                                                 {{ $item->role->name }}
                                             @endif
                                         </td> --}}
-                                        <td class="text-center">{{ $item->created_at }}</td>
+                                        <td class="text-center">{{ $item->mobile_phone ?? null }}</td>
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <div class="d-inline-block text-nowrap">
