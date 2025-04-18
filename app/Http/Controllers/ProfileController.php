@@ -13,10 +13,8 @@ class ProfileController extends MainController
     {
         $userId = Auth::guard('member')->user()->id;
         // MemberInfo::create(['first_name' => 'test', 'last_name' => 'test', 'adviser_id' => 1, 'member_id' => 4]);
-        $profile = Member::join('member_infomation', 'member_infomation.member_id', '=', 'member.id')
-            ->select('member.*', 'member_infomation.*')
-            ->where('member.id', $userId)
-            ->first();
+        $profile = Member::find($userId);
+
         return view('my-account', compact('profile'));
     }
 
@@ -34,14 +32,6 @@ class ProfileController extends MainController
             // 'mobile_phone.unique' =>  __('messages.phone_exists'),
             // 'mobile_phone.digits' =>  __('messages.mobile_number_must_be_10_digits'),
         ]);
-        // if ($validator->fails()) {
-        //     return redirect()
-        //         ->back()
-        //         ->withErrors($validator);
-        // }
-        // dd($request->all());
-        DB::table('member')
-            ->where('id', $userId);
 
         DB::table('member_infomation')
             ->where('member_id', $userId)
@@ -49,7 +39,6 @@ class ProfileController extends MainController
                 'first_name' => $request->first_name ?? null,
                 'last_name' => $request->last_name ?? null,
                 'mobile_phone' => $request->mobile_phone,
-
             ]);
         return redirect()->route('profile', ['lang' => app()->getLocale()]);
     }

@@ -122,7 +122,10 @@ data-template="vertical-menu-template-free"
             cursor: move;
         }
     </style> --}}
-    <style>  
+    <style>  body {
+        background-color: #f5f7fa;
+        font-family: 'Prompt', sans-serif;
+    }
       .ck-editor__editable_inline{
             min-height: 200px;
             }

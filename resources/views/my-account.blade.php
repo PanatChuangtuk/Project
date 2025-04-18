@@ -20,7 +20,7 @@
             <div class="content">
                 <div class="card-info main px-5">
                     <div class="avatar-setting">
-                        <img class="avatar" src="{{ asset('upload/images/' . $profile->avatar) }}" alt="" />
+                        <img class="avatar" src="{{ asset('upload/images/' . $profile->info->avatar) }}" alt="" />
 
                     </div>
 
@@ -48,22 +48,6 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="title">@lang('messages.firstname')</label>
-                                    <input type="text" class="form-control"name="first_name"
-                                        value="{{ $profile->first_name ?? null }}" />
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="title">@lang('messages.lastname')</label>
-                                    <input type="text" class="form-control" name="last_name"
-                                        value="{{ $profile->last_name ?? null }}" />
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
                                     <label class="title">@lang('messages.mobile_phone')</label>
                                     <input type="text" class="form-control"name="mobile_phone"
                                         value="{{ $profile->info->mobile_phone ?? null }}" pattern="[0-9]*"
@@ -76,36 +60,35 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="title">Student Number</label>
-                                    <input type="text" class="form-control"
-                                        value="{{ $profile->info->student->student_number ?? null }}" />
+                                    <label class="title">@lang('messages.firstname')</label>
+                                    <input type="text" class="form-control"name="first_name"
+                                        value="{{ $profile->info->first_name ?? null }}" />
                                 </div>
                             </div>
 
-                            {{-- <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="title">@lang('messages.company')</label>
-                                    <input type="text" value="{{ $profile->company ?? null }}" name="company"
-                                        class="form-control" />
+                                    <label class="title">@lang('messages.lastname')</label>
+                                    <input type="text" class="form-control" name="last_name"
+                                        value="{{ $profile->info->last_name ?? null }}" />
                                 </div>
-                            </div> --}}
+                            </div>
 
-                            {{-- <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="title">Line ID</label>
-                                    <input type="text" value="{{ $profile->line_id ?? null }}" name="line_id"
-                                        class="form-control" />
+                                    <label class="title">Student Number</label>
+                                    <input type="text" class="form-control"
+                                        value="{{ $profile->info->student->student_number ?? null }}"readonly />
                                 </div>
-                            </div> --}}
+                            </div>
 
-                            {{-- <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="title">@lang('messages.vat_register_number')</label>
-                                    <input type="text" class="form-control" placeholder="VAT Register Number"
-                                        name="vat_register_number" value="{{ $profile->vat_register_number ?? null }}"
-                                        maxlength="13" />
+                                    <label class="title">Adviser</label>
+                                    <input type="text" class="form-control"
+                                        value="{{ $profile->info->adviser->first_name . ' ' . $profile->info->adviser->last_name ?? null }}"readonly />
                                 </div>
-                            </div> --}}
+                            </div>
 
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary" id="confirmSave">@lang('messages.save')</button>

@@ -10,6 +10,7 @@ use App\Http\Requests\{MemberCreateRequest, MemberUpdateRequest};
 
 class ApproveUserController extends Controller
 {
+    private $main_menu = 'user';
     public function index(Request $request)
     {
         $query = $request->input('query');
@@ -28,7 +29,8 @@ class ApproveUserController extends Controller
         $users = $userQuery->paginate(10)->appends([
             'query' => $query,
         ]);
-        return view('administrator.user_approve.index', compact('users', 'query'));
+        $main_menu = $this->main_menu;
+        return view('administrator.user_approve.index', compact('users', 'query', 'main_menu'));
     }
     public function updateApprove(Request $request)
     {

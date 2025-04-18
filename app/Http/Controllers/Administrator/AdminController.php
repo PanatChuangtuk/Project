@@ -11,6 +11,7 @@ use App\Http\Requests\{MemberCreateRequest, MemberUpdateRequest};
 
 class AdminController extends Controller
 {
+    private $main_menu = 'admin';
     public function index(Request $request)
     {
         $query = $request->input('query');
@@ -30,18 +31,21 @@ class AdminController extends Controller
         $users = $userQuery->paginate(10)->appends([
             'query' => $query,
         ]);
-        return view('administrator.admin.index', compact('users', 'query'));
+        $main_menu = $this->main_menu;
+        return view('administrator.admin.index', compact('users', 'query', 'main_menu'));
     }
 
     public function add()
     {
-        return view('administrator.admin.add');
+        $main_menu = $this->main_menu;
+        return view('administrator.admin.add', compact('main_menu'));
     }
 
     public function edit($id)
     {
+        $main_menu = $this->main_menu;
         $admin = Member::find($id);
-        return view('administrator.admin.edit', compact('admin'));
+        return view('administrator.admin.edit', compact('admin', 'main_menu'));
     }
 
     public function submit(MemberCreateRequest  $request)

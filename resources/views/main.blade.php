@@ -197,7 +197,7 @@
                 <div class="cols footer-links">
                     <div class="group">
                         <ul class="nav">
-                            <li><a href="{{ url('/about') }}">@lang('messages.about')</a></li>
+                            <li><a href="{{ url('/profile') }}">@lang('messages.profile')</a></li>
                             <li><a href="{{ url('/equipment') }}">equipment</a>
                             </li>
                         </ul>

@@ -5,11 +5,6 @@
 
 @section('stylesheet')
     <style>
-        body {
-            background-color: #f5f7fa;
-            font-family: 'Prompt', sans-serif;
-        }
-
         .modal-content {
             border-radius: 16px;
             overflow: hidden;

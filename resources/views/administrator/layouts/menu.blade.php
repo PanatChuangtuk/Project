@@ -29,40 +29,55 @@
 
     <div class="menu-inner-shadow"></div>
 
+
     <ul class="menu-inner py-1">
         <li class="menu-item">
             <a href="{{ route('administrator.dashboard') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <i class="menu-icon fas fa-home"></i>
                 <div class="menu-text"> Dashboard </div>
             </a>
         </li>
 
-        <li class="menu-item">
-            <a href="{{ route('administrator.admin') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-user-circle"></i>
-                <div class="menu-text"> Admin </div>
-            </a>
-        </li>
 
-        <li class="menu-item">
-            <a href="{{ route('administrator.student') }}" class="menu-link">
-                <i class='menu-icon tf-icons bx bxs-school'></i>
-                <div class="menu-text"> Student </div>
+        <li class="menu-item {{ $main_menu == 'admin' ? 'open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='menu-icon fas fa-user-cog'></i>
+                <div class="text-truncate" data-i18n="Layouts">Admin</div>
             </a>
-        </li>
+            <ul class="menu-sub ">
+                <li class="menu-item">
+                    <a href="{{ route('administrator.admin') }}" class="menu-link">
+                        <div class="menu-text"> Admin </div>
+                    </a>
+                </li>
 
-        <li class="menu-item">
-            <a href="{{ route('administrator.user') }}" class="menu-link">
-                <i class='menu-icon tf-icons bx bxs-school'></i>
-                <div class="menu-text"> User </div>
-            </a>
-        </li>
+                <li class="menu-item">
+                    <a href="{{ route('administrator.student') }}" class="menu-link">
+                        <div class="menu-text"> Student </div>
+                    </a>
+                </li>
+            </ul>
 
-        <li class="menu-item">
-            <a href="{{ route('administrator.approve-user') }}" class="menu-link">
-                <i class='menu-icon tf-icons bx bxs-school'></i>
-                <div class="menu-text"> Approve User </div>
+        </li>
+        <li class="menu-item {{ $main_menu == 'user' ? 'open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='menu-icon fas fa-user-tie'> </i>
+                <div class="text-truncate" data-i18n="Layouts">User</div>
             </a>
+
+            <ul class="menu-sub ">
+                <li class="menu-item">
+                    <a href="{{ route('administrator.user') }}" class="menu-link">
+                        <div class="menu-text"> User </div>
+                    </a>
+                </li>
+
+                <li class="menu-item">
+                    <a href="{{ route('administrator.approve-user') }}" class="menu-link">
+                        <div class="menu-text"> Approve User </div>
+                    </a>
+                </li>
+            </ul>
         </li>
     </ul>
 </aside>

@@ -12,6 +12,7 @@ use App\Http\Requests\{StudentUpdateRequest, StudentCreatRequest};
 
 class StudentController extends Controller
 {
+    private $main_menu = 'admin';
     public function index(Request $request)
     {
         $query = $request->input('query');
@@ -28,18 +29,21 @@ class StudentController extends Controller
         $users = $userQuery->paginate(10)->appends([
             'query' => $query,
         ]);
-        return view('administrator.student.index', compact('users', 'query'));
+        $main_menu = $this->main_menu;
+        return view('administrator.student.index', compact('users', 'query', 'main_menu'));
     }
 
     public function add()
     {
-        return view('administrator.student.add');
+        $main_menu = $this->main_menu;
+        return view('administrator.student.add', compact('main_menu'));
     }
 
     public function edit($id)
     {
+        $main_menu = $this->main_menu;
         $student = Student::find($id);
-        return view('administrator.student.edit', compact('student'));
+        return view('administrator.student.edit', compact('student', 'main_menu'));
     }
 
     public function submit(StudentCreatRequest $request)
@@ -91,7 +95,6 @@ class StudentController extends Controller
             $line = array_change_key_case($line, CASE_LOWER);
             $fullName = trim($line['advisername'] ?? '');
 
-            // รายชื่อคำนำหน้าหลายคำ (รองรับทั้งไทยและอังกฤษ)
             $prefixes = [
                 'นาย',
                 'นาง',

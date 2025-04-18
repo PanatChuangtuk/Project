@@ -17,7 +17,8 @@ class LoanTransaction extends Model
         'status_type',
         'status',
         'borrowed_at',
-        'returned_at'
+        'returned_at',
+        'description'
     ];
 
 
