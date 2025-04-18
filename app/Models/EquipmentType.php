@@ -15,4 +15,8 @@ class EquipmentType extends Model
         'name',
         'status',
     ];
+    public function equipment()
+    {
+        return $this->hasMany(Equipment::class);
+    }
 }
