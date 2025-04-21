@@ -1,7 +1,7 @@
 @extends('main')
 
 @section('title')
-    @lang('messages.profile')
+    โปรไฟล์
 @endsection
 
 @section('stylesheet')
@@ -11,7 +11,7 @@
     <div class="section section-profile bg-light pt-0">
         <div class="container has-sidebar">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item">@lang('messages.profile')</li>
+                <li class="breadcrumb-item">โปรไฟล์</li>
             </ol>
 
             <x-nav-profile />
@@ -27,17 +27,9 @@
                     <form class="form pt-3" method="POST" action="{{ route('profile.submit') }}">
                         @csrf
                         <div class="row form-row">
-                            {{-- <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="title">@lang('messages.username')</label>
-                                    <input type="text" class="form-control"name="username" 4t
-                                        value="{{ $profile->username ?? null }}" />
-                                </div>
-                            </div> --}}
-
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="title">@lang('messages.email')<span class="star">*</span></label>
+                                    <label class="title">อีเมล<span class="star">*</span></label>
                                     <input type="email" class="form-control" name ="email"
                                         value="{{ $profile->email ?? null }}"readonly />
                                     @error('email')
@@ -48,7 +40,7 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="title">@lang('messages.mobile_phone')</label>
+                                    <label class="title">เบอร์โทรศัพท์</label>
                                     <input type="text" class="form-control"name="mobile_phone"
                                         value="{{ $profile->info->mobile_phone ?? null }}" pattern="[0-9]*"
                                         maxlength="10" />
@@ -60,7 +52,7 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="title">@lang('messages.firstname')</label>
+                                    <label class="title">ชื่อ</label>
                                     <input type="text" class="form-control"name="first_name"
                                         value="{{ $profile->info->first_name ?? null }}" />
                                 </div>
@@ -68,7 +60,7 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="title">@lang('messages.lastname')</label>
+                                    <label class="title">นามสกุล</label>
                                     <input type="text" class="form-control" name="last_name"
                                         value="{{ $profile->info->last_name ?? null }}" />
                                 </div>
@@ -76,7 +68,7 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="title">Student Number</label>
+                                    <label class="title">รหัสนักศึกษา</label>
                                     <input type="text" class="form-control"
                                         value="{{ $profile->info->student->student_number ?? null }}"readonly />
                                 </div>
@@ -84,14 +76,14 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="title">Adviser</label>
+                                    <label class="title">อาจารย์ที่ปรึกษา</label>
                                     <input type="text" class="form-control"
                                         value="{{ $profile->info->adviser->first_name . ' ' . $profile->info->adviser->last_name ?? null }}"readonly />
                                 </div>
                             </div>
 
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary" id="confirmSave">@lang('messages.save')</button>
+                                <button type="submit" class="btn btn-primary" id="confirmSave">บันทึก</button>
                             </div>
                         </div>
                         <!--row-->

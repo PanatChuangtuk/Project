@@ -22,8 +22,12 @@ class RegisterMemberRequest extends FormRequest
         $id = $this->route('id');
         return [
             // 'username' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:member' .
-                $id,
+            'email' =>  'required',
+            'string',
+            'email',
+            'max:255',
+            'regex:/^s[0-9a-zA-Z._%+-]*@email\.kmutnb\.ac\.th$/',
+            'unique:member,email,' . $id,
             'password' => 'required|string|min:8|confirmed',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -57,6 +61,7 @@ class RegisterMemberRequest extends FormRequest
             'mobile_phone.max' => 'เบอร์โทรศัพท์ต้องไม่เกิน 15 หลัก',
             'mobile_phone.regex' => 'เบอร์โทรศัพท์ต้องเป็นตัวเลขเท่านั้น',
             'imageData.required' => '*กรุณาถ่ายภาพ*',
+            'email.regex' => 'รูปแบบอีเมลไม่ถูกต้อง ต้องขึ้นต้นด้วย s และตามด้วย @email.kmutnb.ac.th',
         ];
     }
 }

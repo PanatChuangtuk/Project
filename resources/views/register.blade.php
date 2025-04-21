@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <title>@yield('title', 'REGISTER') - KMUTNB</title>
+    <title>@yield('title', 'สมัครสมาชิก') - KMUTNB</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -203,6 +203,7 @@
                         @error('imageData')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
+
                         <div class="capture-btn-container mt-4">
                             <button id="capture" class="capture-btn">อัปโหลดรูปภาพ</button>
                             <button id="retake" class="capture-btn"style="display: none;">อัปโหลดรูปภาพใหม่</button>

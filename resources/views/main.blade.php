@@ -112,10 +112,10 @@
                     <ul class="nav nav-general right member">
 
                         <li class="{{ request()->is('profile') ? 'active' : '' }}">
-                            <a href="{{ url('/') }}" class="nav-link">@lang('messages.home')</a>
+                            <a href="{{ url('/') }}" class="nav-link">หน้าหลัก</a>
                         </li>
                         <li class="{{ request()->is('equipment') ? 'active' : '' }}">
-                            <a href="{{ url('/equipment') }}" class="nav-link">equipment</a>
+                            <a href="{{ url('/equipment') }}" class="nav-link">หน้าอุปกรณ์</a>
                         </li>
 
                         @auth('member')
@@ -130,7 +130,7 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a href="{{ url('/profile') }}"> @lang('messages.my_account')</a>
+                                            <a href="{{ url('/profile') }}">บัญชีของฉัน</a>
                                         </li>
                                         <li>
                                             <form id="logout-form" action="{{ url('/logout') }}" method="POST"
@@ -138,7 +138,7 @@
                                                 @csrf
                                             </form>
                                             <a href="#" class="logout" onclick="confirmLogout(event)">
-                                                @lang('messages.sign_out')
+                                                ออกจากระบบ
                                             </a>
                                         </li>
                                     </ul>
@@ -166,10 +166,10 @@
 
             <ul class="nav nav-accordion">
                 <li>
-                    <h5><a href="{{ url('/ ') }}">@lang('messages.home')</a></h5>
+                    <h5><a href="{{ url('/ ') }}">หน้าหลัก</a></h5>
                 </li>
                 <li>
-                    <h5><a href="{{ url('/equipment') }}">equipment</a></h5>
+                    <h5><a href="{{ url('/equipment') }}">หน้าอุปกรณ์</a></h5>
                 </li>
 
 
@@ -197,8 +197,8 @@
                 <div class="cols footer-links">
                     <div class="group">
                         <ul class="nav">
-                            <li><a href="{{ url('/profile') }}">@lang('messages.profile')</a></li>
-                            <li><a href="{{ url('/equipment') }}">equipment</a>
+                            <li><a href="{{ url('/profile') }}">โปรไฟล์</a></li>
+                            <li><a href="{{ url('/equipment') }}">หน้าอุปกรณ์</a>
                             </li>
                         </ul>
 
@@ -237,11 +237,11 @@
         function confirmLogout(event) {
             event.preventDefault();
             Swal.fire({
-                title: '@lang('messages.are_you_sure')',
+                title: 'คุณต้องการออกจากระบบหรือไม่?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: '@lang('messages.ok')',
-                cancelButtonText: '@lang('messages.cancel')',
+                confirmButtonText: 'โอเค',
+                cancelButtonText: 'ยกเลิก',
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
             }).then((result) => {

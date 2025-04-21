@@ -8,18 +8,6 @@
 @endsection
 
 @section('content')
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
-
     <div class="row">
         <div class="col-md-12">
             <x-bread-crumb />
@@ -84,29 +72,7 @@
                                             </div>
                                         </td>
                                         <td class="text-center">{{ $item->email }}</td>
-                                        {{-- <td class="text-center">
-                                            @if (Auth::user()->role->name == 'Super Admin')
-                                                @if (Auth::user()->id != $item->id)
-                                                    <form method="POST"
-                                                        action="{{ route('administrator.admin.change-role', ['id' => $item->id]) }}"
-                                                        id="roleForm-{{ $item->id }}">
-                                                        @csrf
-                                                        <select name="role_id" class="form-control"
-                                                            onchange="this.form.submit()">
-                                                            @foreach ($roles as $role)
-                                                                <option value="{{ $role->id }}"
-                                                                    {{ $item->role_id == $role->id ? 'selected' : '' }}>
-                                                                    {{ $role->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </form>
-                                                @else
-                                                    <span style="font-weight: bold;">{{ $item->role->name }} (You)</span>
-                                                @endif
-                                            @else
-                                                {{ $item->role->name }}
-                                            @endif
-                                        </td> --}}
+
                                         <td class="text-center">{{ $item->created_at }}</td>
                                         <td>
                                             <div class="d-flex justify-content-center">

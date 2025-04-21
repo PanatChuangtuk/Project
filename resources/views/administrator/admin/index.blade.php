@@ -53,9 +53,9 @@
                                         </div>
                                     </th>
                                     <th>NO</th>
-                                    <th class="text-center">Name</th>
+                                    <th class="text-center">FullName</th>
                                     <th class="text-center">Email</th>
-                                    <th class="text-center">Created Date</th>
+                                    <th class="text-center">MobilePhone</th>
                                     <th class="text-center">Actions</th>
                                 </tr>
                             </thead>
@@ -73,41 +73,14 @@
                                         <td>
                                             <div class="text-center">
                                                 <div class="flex-grow-1">
-                                                    <strong class="d-block">
-                                                        {{ $item->info->first_name ?? null }} |
-                                                        {{ $item->info->last_name ?? null }}
-                                                    </strong>
-                                                    <span class="text-muted small">
-                                                        {{ $item->info->mobile_phone ?? null }}
-                                                    </span>
+                                                    {{ $item->info->first_name ?? null }}
+                                                    {{ $item->info->last_name ?? null }}
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="text-center">{{ $item->email }}</td>
-                                        {{-- <td class="text-center">
-                                            @if (Auth::user()->role->name == 'Super Admin')
-                                                @if (Auth::user()->id != $item->id)
-                                                    <form method="POST"
-                                                        action="{{ route('administrator.admin.change-role', ['id' => $item->id]) }}"
-                                                        id="roleForm-{{ $item->id }}">
-                                                        @csrf
-                                                        <select name="role_id" class="form-control"
-                                                            onchange="this.form.submit()">
-                                                            @foreach ($roles as $role)
-                                                                <option value="{{ $role->id }}"
-                                                                    {{ $item->role_id == $role->id ? 'selected' : '' }}>
-                                                                    {{ $role->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </form>
-                                                @else
-                                                    <span style="font-weight: bold;">{{ $item->role->name }} (You)</span>
-                                                @endif
-                                            @else
-                                                {{ $item->role->name }}
-                                            @endif
-                                        </td> --}}
-                                        <td class="text-center">{{ $item->created_at }}</td>
+
+                                        <td class="text-center">{{ $item->info->mobile_phone ?? 'Empty' }}</td>
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <div class="d-inline-block text-nowrap">

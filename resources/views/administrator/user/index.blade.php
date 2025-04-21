@@ -53,8 +53,10 @@
                                         </div>
                                     </th>
                                     <th>NO</th>
-                                    <th class="text-center">Name</th>
+                                    <th class="text-center">FullName</th>
                                     <th class="text-center">Email</th>
+                                    <th class="text-center">MobilePhone</th>
+                                    <th class="text-center">StudentId</th>
                                     <th class="text-center">Created Date</th>
                                     <th class="text-center">Actions</th>
                                 </tr>
@@ -73,18 +75,14 @@
                                         <td>
                                             <div class="text-center">
                                                 <div class="flex-grow-1">
-                                                    <strong class="d-block">
-                                                        {{ $item->info->first_name ?? null }} |
-                                                        {{ $item->info->last_name ?? null }}
-                                                    </strong>
-                                                    <span class="text-muted small">
-                                                        {{ $item->info->mobile_phone ?? null }}
-                                                    </span>
+                                                    {{ $item->info->first_name ?? null }}
+                                                    {{ $item->info->last_name ?? null }}
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="text-center">{{ $item->email }}</td>
-
+                                        <td class="text-center">{{ $item->mobile_phone ?? 'Empty' }}</td>
+                                        <td class="text-center">{{ $item->info->student->student_number ?? null }}</td>
                                         <td class="text-center">{{ $item->created_at }}</td>
                                         <td>
                                             <div class="d-flex justify-content-center">

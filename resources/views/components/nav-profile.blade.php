@@ -1,7 +1,7 @@
 <div class="sidebar">
     <div class="card-info main">
         <div class="title-bar d-flex" data-bs-toggle="collapse" data-bs-target="#navProfile">
-            <h1 class="h2 text-capitalize text-underline">@lang('messages.profile')</h1>
+            <h1 class="h2 text-capitalize text-underline">โปรไฟล์</h1>
 
             <button class="btn btn-menu" type="button">
                 <img class="icons svg-js" src="{{ asset('img/icons/icon-add-plus.svg') }}" alt="" />
@@ -12,14 +12,14 @@
             <li class="{{ Request::is('/profile') ? 'active' : '' }}">
                 <a href="{{ url('/profile') }}">
                     <img class="icons" src="{{ asset('img/icons/icon-user.svg') }}" alt="" />
-                    @lang('messages.my_account')
+                    บัญชีของฉัน
                 </a>
             </li>
 
             <li class="{{ Request::is('/equipment') ? 'active' : '' }}">
                 <a href="{{ url('/equipment') }}">
                     <img class="icons" src="{{ asset('img/icons/icon-document.svg') }}" alt="" />
-                    Equipment
+                    อุปกรณ์
                 </a>
             </li>
 
@@ -29,7 +29,7 @@
                 </form>
                 <a href="#" onclick="confirmLogout(event)">
                     <img class="icons" src="{{ asset('img/icons/icon-logout.svg') }}" alt="" />
-                    @lang('messages.sign_out')
+                    ออกจากระบบ
                 </a>
             </li>
         </ul>

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale = 1.0, 
 maximum-scale=1.0, user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <title>@yield('title', 'Login') - KMUTNB</title>
+    <title>@yield('title', 'ล็อกอิน') - KMUTNB</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -352,11 +352,11 @@ maximum-scale=1.0, user-scalable=no" />
         function confirmLogout(event) {
             event.preventDefault();
             Swal.fire({
-                title: '@lang('messages.are_you_sure')',
+                title: 'คุณแน่ใจหรือไม่ว่าต้องการออกจากระบบ?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: '@lang('messages.ok')',
-                cancelButtonText: '@lang('messages.cancel')',
+                confirmButtonText: 'ตกลง',
+                cancelButtonText: 'ยกเลิก',
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
             }).then((result) => {
@@ -366,6 +366,7 @@ maximum-scale=1.0, user-scalable=no" />
             });
         }
     </script>
+
 </body>
 
 </html>

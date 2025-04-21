@@ -71,57 +71,7 @@ data-template="vertical-menu-template-free"
     {{-- <link rel="stylesheet" href="{{ URL::asset('css/theme.css') }}"> --}}
     
     @yield('stylesheet')
-    {{-- <style>
-        body {
-            font-family: "Prompt", sans-serif;
-            --sb-track-color: #ffffff;
-            --sb-thumb-color: #a1acb8;
-            --sb-size: 8px;
-        }
-        .file-preview .fileinput-remove{
-            display: none;
-        }
-
-        .btn-outline-spacial:hover {
-            background-color: #ffffff !important;
-        }
-
-        .dataTables_info {
-            display: none;
-        }
-
-        /* scroll bar */
-
-        body::-webkit-scrollbar {
-            width: var(--sb-size)
-        }
-
-        body::-webkit-scrollbar-track {
-            background: var(--sb-track-color);
-            border-radius: 3px;
-        }
-
-        body::-webkit-scrollbar-thumb {
-            background: var(--sb-thumb-color);
-            border-radius: 3px;
-        
-        }
-
-        @supports not selector(::-webkit-scrollbar) {
-        body {
-                scrollbar-color: var(--sb-thumb-color)
-                                var(--sb-track-color);
-            }
-        }
-
-        .flatpickr-day.selected , .flatpickr-day.selected:hover{
-            border-color: #009b48 !important;
-        }
-
-        .tablesort tbody tr {
-            cursor: move;
-        }
-    </style> --}}
+   
     <style>  body {
         background-color: #f5f7fa;
         font-family: 'Prompt', sans-serif;
@@ -274,7 +224,7 @@ data-template="vertical-menu-template-free"
                       </div>
                       <div class="flex-grow-1">
                         <h6 class="mb-0">{{Auth::user()->info->first_name . ' '. Auth::user()->info->last_name}}</h6>
-                        <small class="text-muted">Admin</small>
+                        <small class="text-muted">แอดมิน</small>
                       </div>
                     </div>
                   </a>
@@ -296,7 +246,7 @@ data-template="vertical-menu-template-free"
                 <li>
                   <a class="dropdown-item logout-btn" href="javascript:void(0);" data-logout-url="{{ route('administrator.logout') }}">
                       <i class="bx bx-power-off bx-md me-3"></i>
-                      <span>Log Out</span>
+                      <span>ออกจากระบบ</span>
                   </a>
               </li>
               </ul>
@@ -449,13 +399,13 @@ data-template="vertical-menu-template-free"
             logoutButton.addEventListener('click', function() {
                 const logoutUrl = this.dataset.logoutUrl;
                 Swal.fire({
-                    title: 'Are you sure?',
+                    title: 'คุณต้องการออกจากระบบหรือไม่?',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'OK',
-                    cancelButtonText: 'Cancel'
+                    confirmButtonText: 'โอเค',
+                    cancelButtonText: 'ยกเลิก',
                 }).then((result) => {
                     if (result.isConfirmed) {
                         window.location.href = logoutUrl;

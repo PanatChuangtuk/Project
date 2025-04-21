@@ -17,9 +17,8 @@
                         d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1-.33h-.36a1.65 1.65 0 0 0-1 .33A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-.33 1.82l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-.33-1.82A1.65 1.65 0 0 0 4 12a1.65 1.65 0 0 0 .33-1.82A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06A2 2 0 1 1 7 4.6l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1.82-.33A1.65 1.65 0 0 0 12 4a1.65 1.65 0 0 0 1.82.33A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 .33 1.82A1.65 1.65 0 0 0 20 12a1.65 1.65 0 0 0-.33 1.82A1.65 1.65 0 0 0 19.4 15z">
                     </path>
                 </svg>
-
             </span>
-            <span class="app-brand-text demo fw-bold ms-2">ADMIN</span>
+            <span class="app-brand-text demo fw-bold ms-2">ผู้ดูแลระบบ</span>
         </a>
 
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none">
@@ -29,52 +28,50 @@
 
     <div class="menu-inner-shadow"></div>
 
-
     <ul class="menu-inner py-1">
         <li class="menu-item">
             <a href="{{ route('administrator.dashboard') }}" class="menu-link">
                 <i class="menu-icon fas fa-home"></i>
-                <div class="menu-text"> Dashboard </div>
+                <div class="menu-text">แดชบอร์ด</div>
             </a>
         </li>
-
 
         <li class="menu-item {{ $main_menu == 'admin' ? 'open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon fas fa-user-cog'></i>
-                <div class="text-truncate" data-i18n="Layouts">Admin</div>
+                <div class="text-truncate" data-i18n="Layouts">ผู้ดูแลระบบ</div>
             </a>
-            <ul class="menu-sub ">
+            <ul class="menu-sub">
                 <li class="menu-item">
                     <a href="{{ route('administrator.admin') }}" class="menu-link">
-                        <div class="menu-text"> Admin </div>
+                        <div class="menu-text">ผู้ดูแลระบบ</div>
                     </a>
                 </li>
 
                 <li class="menu-item">
                     <a href="{{ route('administrator.student') }}" class="menu-link">
-                        <div class="menu-text"> Student </div>
+                        <div class="menu-text">นักศึกษา</div>
                     </a>
                 </li>
             </ul>
-
         </li>
+
         <li class="menu-item {{ $main_menu == 'user' ? 'open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon fas fa-user-tie'> </i>
-                <div class="text-truncate" data-i18n="Layouts">User</div>
+                <i class='menu-icon fas fa-user-tie'></i>
+                <div class="text-truncate" data-i18n="Layouts">ผู้ใช้งาน</div>
             </a>
 
-            <ul class="menu-sub ">
+            <ul class="menu-sub">
                 <li class="menu-item">
                     <a href="{{ route('administrator.user') }}" class="menu-link">
-                        <div class="menu-text"> User </div>
+                        <div class="menu-text">ผู้ใช้งาน</div>
                     </a>
                 </li>
 
                 <li class="menu-item">
                     <a href="{{ route('administrator.approve-user') }}" class="menu-link">
-                        <div class="menu-text"> Approve User </div>
+                        <div class="menu-text">อนุมัติผู้ใช้งาน</div>
                     </a>
                 </li>
             </ul>

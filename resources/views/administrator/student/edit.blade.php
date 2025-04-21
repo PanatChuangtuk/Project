@@ -85,7 +85,9 @@
                             <label class="fw-bold w-100 d-block">อาจารย์ที่ปรึกษา <span class="text-danger">*</span></label>
                             <select name="adviser_id" id="adviserSelect" class="form-control select2">
                                 <option value="">
-                                    {{ $student->adviser->first_name . ' ' . $student->adviser->last_name }}</option>
+                                    {{ optional($student->adviser)->first_name }}
+                                    {{ optional($student->adviser)->last_name }}
+                                </option>
                                 </option>
                             </select>
                             @error('adviser_id')

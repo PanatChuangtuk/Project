@@ -257,10 +257,11 @@
                                         </div> --}}
                                     </th>
                                     <th>NO</th>
-                                    <th class="text-center">Name</th>
+                                    <th class="text-center">FullName</th>
                                     <th class="text-center">Email</th>
+                                    <th class="text-center">MobilePhone</th>
                                     <th class="text-center">Created Date</th>
-                                    <th class="text-center">STATUS</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
 
@@ -268,27 +269,19 @@
                                 @foreach ($users as $item)
                                     <tr>
                                         <td>
-                                            {{-- <div class="form-check" style="font-size: 1rem;">
-                                                <input type="checkbox" class="form-check-input check-item"
-                                                    value="{{ $item->id }}">
-                                            </div> --}}
+
                                         </td>
                                         <td>{{ $item->id }}</td>
                                         <td>
                                             <div class="text-center">
                                                 <div class="flex-grow-1">
-                                                    <strong class="d-block">
-                                                        {{ $item->info->first_name ?? null }} |
-                                                        {{ $item->info->last_name ?? null }}
-                                                    </strong>
-                                                    <span class="text-muted small">
-                                                        {{ $item->info->mobile_phone ?? null }}
-                                                    </span>
+                                                    {{ $item->info->first_name ?? null }}
+                                                    {{ $item->info->last_name ?? null }}
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="text-center">{{ $item->email }}</td>
-
+                                        <td class="text-center">{{ $item->info->mobile_phone ?? 'Empty' }}</td>
                                         <td class="text-center">{{ $item->created_at }}</td>
                                         <td class="text-center">
                                             <button class="btn btn-info mb-3 show-modal-btn" data-bs-toggle="modal"
@@ -297,13 +290,13 @@
                                                 data-name-new="{{ $item->info->first_name ?? '' }} {{ $item->info->last_name ?? '' }}"
                                                 data-email-new="{{ $item->email }}"
                                                 data-adviser-new="{{ $item->info->adviser->first_name . ' ' . $item->info->adviser->last_name }}"
-                                                data-student-new="{{ $item->info->student->student_number ?? null }}"
+                                                {{-- data-student-new="{{ $item->info->student->student_number ?? null }}" --}}
                                                 data-avatar-new="{{ asset('upload/images/' . $item->info->avatar) }}"
                                                 data-phone-new="{{ $item->info->mobile_phone ?? '' }}"
                                                 data-name-old="{{ $item->info->student->first_name ?? '' }} {{ $item->info->student->last_name ?? '' }}"
                                                 data-email-old="{{ $item->info->student->email ?? '' }}"
                                                 data-phone-old="{{ $item->info->student->mobile_phone ?? '' }}"
-                                                data-student-old="{{ $item->info->student->student_number ?? null }}"
+                                                {{-- data-student-old="{{ $item->info->student->student_number ?? null }}" --}}
                                                 data-adviser-old="{{ $item->info->student->adviser->first_name . ' ' . $item->info->student->adviser->last_name }}">
                                                 <i class='bx bx-user'></i>
                                             </button>
@@ -407,11 +400,11 @@
                                         </div>
                                         <div class="info-value fw-bold" id="oldAdviser">ไม่มีข้อมูล</div>
                                     </div>
-                                    <div class="info-item mt-3">
+                                    {{-- <div class="info-item mt-3">
                                         <div class="info-label"><i class="fas fa-id-card info-icon"></i>รหัสนักศึกษา:
                                         </div>
                                         <div class="info-value fw-bold" id="oldStudent">ไม่มีข้อมูล</div>
-                                    </div>
+                                    </div> --}}
 
                                 </div>
                             </div>
@@ -463,7 +456,7 @@
                 const oldEmail = $(this).data('email-old');
                 const oldPhone = $(this).data('phone-old');
                 const oldAvatar = $(this).data('avatar-old');
-                const oldStudent = $(this).data('student-old');
+                // const oldStudent = $(this).data('student-old');
                 const oldAdviser = $(this).data('adviser-old');
                 const newAdviser = $(this).data('adviser-new');
                 $('#newName').text(newName || 'ไม่มีข้อมูล');
@@ -473,7 +466,7 @@
                 $('#oldName').text(oldName || 'ไม่มีข้อมูล');
                 $('#oldEmail').text(oldEmail || 'ไม่มีข้อมูล');
                 $('#oldPhone').text(oldPhone || 'ไม่มีข้อมูล');
-                $('#oldStudent').text(oldStudent || 'ไม่มีข้อมูล');
+                // $('#oldStudent').text(oldStudent || 'ไม่มีข้อมูล');
                 $('#oldAdviser').text(oldAdviser || 'ไม่มีข้อมูล');
                 $('#newAdviser').text(newAdviser || 'ไม่มีข้อมูล');
                 // ตั้งค่ารูปภาพ

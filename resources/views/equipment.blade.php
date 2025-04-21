@@ -273,14 +273,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
-                    {{-- Include your sidebar navigation here --}}
+                    {{-- ใส่แถบเมนูด้านข้างที่นี่ --}}
                     {{-- <x-nav-profile /> --}}
                 </div>
 
                 <div class="col-lg-6">
                     <div class="equipment-form">
                         <div class="form-header">
-                            <h3><i class="fas fa-tools mr-2"></i> Equipment Registration</h3>
+                            <h3><i class="fas fa-tools mr-2"></i> ลงทะเบียนอุปกรณ์</h3>
                         </div>
 
                         {{-- <form action="{{ route('equipment.store') }}" method="POST">
@@ -289,74 +289,74 @@
                         <div class="row">
                             <div class="col-md-12 mb-4">
                                 <div class="equipment-category-header">
-                                    <h5 class="mb-0">Select Equipment (Max 2 items from different categories)</h5>
+                                    <h5 class="mb-0">เลือกอุปกรณ์ (เลือกได้สูงสุด 2 รายการจากหมวดหมู่ที่ต่างกัน)</h5>
                                 </div>
 
                                 <div class="equipment-container">
-                                    <!-- Machinery Category -->
+                                    <!-- หมวดเครื่องจักร -->
                                     <div class="equipment-selection">
-                                        <h5>Machinery</h5>
+                                        <h5>เครื่องจักร</h5>
                                         <div class="equipment-items">
                                             <div class="equipment-item">
                                                 <input type="checkbox" name="equipment[]" value="machinery_drill"
-                                                    data-category="machinery"> Drill Machine
+                                                    data-category="machinery"> เครื่องเจาะ
                                             </div>
                                             <div class="equipment-item">
                                                 <input type="checkbox" name="equipment[]" value="machinery_generator"
-                                                    data-category="machinery"> Generator
+                                                    data-category="machinery"> เครื่องปั่นไฟ
                                             </div>
                                             <div class="equipment-item">
                                                 <input type="checkbox" name="equipment[]" value="machinery_compressor"
-                                                    data-category="machinery"> Air Compressor
+                                                    data-category="machinery"> เครื่องอัดลม
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- Tools Category -->
+                                    <!-- หมวดเครื่องมือ -->
                                     <div class="equipment-selection">
-                                        <h5>Tools</h5>
+                                        <h5>เครื่องมือ</h5>
                                         <div class="equipment-items">
                                             <div class="equipment-item">
                                                 <input type="checkbox" name="equipment[]" value="tools_wrench"
-                                                    data-category="tools"> Wrench Set
+                                                    data-category="tools"> ชุดประแจ
                                             </div>
                                             <div class="equipment-item">
                                                 <input type="checkbox" name="equipment[]" value="tools_screwdriver"
-                                                    data-category="tools"> Screwdriver Set
+                                                    data-category="tools"> ชุดไขควง
                                             </div>
                                             <div class="equipment-item">
                                                 <input type="checkbox" name="equipment[]" value="tools_pliers"
-                                                    data-category="tools"> Pliers
+                                                    data-category="tools"> คีม
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- Electronics Category -->
+                                    <!-- หมวดอิเล็กทรอนิกส์ -->
                                     <div class="equipment-selection">
-                                        <h5>Electronics</h5>
+                                        <h5>อิเล็กทรอนิกส์</h5>
                                         <div class="equipment-items">
                                             <div class="equipment-item">
                                                 <input type="checkbox" name="equipment[]" value="electronics_multimeter"
-                                                    data-category="electronics"> Multimeter
+                                                    data-category="electronics"> มัลติมิเตอร์
                                             </div>
                                             <div class="equipment-item">
                                                 <input type="checkbox" name="equipment[]" value="electronics_soldering"
-                                                    data-category="electronics"> Soldering Iron
+                                                    data-category="electronics"> หัวแร้ง
                                             </div>
                                             <div class="equipment-item">
                                                 <input type="checkbox" name="equipment[]" value="electronics_tester"
-                                                    data-category="electronics"> Cable Tester
+                                                    data-category="electronics"> เครื่องทดสอบสาย
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- Selected Equipment Summary -->
+                                    <!-- สรุปอุปกรณ์ที่เลือก -->
                                     <div class="selected-equipment">
-                                        <h5><i class="fas fa-clipboard-list mr-2"></i> Selected Equipment</h5>
-                                        <div id="selection-message">No equipment selected yet. Please select up to 2 items
-                                            from different categories.</div>
+                                        <h5><i class="fas fa-clipboard-list mr-2"></i> อุปกรณ์ที่เลือก</h5>
+                                        <div id="selection-message">ยังไม่ได้เลือกอุปกรณ์ กรุณาเลือกสูงสุด 2
+                                            รายการจากหมวดหมู่ที่แตกต่างกัน</div>
                                         <ul class="selected-equipment-list" id="selected-equipment">
-                                            <!-- Selected items will appear here -->
+                                            <!-- รายการที่เลือกจะแสดงที่นี่ -->
                                         </ul>
                                     </div>
                                 </div>
@@ -368,9 +368,9 @@
 
                             <div class="col-md-6 mb-4">
                                 <div class="form-group">
-                                    <label class="title">Serial Number</label>
+                                    <label class="title">หมายเลขซีเรียล</label>
                                     <input type="text" class="form-control" name="serial_number"
-                                        value="{{ old('serial_number') }}" placeholder="Enter serial number" />
+                                        value="{{ old('serial_number') }}" placeholder="กรอกหมายเลขซีเรียล" />
                                     @error('serial_number')
                                         <div class="text-danger mt-1">{{ $message }}</div>
                                     @enderror
@@ -379,7 +379,7 @@
 
                             <div class="col-md-6 mb-4">
                                 <div class="form-group">
-                                    <label class="title">Borrow Date</label>
+                                    <label class="title">วันที่ยืม</label>
                                     <input type="date" class="form-control" name="purchase_date"
                                         value="{{ old('purchase_date') }}" />
                                     @error('purchase_date')
@@ -390,8 +390,8 @@
 
                             <div class="col-md-12 mb-4">
                                 <div class="form-group">
-                                    <label class="title">Description</label>
-                                    <textarea class="form-control" name="description" rows="3" placeholder="Enter equipment description">{{ old('description') }}</textarea>
+                                    <label class="title">รายละเอียด</label>
+                                    <textarea class="form-control" name="description" rows="3" placeholder="กรอกรายละเอียดอุปกรณ์">{{ old('description') }}</textarea>
                                     @error('description')
                                         <div class="text-danger mt-1">{{ $message }}</div>
                                     @enderror
@@ -400,8 +400,8 @@
                         </div>
 
                         <div class="d-flex justify-content-end mt-4">
-                            <button type="reset" class="btn btn-secondary btn-modern btn-space">Reset</button>
-                            <button type="submit" class="btn btn-primary btn-modern">Save Equipment</button>
+                            <button type="reset" class="btn btn-secondary btn-modern btn-space">ล้างข้อมูล</button>
+                            <button type="submit" class="btn btn-primary btn-modern">บันทึกอุปกรณ์</button>
                         </div>
                         {{-- </form> --}}
                     </div>
@@ -410,6 +410,7 @@
         </div>
     </div>
 @endsection
+
 
 @section('script')
     <script>
@@ -434,7 +435,7 @@
                         0) {
                         alert(
                             'You can only select one item per category. Please deselect the previous item from this category first.'
-                            );
+                        );
                         $this.prop('checked', false);
                         return;
                     }
