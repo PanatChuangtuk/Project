@@ -14,6 +14,7 @@ class EquipmentItem extends Model
     protected $fillable = [
         'name',
         'category_id',
+        'image',
         'status',
     ];
     public function category()

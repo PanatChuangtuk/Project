@@ -44,7 +44,17 @@
                             @enderror
                         </div>
                     </div>
-                    <!-- สถานะ -->
+
+                    <div class="col-md-12">
+                        <label for="image" class="col-md-2 col-form-label">Image</label>
+                        <div class="col-md-12">
+                            <input id="image" name="image" type="file" data-browse-on-zone-click="true" />
+                            @error('image')
+                                <div class="text-danger col-form-label">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
                     <div class="col-md-12 mt-3">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="status" value="1" name="status"
@@ -59,7 +69,7 @@
                         <button type="submit" class="btn btn-success px-4 shadow-sm">
                             <i class="fas fa-save"></i> บันทึก
                         </button>
-                        <a href="{{ route('administrator.admin') }}" class="btn btn-danger px-4 shadow-sm">
+                        <a href="{{ route('administrator.item-equipment') }}" class="btn btn-danger px-4 shadow-sm">
                             <i class="fas fa-times"></i> ยกเลิก
                         </a>
                     </div>
@@ -106,6 +116,82 @@
                 },
                 cache: true
             }
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#image").fileinput({
+                deleteUrl: "{{ route('administrator.item-equipment.delete.image', $item_equipment->id) . '?_token=' . csrf_token() }}",
+                enableResumableUpload: true,
+                showRemove: false,
+                uploadAsync: false,
+                initialPreviewAsData: true,
+                showCancel: true,
+                showUpload: false,
+                elErrorContainer: '#kartik-file-errors',
+                allowedFileExtensions: ["jpg", "png", "jpeg", "svg", "raw", "gif", "tif", "webp"],
+                resumableUploadOptions: {
+                    chunkSize: 5,
+                },
+                initialPreview: [
+                    @if ($item_equipment->image)
+                        src =
+                            "{{ asset('upload/file/equipment_item/' . basename($item_equipment->image)) }}"
+                    @else
+                        null
+                    @endif
+                ],
+                initialPreviewConfig: [
+                    @if ($item_equipment)
+                        {
+                            caption: "{{ basename($item_equipment->image) }}",
+                            key: 1
+                        }
+                    @else
+                        {
+                            caption: "ไม่มีรูปภาพ",
+                            key: 0
+                        }
+                    @endif
+                ],
+                maxFileCount: 1,
+                theme: "bs5",
+                fileActionSettings: {
+                    showZoom: function(config) {
+                        if (config.type === 'pdf' || config.type === 'image') {
+                            return true;
+                        }
+                        return false;
+                    },
+                }
+            }).on('filebeforedelete', function() {
+                return new Promise(function(resolve, reject) {
+                    $.confirm({
+                        title: 'ยืนยันการลบ!',
+                        content: 'คุณแน่ใจหรือไม่ว่าต้องการลบไฟล์นี้?',
+                        type: 'red',
+                        buttons: {
+                            ok: {
+                                btnClass: 'btn-primary text-white',
+                                keys: ['enter'],
+                                action: function() {
+                                    resolve();
+                                }
+                            },
+                            cancel: function() {
+                                reject();
+
+                            }
+                        }
+                    });
+                });
+            }).on('filedeleted', function() {
+
+            });
+            $('#form-update').on('submit', function(e) {
+                e.preventDefault();
+                this.submit();
+            });
         });
     </script>
 @endsection

@@ -61,7 +61,7 @@
                         <button type="submit" class="btn btn-success px-4 shadow-sm">
                             <i class="fas fa-save"></i> บันทึก
                         </button>
-                        <a href="{{ route('administrator.admin') }}" class="btn btn-danger px-4 shadow-sm">
+                        <a href="{{ route('administrator.category-equipment') }}" class="btn btn-danger px-4 shadow-sm">
                             <i class="fas fa-times"></i> ยกเลิก
                         </a>
                     </div>

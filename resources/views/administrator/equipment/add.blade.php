@@ -42,6 +42,15 @@
                             <div class="text-danger small mt-1">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="col-md-12">
+                        <label for="image" class="col-md-2 col-form-label">Image</label>
+                        <div class="col-md-12">
+                            <input id="image" name="image" type="file" data-browse-on-zone-click="true" />
+                            @error('image')
+                                <div class="text-danger col-form-label">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
 
                     <!-- สถานะ -->
                     <div class="col-md-12 mt-3">
@@ -56,7 +65,7 @@
                         <button type="submit" class="btn btn-success px-4 shadow-sm">
                             <i class="fas fa-save"></i> บันทึก
                         </button>
-                        <a href="{{ route('administrator.admin') }}" class="btn btn-danger px-4 shadow-sm">
+                        <a href="{{ route('administrator.equipment') }}" class="btn btn-danger px-4 shadow-sm">
                             <i class="fas fa-times"></i> ยกเลิก
                         </a>
                     </div>
@@ -103,6 +112,32 @@
                 },
                 cache: true
             }
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#image").fileinput({
+                showRemove: false,
+                enableResumableUpload: true,
+                initialPreviewAsData: true,
+                showCancel: true,
+                showUpload: false,
+                elErrorContainer: '#kartik-file-errors',
+                allowedFileExtensions: ["jpg", "png", "jpeg", "svg", "raw", "gif", "tif", "webp"],
+                resumableUploadOptions: {
+                    chunkSize: 5,
+                },
+                maxFileCount: 1,
+                theme: "bs5",
+                fileActionSettings: {
+                    showZoom: function(config) {
+                        if (config.type === 'pdf' || config.type === 'image') {
+                            return true;
+                        }
+                        return false;
+                    }
+                }
+            });
         });
     </script>
 @endsection

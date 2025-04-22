@@ -79,6 +79,7 @@ Route::prefix('administrator')->group(function () {
             Route::post('/update/{id}', [EquipmentItemController::class, 'update'])->name('item-equipment.update');
             Route::delete('/{id}', [EquipmentItemController::class, 'destroy'])->name('item-equipment.destroy');
             Route::post('/bulk-delete', [EquipmentItemController::class, 'bulkDelete'])->name('item-equipment.bulk.delete');
+            Route::post('image/{id}', [EquipmentItemController::class, 'deleteImage'])->name('item-equipment.delete.image');
         });
 
         Route::group(['prefix' => 'equipment', 'as' => 'administrator.'], function () {
@@ -89,6 +90,7 @@ Route::prefix('administrator')->group(function () {
             Route::post('/update/{id}', [EquipmentController::class, 'update'])->name('equipment.update');
             Route::delete('/{id}', [EquipmentController::class, 'destroy'])->name('equipment.destroy');
             Route::post('/bulk-delete', [EquipmentController::class, 'bulkDelete'])->name('equipment.bulk.delete');
+            Route::post('image/{id}', [EquipmentController::class, 'deleteImage'])->name('equipment.delete.image');
         });
 
         Route::group(['prefix' => 'approve-user', 'as' => 'administrator.'], function () {

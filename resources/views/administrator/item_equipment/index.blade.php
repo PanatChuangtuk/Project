@@ -60,6 +60,7 @@
                                         </div>
                                     </th>
                                     <th>ลำดับ</th>
+                                    <th class="text-center">รูปอุปกรณ์</th>
                                     <th class="text-center">ชื่อหมวดหมู่อุปกรณ์</th>
                                     <th class="text-center">ชื่อประเภทอุปกรณ์</th>
                                     <th class="text-center">สถานะเปิดใช้งาน</th>
@@ -77,6 +78,30 @@
                                             </div>
                                         </td>
                                         <td>{{ $item->id }}</td>
+                                        <td>
+                                            <div class="text-center">
+                                                @if ($item->image)
+                                                    <img src="{{ asset('upload/file/equipment_item/' . $item->image) }}"
+                                                        class="rounded-circle"
+                                                        style="width: 50px; height: 50px; object-fit: cover; cursor: pointer;"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#imageModal{{ $item->id }}" />
+                                                @endif
+                                            </div>
+                                        </td>
+                                        @if ($item->image)
+                                            <div class="modal fade" id="imageModal{{ $item->id }}" tabindex="-1"
+                                                aria-labelledby="imageModalLabel{{ $item->id }}" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content border-0 shadow-lg">
+                                                        <div class="modal-body p-0">
+                                                            <img src="{{ asset('upload/file/equipment_item/' . $item->image) }}"
+                                                                class="img-fluid w-100 rounded" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
                                         <td>
                                             <div class="text-center">
                                                 <div class="flex-grow-1">

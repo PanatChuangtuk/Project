@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Administrator;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\{Auth, DB, Validator, Hash};
+use Illuminate\Support\Facades\{Auth, Validator, Storage};
 use Illuminate\Http\Request;
 use App\Models\{EquipmentItem, EquipmentCategory};
 use App\Http\Requests\{EquipmentCategoryUpdateRequest, EquipmentCategoryCreateRequest};
@@ -61,9 +61,13 @@ class EquipmentItemController extends Controller
 
     public function submit(EquipmentCategoryCreateRequest $request)
     {
-        // dd($request->all());
+        $filename = null;
+        if ($request->hasFile('image')) {
+            $filename = $this->uploadsImage($request->file('image'), 'equipment_item');
+        }
         EquipmentItem::create([
             'category_id' => $request->category_id,
+            'image' => $filename,
             'name' => $request->name,
             'status' =>  $request->input('status', 0),
             'created_at' => now(),
@@ -76,9 +80,14 @@ class EquipmentItemController extends Controller
     public function update(EquipmentCategoryUpdateRequest $request, $id)
     {
         $item_equipment = EquipmentItem::find($id);
+        $filename = null;
+        if ($request->hasFile('image')) {
+            $filename = $this->uploadsImage($request->file('image'), 'equipment_item');
+        }
         $item_equipment->update([
             'category_id' => $request->category_id ?? $item_equipment->category_id,
             'name' => $request->name,
+            'image' => $filename ?? $item_equipment->image,
             'status' =>  $request->input('status', 0),
             'updated_at' => now(),
         ]);
@@ -118,5 +127,25 @@ class EquipmentItemController extends Controller
             'status' => 'error',
             'message' => 'ไม่ได้เลือกข้อมูลที่จะลบ'
         ], 400);
+    }
+
+    public function deleteImage($id)
+    {
+        $banner = EquipmentItem::find($id);
+
+        if ($banner) {
+            $oldImagePath = str_replace(asset('public'), 'file/equipment_item/', $banner->image);
+
+            if (Storage::disk('public')->exists('file/equipment_item/' . $oldImagePath)) {
+                Storage::disk('public')->delete('file/equipment_item/' . $oldImagePath);
+            }
+
+            $banner->update([
+                'image' => null,
+                'updated_by' => Auth::user()->id
+            ]);
+
+            return response()->json(['success' => 'Image deleted successfully']);
+        }
     }
 }
