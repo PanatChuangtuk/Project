@@ -12,6 +12,7 @@ use App\Http\Requests\{MemberCreateRequest, MemberUpdateRequest};
 class UserController extends Controller
 {
     private $main_menu = 'user';
+
     public function index(Request $request)
     {
         $query = $request->input('query');
@@ -104,6 +105,7 @@ class UserController extends Controller
         return redirect()->back()
             ->with('success', 'ข้อมูลถูกอัพเดตเรียบร้อยแล้ว');
     }
+
     public function destroy($id, Request $request)
     {
         $about = Member::findOrFail($id);
@@ -112,7 +114,7 @@ class UserController extends Controller
         $currentPage = $request->query('page', 1);
 
         return redirect()->route('administrator.user', ['page' => $currentPage])->with([
-            'success' => 'About deleted successfully!',
+            'success' => 'ข้อมูลถูกลบเรียบร้อยแล้ว!',
             'id' => $id
         ]);
     }
@@ -126,14 +128,14 @@ class UserController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Selected about have been deleted successfully.',
+                'message' => 'ข้อมูลที่เลือกถูกลบเรียบร้อยแล้ว',
                 'deleted_ids' => $ids
             ]);
         }
 
         return response()->json([
             'status' => 'error',
-            'message' => 'No about selected for deletion.'
+            'message' => 'ไม่มีข้อมูลที่เลือกสำหรับการลบ'
         ], 400);
     }
 }

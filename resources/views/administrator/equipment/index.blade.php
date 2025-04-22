@@ -17,14 +17,15 @@
                 <div class="card-body">
                     {{-- Head --}}
                     <div class="d-flex justify-content-between align-items-center p-3">
-                        <form action="{{ route('administrator.admin') }}" method="GET"
+                        <form action="{{ route('administrator.equipment') }}" method="GET"
                             class="d-flex justify-content-between align-items-center w-100">
                             <x-search />
 
                             <div class="d-flex align-items-center ms-2">
                                 {{-- <x-status-filter /> --}}
-                                <a href="{{ route('administrator.admin.add') }}"
-                                    class="btn btn-primary d-flex align-items-center" style="white-space: nowrap;">Add
+                                <a href="{{ route('administrator.equipment.add') }}"
+                                    class="btn btn-primary d-flex align-items-center"
+                                    style="white-space: nowrap;">เพิ่มข้อมูล
                                 </a>
                             </div>
                         </form>
@@ -40,11 +41,11 @@
                                             <input class="form-check-input check-item" type="checkbox" id="checkAll" />
                                         </div>
                                     </th>
-                                    {{-- <th>ID</th> --}}
-                                    <th class="text-center">UserName</th>
-                                    <th class="text-center">Email</th>
-                                    <th class="text-center">Created Date</th>
-                                    <th class="text-center">Actions</th>
+                                    <th>ลำดับ</th>
+                                    <th class="text-center">ชื่อหมวดหมู่</th>
+                                    <th class="text-center">เลขอุปกรณ์</th>
+                                    <th class="text-center">สถานะเปิดใช้งาน</th>
+                                    <th class="text-center">การจัดการ</th>
                                 </tr>
                             </thead>
 
@@ -57,33 +58,34 @@
                                                     value="{{ $item->id }}">
                                             </div>
                                         </td>
-                                        {{-- <td>{{ $item->id }}</td> --}}
+                                        <td>{{ $item->id }}</td>
                                         <td>
                                             <div class="text-center">
                                                 <div class="flex-grow-1">
-                                                    <strong class="d-block">
-                                                        {{ $item->info->first_name ?? null }} |
-                                                        {{ $item->info->last_name ?? null }}
-                                                    </strong>
-                                                    <span class="text-muted small">
-                                                        {{ $item->info->mobile_phone ?? null }}
-                                                    </span>
+                                                    {{ $item->item->name ?? null }}
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="text-center">{{ $item->email }}</td>
-
-                                        <td class="text-center">{{ $item->created_at }}</td>
+                                        <td>
+                                            <div class="text-center">
+                                                <div class="flex-grow-1">
+                                                    {{ $item->number ?? null }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <x-status-label :status="$item->status" />
+                                        </td>
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <div class="d-inline-block text-nowrap">
                                                     <a class="btn btn-icon btn-outline-primary border-0"
-                                                        href="{{ route('administrator.admin.edit', ['id' => $item->id]) }}">
+                                                        href="{{ route('administrator.equipment.edit', ['id' => $item->id]) }}">
                                                         <i class="bx bx-edit bx"></i>
                                                     </a>
 
                                                     <form id="deleteForm{{ $item->id }}"
-                                                        action="{{ route('administrator.admin.destroy', ['id' => $item->id, 'page' => request()->get('page')]) }}"
+                                                        action="{{ route('administrator.equipment.destroy', ['id' => $item->id, 'page' => request()->get('page')]) }}"
                                                         method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')

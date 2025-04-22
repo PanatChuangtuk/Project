@@ -8,26 +8,17 @@
 @endsection
 
 @section('content')
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
-
     <div class="row">
         <div class="col-md-12">
-            <x-bread-crumb />
+            <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
+                <li class="breadcrumb-item"><a href="{{ route('administrator.dashboard') }}">หน้าหลัก</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('administrator.category-equipment') }}">ผู้ใช้งาน</a></li>
+            </ol>
 
-            {{-- Content --}}
+            {{-- เนื้อหา --}}
             <div class="card">
                 <div class="card-body">
-                    {{-- Head --}}
+                    {{-- หัว --}}
                     <div class="d-flex justify-content-between align-items-center p-3">
                         <form action="{{ route('administrator.user') }}" method="GET"
                             class="d-flex justify-content-between align-items-center w-100">
@@ -36,13 +27,14 @@
                             <div class="d-flex align-items-center ms-2">
                                 {{-- <x-status-filter /> --}}
                                 <a href="{{ route('administrator.user.add') }}"
-                                    class="btn btn-primary d-flex align-items-center" style="white-space: nowrap;">Add
+                                    class="btn btn-primary d-flex align-items-center"
+                                    style="white-space: nowrap;">เพิ่มข้อมูล
                                 </a>
                             </div>
                         </form>
                     </div>
 
-                    {{-- Table --}}
+                    {{-- ตาราง --}}
                     <div class="table-responsive text-nowrap">
                         <table class="table table-hover">
                             <thead>
@@ -52,13 +44,13 @@
                                             <input class="form-check-input check-item" type="checkbox" id="checkAll" />
                                         </div>
                                     </th>
-                                    <th>NO</th>
-                                    <th class="text-center">FullName</th>
-                                    <th class="text-center">Email</th>
-                                    <th class="text-center">MobilePhone</th>
-                                    <th class="text-center">StudentId</th>
-                                    <th class="text-center">Created Date</th>
-                                    <th class="text-center">Actions</th>
+                                    <th>ลำดับ</th>
+                                    <th class="text-center">ชื่อ-นามสกุล</th>
+                                    <th class="text-center">อีเมล</th>
+                                    <th class="text-center">เบอร์โทรศัพท์มือถือ</th>
+                                    <th class="text-center">รหัสนักศึกษา</th>
+                                    {{-- <th class="text-center">วันที่สร้าง</th> --}}
+                                    <th class="text-center">การจัดการ</th>
                                 </tr>
                             </thead>
 
@@ -81,9 +73,9 @@
                                             </div>
                                         </td>
                                         <td class="text-center">{{ $item->email }}</td>
-                                        <td class="text-center">{{ $item->mobile_phone ?? 'Empty' }}</td>
+                                        <td class="text-center">{{ $item->mobile_phone ?? 'ว่าง' }}</td>
                                         <td class="text-center">{{ $item->info->student->student_number ?? null }}</td>
-                                        <td class="text-center">{{ $item->created_at }}</td>
+                                        {{-- <td class="text-center">{{ $item->created_at }}</td> --}}
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <div class="d-inline-block text-nowrap">
@@ -111,7 +103,7 @@
                             </tbody>
                         </table>
 
-                        {{-- Pagination --}}
+                        {{-- การแบ่งหน้า --}}
                         <div>
                             {!! $users->links() !!}
                         </div>

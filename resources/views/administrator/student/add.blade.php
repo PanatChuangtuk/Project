@@ -4,14 +4,14 @@
 
 @section('content')
     <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
-        <li class="breadcrumb-item"><a href="{{ route('administrator.dashboard') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('administrator.student') }}">User</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Add</li>
+        <li class="breadcrumb-item"><a href="{{ route('administrator.dashboard') }}">หน้าแรก</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('administrator.student') }}">ผู้ใช้งาน</a></li>
+        <li class="breadcrumb-item active" aria-current="page">เพิ่ม</li>
     </ol>
 
     <div class="card shadow-lg border-0 rounded-4">
         <div class="card-header text-white rounded-top-4">
-            <h5 class="mb-0"><i class="fas fa-user-plus"></i> Add New Student</h5>
+            <h5 class="mb-0"><i class="fas fa-user-plus"></i> เพิ่มนักศึกษาใหม่</h5>
         </div>
         <div class="card-body">
             <form id="form-create" method="POST" action="{{ route('administrator.student.submit') }}"
@@ -20,7 +20,7 @@
 
                 <div class="row g-4">
                     <div class="col-md-6">
-                        <label for="first_name" class="form-label fw-semibold">First Name</label>
+                        <label for="first_name" class="form-label fw-semibold">ชื่อ</label>
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
                             <input type="text" id="first_name" name="first_name"
@@ -32,7 +32,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label for="last_name" class="form-label fw-semibold">Last Name</label>
+                        <label for="last_name" class="form-label fw-semibold">นามสกุล</label>
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
                             <input type="text" id="last_name" name="last_name" class="form-control border-0 shadow-sm" />
@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label for="student_number" class="form-label fw-semibold">Student Number</label>
+                        <label for="student_number" class="form-label fw-semibold">รหัสนักศึกษา</label>
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-id-card"></i></span>
                             <input type="text" id="student_number" name="student_number"
@@ -55,7 +55,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label for="mobile_phone" class="form-label fw-semibold">Mobile Phone</label>
+                        <label for="mobile_phone" class="form-label fw-semibold">เบอร์โทรศัพท์</label>
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-phone"></i></span>
                             <input type="text" id="mobile_phone" name="mobile_phone"
@@ -67,7 +67,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label for="email" class="form-label fw-semibold">Email</label>
+                        <label for="email" class="form-label fw-semibold">อีเมล</label>
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-envelope"></i></span>
                             <input type="text" id="email" name="email" class="form-control border-0 shadow-sm" />
@@ -92,23 +92,24 @@
                     <div class="col-md-12 mt-3">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="status" value="1" name="status">
-                            <label class="form-check-label fw-semibold" for="status">Active Status</label>
+                            <label class="form-check-label fw-semibold" for="status">สถานะเปิดใช้งาน</label>
                         </div>
                     </div>
                 </div>
 
                 <div class="text-end mt-4">
                     <button type="submit" class="btn btn-success px-4 shadow-sm">
-                        <i class="fas fa-save"></i> Save
+                        <i class="fas fa-save"></i> บันทึก
                     </button>
                     <a href="{{ route('administrator.student') }}" class="btn btn-danger px-4 shadow-sm">
-                        <i class="fas fa-times"></i> Cancel
+                        <i class="fas fa-times"></i> ยกเลิก
                     </a>
                 </div>
             </form>
         </div>
     </div>
 @endsection
+
 @section('script')
     @if (session('success'))
         <script>

@@ -3,15 +3,17 @@
 @section('title')
 
 @section('content')
+    <!-- Breadcrumb -->
     <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
-        <li class="breadcrumb-item"><a href="{{ route('administrator.dashboard') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('administrator.admin') }}">Admin</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Update</li>
+        <li class="breadcrumb-item"><a href="{{ route('administrator.dashboard') }}">หน้าแรก</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('administrator.admin') }}">ผู้ดูแลระบบ</a></li>
+        <li class="breadcrumb-item active" aria-current="page">แก้ไขข้อมูล</li>
     </ol>
 
+    <!-- Card Form -->
     <div class="card shadow-lg border-0 rounded-4">
         <div class="card-header text-white rounded-top-4">
-            <h5 class="mb-0"><i class="fas fa-user-edit"></i> Update Admin</h5>
+            <h5 class="mb-0"><i class="fas fa-user-edit"></i> แก้ไขข้อมูลผู้ดูแลระบบ</h5>
         </div>
         <div class="card-body">
             <form id="form-update" method="POST" action="{{ route('administrator.admin.update', $admin->id) }}"
@@ -19,22 +21,9 @@
                 @csrf
 
                 <div class="row g-4">
-                    <!-- Username Field -->
-                    {{-- <div class="col-md-6">
-                        <label for="username" class="form-label fw-semibold">Username</label>
-                        <div class="input-group shadow-sm">
-                            <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
-                            <input type="text" id="username" name="username" class="form-control border-0 shadow-sm"
-                                value="{{ old('username', $admin->username) }}"  />
-                        </div>
-                        @error('username')
-                            <div class="text-danger small mt-1">{{ $message }}</div>
-                        @enderror
-                    </div> --}}
-
-                    <!-- Email Field -->
+                    <!-- อีเมล -->
                     <div class="col-md-6">
-                        <label for="email" class="form-label fw-semibold">Email</label>
+                        <label for="email" class="form-label fw-semibold">อีเมล</label>
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-envelope"></i></span>
                             <input type="email" id="email" name="email" class="form-control border-0 shadow-sm"
@@ -45,8 +34,9 @@
                         @enderror
                     </div>
 
+                    <!-- เบอร์โทรศัพท์ -->
                     <div class="col-md-6">
-                        <label for="mobile_phone" class="form-label fw-semibold">Mobile Phone</label>
+                        <label for="mobile_phone" class="form-label fw-semibold">เบอร์โทรศัพท์มือถือ</label>
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-phone"></i></span>
                             <input type="text" id="mobile_phone" name="mobile_phone"
@@ -58,8 +48,9 @@
                         @enderror
                     </div>
 
+                    <!-- ชื่อ -->
                     <div class="col-md-6">
-                        <label for="first_name" class="form-label fw-semibold">First Name</label>
+                        <label for="first_name" class="form-label fw-semibold">ชื่อ</label>
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
                             <input type="text" id="first_name" name="first_name" class="form-control border-0 shadow-sm"
@@ -70,8 +61,9 @@
                         @enderror
                     </div>
 
+                    <!-- นามสกุล -->
                     <div class="col-md-6">
-                        <label for="last_name" class="form-label fw-semibold">Last Name</label>
+                        <label for="last_name" class="form-label fw-semibold">นามสกุล</label>
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
                             <input type="text" id="last_name" name="last_name" class="form-control border-0 shadow-sm"
@@ -82,9 +74,9 @@
                         @enderror
                     </div>
 
-                    <!-- Password Field (Optional) -->
+                    <!-- รหัสผ่าน -->
                     <div class="col-md-6">
-                        <label for="password" class="form-label fw-semibold">Password</label>
+                        <label for="password" class="form-label fw-semibold">รหัสผ่าน</label>
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-lock"></i></span>
                             <input type="password" id="password" name="password" class="form-control border-0 shadow-sm" />
@@ -94,9 +86,9 @@
                         @enderror
                     </div>
 
-                    <!-- Password Confirmation Field (Optional) -->
+                    <!-- ยืนยันรหัสผ่าน -->
                     <div class="col-md-6">
-                        <label for="password_confirmation" class="form-label fw-semibold">Confirm Password</label>
+                        <label for="password_confirmation" class="form-label fw-semibold">ยืนยันรหัสผ่าน</label>
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-key"></i></span>
                             <input type="password" id="password_confirmation" name="password_confirmation"
@@ -107,34 +99,34 @@
                         @enderror
                     </div>
 
-                    <!-- Image Field (Optional) -->
+                    <!-- รูปภาพ -->
                     <div class="col-md-6">
-                        <label for="image" class="form-label fw-semibold">Upload Image</label>
+                        <label for="image" class="form-label fw-semibold">อัปโหลดรูปภาพ</label>
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-image"></i></span>
                             <input type="file" id="image" name="image" class="form-control border-0 shadow-sm" />
                         </div>
-
                         @error('image')
                             <div class="text-danger small mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <!-- Status Toggle -->
+                    <!-- สถานะการใช้งาน -->
                     <div class="col-md-12 mt-3">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="status" value="1"
                                 name="status" {{ $admin->status ? 'checked' : '' }} />
-                            <label class="form-check-label fw-semibold" for="status">Active Status</label>
+                            <label class="form-check-label fw-semibold" for="status">สถานะใช้งาน</label>
                         </div>
                     </div>
 
+                    <!-- ปุ่มบันทึก -->
                     <div class="col-md-12 mt-4 text-end">
                         <button type="submit" class="btn btn-success px-4 shadow-sm">
-                            <i class="fas fa-save"></i> Save
+                            <i class="fas fa-save"></i> บันทึก
                         </button>
                         <a href="{{ route('administrator.admin') }}" class="btn btn-danger px-4 shadow-sm">
-                            <i class="fas fa-times"></i> Cancel
+                            <i class="fas fa-times"></i> ยกเลิก
                         </a>
                     </div>
                 </div>
@@ -142,6 +134,7 @@
         </div>
     </div>
 @endsection
+
 @section('script')
     @if (session('success'))
         <script>

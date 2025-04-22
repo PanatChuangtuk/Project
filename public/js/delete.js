@@ -1,4 +1,4 @@
-// Check All Checkbox
+// ตรวจสอบทั้งหมด Checkbox
 document.getElementById("checkAll").addEventListener("change", function () {
     const isChecked = this.checked;
     const checkboxes = document.querySelectorAll(".check-item");
@@ -8,7 +8,7 @@ document.getElementById("checkAll").addEventListener("change", function () {
     toggleBulkDeleteButton();
 });
 
-// Toggle Bulk Delete Button Visibility
+// เปลี่ยนสถานะการแสดงปุ่มลบหลายรายการ
 document.querySelectorAll(".check-item").forEach((checkbox) => {
     checkbox.addEventListener("change", toggleBulkDeleteButton);
 });
@@ -23,20 +23,20 @@ function toggleBulkDeleteButton() {
         : "hidden";
 }
 
-// Single Delete Button
+// ปุ่มลบเดี่ยว
 $(document).on("click", ".btn-delete", function (e) {
     e.preventDefault();
     const id = $(this).data("id");
     const form = $("#deleteForm" + id);
 
     Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        title: "คุณแน่ใจหรือไม่?",
+        text: "คุณจะไม่สามารถกู้คืนได้!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: "ใช่, ลบเลย!",
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
@@ -45,8 +45,8 @@ $(document).on("click", ".btn-delete", function (e) {
                 data: form.serialize(),
                 success: function (response) {
                     Swal.fire(
-                        "Deleted!",
-                        "Your item has been deleted.",
+                        "ลบแล้ว!",
+                        "รายการของคุณได้ถูกลบแล้ว.",
                         "success"
                     ).then(() => {
                         location.reload();
@@ -54,8 +54,8 @@ $(document).on("click", ".btn-delete", function (e) {
                 },
                 error: function (xhr) {
                     Swal.fire(
-                        "Error!",
-                        "An error occurred while deleting.",
+                        "เกิดข้อผิดพลาด!",
+                        "เกิดข้อผิดพลาดระหว่างการลบ.",
                         "error"
                     );
                 },
@@ -64,7 +64,7 @@ $(document).on("click", ".btn-delete", function (e) {
     });
 });
 
-// Bulk Delete Button
+// ปุ่มลบหลายรายการ
 $("#bulk-delete-button").click(function () {
     const ids = $(".check-item:checked")
         .map(function () {
@@ -74,13 +74,13 @@ $("#bulk-delete-button").click(function () {
 
     if (ids.length > 0) {
         Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
+            title: "คุณแน่ใจหรือไม่?",
+            text: "คุณจะไม่สามารถกู้คืนได้!",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete them!",
+            confirmButtonText: "ใช่, ลบทั้งหมด!",
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
@@ -91,7 +91,7 @@ $("#bulk-delete-button").click(function () {
                         _token: $("meta[name='csrf-token']").attr("content"),
                     },
                     success: function (response) {
-                        Swal.fire("Deleted!", response.message, "success").then(
+                        Swal.fire("ลบแล้ว!", response.message, "success").then(
                             () => {
                                 location.reload();
                             }
@@ -100,8 +100,8 @@ $("#bulk-delete-button").click(function () {
                     error: function (xhr) {
                         console.log(xhr.responseText);
                         Swal.fire(
-                            "Error!",
-                            "An error occurred while deleting: " +
+                            "เกิดข้อผิดพลาด!",
+                            "เกิดข้อผิดพลาดระหว่างการลบ: " +
                                 xhr.responseText,
                             "error"
                         );
@@ -111,8 +111,8 @@ $("#bulk-delete-button").click(function () {
         });
     } else {
         Swal.fire(
-            "No item selected",
-            "Please select at least one item to delete.",
+            "ยังไม่ได้เลือกไอเท็ม",
+            "กรุณาเลือกไอเท็มอย่างน้อยหนึ่งรายการเพื่อทำการลบ.",
             "info"
         );
     }

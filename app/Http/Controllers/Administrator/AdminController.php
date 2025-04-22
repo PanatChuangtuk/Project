@@ -12,6 +12,7 @@ use App\Http\Requests\{MemberCreateRequest, MemberUpdateRequest};
 class AdminController extends Controller
 {
     private $main_menu = 'admin';
+
     public function index(Request $request)
     {
         $query = $request->input('query');
@@ -52,7 +53,6 @@ class AdminController extends Controller
     {
         // dd($request->all());
         $member = Member::create([
-            // 'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 'admin',
@@ -79,7 +79,6 @@ class AdminController extends Controller
     {
         $member = Member::find($id);
         $member->update([
-            // 'username' => $request->username,
             'email' => $request->email,
             'password' => $request->filled('password') ? Hash::make($request->password) : $member->password,
             'role' => 'admin',
@@ -101,6 +100,7 @@ class AdminController extends Controller
         return redirect()->back()
             ->with('success', 'ข้อมูลถูกอัพเดตเรียบร้อยแล้ว');
     }
+
     public function destroy($id, Request $request)
     {
         $about = Member::findOrFail($id);
@@ -109,7 +109,7 @@ class AdminController extends Controller
         $currentPage = $request->query('page', 1);
 
         return redirect()->route('administrator.admin', ['page' => $currentPage])->with([
-            'success' => 'About deleted successfully!',
+            'success' => 'ข้อมูลถูกลบเรียบร้อยแล้ว!',
             'id' => $id
         ]);
     }
@@ -123,14 +123,14 @@ class AdminController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Selected about have been deleted successfully.',
+                'message' => 'ข้อมูลที่เลือกถูกลบเรียบร้อยแล้ว',
                 'deleted_ids' => $ids
             ]);
         }
 
         return response()->json([
             'status' => 'error',
-            'message' => 'No about selected for deletion.'
+            'message' => 'ไม่ได้เลือกข้อมูลที่จะลบ'
         ], 400);
     }
 }

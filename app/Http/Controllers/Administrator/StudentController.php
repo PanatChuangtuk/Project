@@ -165,7 +165,7 @@ class StudentController extends Controller
         $currentPage = $request->query('page', 1);
 
         return redirect()->route('administrator.student', ['page' => $currentPage])->with([
-            'success' => 'About deleted successfully!',
+            'success' => 'ข้อมูลถูกลบเรียบร้อยแล้ว!',
             'id' => $id
         ]);
     }
@@ -179,14 +179,14 @@ class StudentController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Selected about have been deleted successfully.',
+                'message' => 'ข้อมูลที่เลือกถูกลบเรียบร้อยแล้ว',
                 'deleted_ids' => $ids
             ]);
         }
 
         return response()->json([
             'status' => 'error',
-            'message' => 'No about selected for deletion.'
+            'message' => 'ไม่มีข้อมูลที่เลือกสำหรับการลบ'
         ], 400);
     }
 }

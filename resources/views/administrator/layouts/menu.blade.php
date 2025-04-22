@@ -29,7 +29,7 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
-        <li class="menu-item">
+        <li class="menu-item {{ Route::is('administrator.dashboard*') ? 'active' : '' }}">
             <a href="{{ route('administrator.dashboard') }}" class="menu-link">
                 <i class="menu-icon fas fa-home"></i>
                 <div class="menu-text">แดชบอร์ด</div>
@@ -42,13 +42,13 @@
                 <div class="text-truncate" data-i18n="Layouts">ผู้ดูแลระบบ</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item {{ Route::is('administrator.admin*') ? 'active' : '' }}">
                     <a href="{{ route('administrator.admin') }}" class="menu-link">
                         <div class="menu-text">ผู้ดูแลระบบ</div>
                     </a>
                 </li>
 
-                <li class="menu-item">
+                <li class="menu-item {{ Route::is('administrator.student*') ? 'active' : '' }}">
                     <a href="{{ route('administrator.student') }}" class="menu-link">
                         <div class="menu-text">นักศึกษา</div>
                     </a>
@@ -63,17 +63,46 @@
             </a>
 
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item {{ Route::is('administrator.user*') ? 'active' : '' }}">
                     <a href="{{ route('administrator.user') }}" class="menu-link">
                         <div class="menu-text">ผู้ใช้งาน</div>
                     </a>
                 </li>
 
-                <li class="menu-item">
+                <li class="menu-item {{ Route::is('administrator.approve-user*') ? 'active' : '' }}">
                     <a href="{{ route('administrator.approve-user') }}" class="menu-link">
                         <div class="menu-text">อนุมัติผู้ใช้งาน</div>
                     </a>
                 </li>
+            </ul>
+        </li>
+
+        <li class="menu-item {{ $main_menu == 'equipment' ? 'open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='menu-icon fas fa-user-tie'></i>
+                <div class="text-truncate" data-i18n="Layouts">อุปกรณ์</div>
+            </a>
+
+            <ul class="menu-sub">
+                <li class="menu-item {{ Route::is('administrator.category-equipment*') ? 'active' : '' }}">
+                    <a href="{{ route('administrator.category-equipment') }}" class="menu-link">
+                        <div class="menu-text">หมวดหมู่อุปกรณ์</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ Route::is('administrator.item-equipment*') ? 'active' : '' }}">
+                    <a href="{{ route('administrator.item-equipment') }}" class="menu-link">
+                        <div class="menu-text">ประเภทอุปกรณ์</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ Route::is('administrator.equipment*') ? 'active' : '' }}">
+                    <a href="{{ route('administrator.equipment') }}" class="menu-link">
+                        <div class="menu-text">อุปกรณ์</div>
+                    </a>
+                </li>
+
+
             </ul>
         </li>
     </ul>

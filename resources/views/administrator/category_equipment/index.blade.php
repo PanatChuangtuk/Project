@@ -10,22 +10,23 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            {{-- แสดงแถบนำทาง --}}
-            <x-bread-crumb />
+            <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
+                <li class="breadcrumb-item"><a href="{{ route('administrator.dashboard') }}">หน้าหลัก</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('administrator.category-equipment') }}">หมวดหมู่อุปกรณ์</a></li>
+            </ol>
 
-            {{-- เนื้อหาหลัก --}}
+            {{-- Content --}}
             <div class="card">
                 <div class="card-body">
-                    {{-- ส่วนบนของตาราง --}}
+                    {{-- Head --}}
                     <div class="d-flex justify-content-between align-items-center p-3">
-                        <form action="{{ route('administrator.admin') }}" method="GET"
+                        <form action="{{ route('administrator.category-equipment') }}" method="GET"
                             class="d-flex justify-content-between align-items-center w-100">
-                            {{-- ช่องค้นหา --}}
                             <x-search />
 
                             <div class="d-flex align-items-center ms-2">
-                                {{-- ปุ่มเพิ่มข้อมูลผู้ดูแลระบบ --}}
-                                <a href="{{ route('administrator.admin.add') }}"
+                                {{-- <x-status-filter /> --}}
+                                <a href="{{ route('administrator.category-equipment.add') }}"
                                     class="btn btn-primary d-flex align-items-center"
                                     style="white-space: nowrap;">เพิ่มข้อมูล
                                 </a>
@@ -33,7 +34,7 @@
                         </form>
                     </div>
 
-                    {{-- ตารางรายการผู้ใช้ --}}
+                    {{-- Table --}}
                     <div class="table-responsive text-nowrap">
                         <table class="table table-hover">
                             <thead>
@@ -44,9 +45,7 @@
                                         </div>
                                     </th>
                                     <th>ลำดับ</th>
-                                    <th class="text-center">ชื่อ-นามสกุล</th>
-                                    <th class="text-center">อีเมล</th>
-                                    <th class="text-center">เบอร์โทรศัพท์</th>
+                                    <th class="text-center">ชื่อหมวดหมู่</th>
                                     <th class="text-center">สถานะเปิดใช้งาน</th>
                                     <th class="text-center">การจัดการ</th>
                                 </tr>
@@ -65,29 +64,23 @@
                                         <td>
                                             <div class="text-center">
                                                 <div class="flex-grow-1">
-                                                    {{ $item->info->first_name ?? null }}
-                                                    {{ $item->info->last_name ?? null }}
+                                                    {{ $item->name ?? null }}
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="text-center">{{ $item->email }}</td>
-
-                                        <td class="text-center">{{ $item->info->mobile_phone ?? 'ไม่มีข้อมูล' }}</td>
                                         <td class="text-center">
                                             <x-status-label :status="$item->status" />
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <div class="d-inline-block text-nowrap">
-                                                    {{-- ปุ่มแก้ไข --}}
                                                     <a class="btn btn-icon btn-outline-primary border-0"
-                                                        href="{{ route('administrator.admin.edit', ['id' => $item->id]) }}">
+                                                        href="{{ route('administrator.category-equipment.edit', ['id' => $item->id]) }}">
                                                         <i class="bx bx-edit bx"></i>
                                                     </a>
 
-                                                    {{-- ปุ่มลบ --}}
                                                     <form id="deleteForm{{ $item->id }}"
-                                                        action="{{ route('administrator.admin.destroy', ['id' => $item->id, 'page' => request()->get('page')]) }}"
+                                                        action="{{ route('administrator.category-equipment.destroy', ['id' => $item->id, 'page' => request()->get('page')]) }}"
                                                         method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
@@ -105,7 +98,7 @@
                             </tbody>
                         </table>
 
-                        {{-- แสดงปุ่มแบ่งหน้า --}}
+                        {{-- Pagination --}}
                         <div>
                             {!! $users->links() !!}
                         </div>
@@ -115,8 +108,6 @@
             </div>
         </div>
     </div>
-
-    {{-- เตรียม URL สำหรับลบหลายรายการ --}}
     <script>
         const currentPath = window.location.pathname;
         const bulkDeleteUrl = currentPath.endsWith('/') ? currentPath + 'bulk-delete' : currentPath + '/bulk-delete';
@@ -124,7 +115,6 @@
 @endsection
 
 @section('script')
-    {{-- โหลด jQuery, SweetAlert2 และสคริปต์ลบ --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/delete.js') }}"></script>

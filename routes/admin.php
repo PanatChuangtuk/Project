@@ -8,7 +8,10 @@ use App\Http\Controllers\Administrator\{
     UserController,
     AdminController,
     DashboardController,
-    StudentController
+    StudentController,
+    EquipmentCategoryController,
+    EquipmentController,
+    EquipmentItemController,
 };
 
 Route::prefix('administrator')->group(function () {
@@ -34,16 +37,6 @@ Route::prefix('administrator')->group(function () {
             Route::post('/bulk-delete', [AdminController::class, 'bulkDelete'])->name('admin.bulk.delete');
         });
 
-        Route::group(['prefix' => 'users', 'as' => 'administrator.'], function () {
-            Route::get('/', [UserController::class, 'index'])->name('users');
-            Route::get('/add', [UserController::class, 'add'])->name('users.add');
-            Route::post('/submit', [UserController::class, 'submit'])->name('users.submit');
-            Route::get('/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
-            Route::post('/update/{id}', [UserController::class, 'update'])->name('users.update');
-            Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.destroy');
-            Route::post('/bulk-delete', [UserController::class, 'bulkDelete'])->name('users.bulk.delete');
-        });
-
         Route::group(['prefix' => 'student', 'as' => 'administrator.'], function () {
             Route::get('/', [StudentController::class, 'index'])->name('student');
             Route::get('/add', [StudentController::class, 'add'])->name('student.add');
@@ -66,6 +59,36 @@ Route::prefix('administrator')->group(function () {
             Route::post('/update/{id}', [UserController::class, 'update'])->name('user.update');
             Route::delete('/{id}', [UserController::class, 'destroy'])->name('user.destroy');
             Route::post('/bulk-delete', [UserController::class, 'bulkDelete'])->name('user.bulk.delete');
+        });
+
+        Route::group(['prefix' => 'category-equipment', 'as' => 'administrator.'], function () {
+            Route::get('/', [EquipmentCategoryController::class, 'index'])->name('category-equipment');
+            Route::get('/add', [EquipmentCategoryController::class, 'add'])->name('category-equipment.add');
+            Route::post('/submit', [EquipmentCategoryController::class, 'submit'])->name('category-equipment.submit');
+            Route::get('/edit/{id}', [EquipmentCategoryController::class, 'edit'])->name('category-equipment.edit');
+            Route::post('/update/{id}', [EquipmentCategoryController::class, 'update'])->name('category-equipment.update');
+            Route::delete('/{id}', [EquipmentCategoryController::class, 'destroy'])->name('category-equipment.destroy');
+            Route::post('/bulk-delete', [EquipmentCategoryController::class, 'bulkDelete'])->name('category-equipment.bulk.delete');
+        });
+
+        Route::group(['prefix' => 'item-equipment', 'as' => 'administrator.'], function () {
+            Route::get('/', [EquipmentItemController::class, 'index'])->name('item-equipment');
+            Route::get('/add', [EquipmentItemController::class, 'add'])->name('item-equipment.add');
+            Route::post('/submit', [EquipmentItemController::class, 'submit'])->name('item-equipment.submit');
+            Route::get('/edit/{id}', [EquipmentItemController::class, 'edit'])->name('item-equipment.edit');
+            Route::post('/update/{id}', [EquipmentItemController::class, 'update'])->name('item-equipment.update');
+            Route::delete('/{id}', [EquipmentItemController::class, 'destroy'])->name('item-equipment.destroy');
+            Route::post('/bulk-delete', [EquipmentItemController::class, 'bulkDelete'])->name('item-equipment.bulk.delete');
+        });
+
+        Route::group(['prefix' => 'equipment', 'as' => 'administrator.'], function () {
+            Route::get('/', [EquipmentController::class, 'index'])->name('equipment');
+            Route::get('/add', [EquipmentController::class, 'add'])->name('equipment.add');
+            Route::post('/submit', [EquipmentController::class, 'submit'])->name('equipment.submit');
+            Route::get('/edit/{id}', [EquipmentController::class, 'edit'])->name('equipment.edit');
+            Route::post('/update/{id}', [EquipmentController::class, 'update'])->name('equipment.update');
+            Route::delete('/{id}', [EquipmentController::class, 'destroy'])->name('equipment.destroy');
+            Route::post('/bulk-delete', [EquipmentController::class, 'bulkDelete'])->name('equipment.bulk.delete');
         });
 
         Route::group(['prefix' => 'approve-user', 'as' => 'administrator.'], function () {

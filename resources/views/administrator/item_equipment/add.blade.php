@@ -5,44 +5,42 @@
 @section('content')
     <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
         <li class="breadcrumb-item"><a href="{{ route('administrator.dashboard') }}">หน้าหลัก</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('administrator.equipment') }}">อุปกรณ์</a></li>
-        <li class="breadcrumb-item active" aria-current="page">เพิ่ม</li>
+        <li class="breadcrumb-item"><a href="{{ route('administrator.item-equipment') }}">ประเภทอุปกรณ์</a></li>
+        <li class="breadcrumb-item active" aria-current="page">เพิ่มประเภทอุปกรณ์</li>
     </ol>
 
     <div class="card shadow-lg border-0 rounded-4">
         <div class="card-header text-white rounded-top-4">
-            <h5 class="mb-0"><i class="fas fa-user-plus"></i> เพิ่มอุปกรณ์</h5>
+            <h5 class="mb-0"><i class="fas fa-user-plus"></i> เพิ่มประเภทอุปกรณ์</h5>
         </div>
         <div class="card-body">
-            <form id="form-create" method="POST" action="{{ route('administrator.equipment.submit') }}"
+            <form id="form-create" method="POST" action="{{ route('administrator.item-equipment.submit') }}"
                 class="mx-1 mx-md-4" enctype="multipart/form-data">
                 @csrf
                 <div class="row g-4">
                     <!-- Email -->
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="fw-bold w-100 d-block">ประเภทอุปกรณ์<span class="text-danger">*</span></label>
-                            <select name="item_id" id="typeSelect" class="form-control">
-                                <option value="">ประเภทอุปกรณ์</option>
-                            </select>
-                            @error('item_id')
-                                <span class="text-danger w-100">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label for="equipment_number" class="form-label fw-semibold">เลขครุภัณฑ์</label>
+                        <label for="name" class="form-label fw-semibold">ชื่อประเภทอุปกรณ์</label>
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-envelope"></i></span>
-                            <input type="text" id="equipment_number" name="equipment_number"
-                                class="form-control border-0 shadow-sm" />
+                            <input type="name" id="name" name="name" class="form-control border-0 shadow-sm" />
                         </div>
-                        @error('equipment_number')
+                        @error('name')
                             <div class="text-danger small mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="fw-bold w-100 d-block">หมวดหมู่อุปกรณ์<span class="text-danger">*</span></label>
+                            <select name="category_id" id="typeSelect" class="form-control">
+                                <option value="">หมวดหมู่อุปกรณ์</option>
+                            </select>
+                            @error('category_id')
+                                <span class="text-danger w-100">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
                     <!-- สถานะ -->
                     <div class="col-md-12 mt-3">
                         <div class="form-check form-switch">
@@ -75,7 +73,7 @@
                 icon: 'success',
                 confirmButtonText: 'ตกลง'
             }).then(function() {
-                window.location.href = '{{ route('administrator.equipment') }}';
+                window.location.href = '{{ route('administrator.item-equipment') }}';
             });
         </script>
     @endif
@@ -83,7 +81,7 @@
         $('#typeSelect').select2({
             placeholder: 'เลือกหมวดหมู่อุปกรณ์',
             ajax: {
-                url: '{{ url('api/get-item') }}',
+                url: '{{ url('api/get-type') }}',
                 dataType: 'json',
                 delay: 250,
                 data: function(params) {

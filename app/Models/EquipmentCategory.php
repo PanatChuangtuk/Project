@@ -5,18 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class EquipmentType extends Model
+class EquipmentCategory extends Model
 {
     use SoftDeletes;
-
-    protected $table = 'equipment_type';
+    // public $timestamps = false;
+    protected $table = 'equipment_category';
 
     protected $fillable = [
         'name',
         'status',
     ];
-    public function equipment()
+    public function item()
     {
-        return $this->hasMany(Equipment::class);
+        return $this->hasMany(EquipmentItem::class, 'category_id');
     }
 }

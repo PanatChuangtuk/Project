@@ -6,7 +6,7 @@
     <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
         <li class="breadcrumb-item"><a href="{{ route('administrator.dashboard') }}">หน้าหลัก</a></li>
         <li class="breadcrumb-item"><a href="{{ route('administrator.admin') }}">แอดมิน</a></li>
-        <li class="breadcrumb-item active" aria-current="page">เพิ่ม</li>
+        <li class="breadcrumb-item active" aria-current="page">เพิ่มข้อมูล</li>
     </ol>
 
     <div class="card shadow-lg border-0 rounded-4">

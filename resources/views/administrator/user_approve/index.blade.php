@@ -228,7 +228,7 @@
     align-items: center;
 ">
         <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-            <span class="visually-hidden">Loading...</span>
+            <span class="visually-hidden">กำลังโหลด...</span>
         </div>
     </div>
     <div class="row">
@@ -256,12 +256,12 @@
                                             <input class="form-check-input check-item" type="checkbox" id="checkAll" />
                                         </div> --}}
                                     </th>
-                                    <th>NO</th>
-                                    <th class="text-center">FullName</th>
-                                    <th class="text-center">Email</th>
-                                    <th class="text-center">MobilePhone</th>
-                                    <th class="text-center">Created Date</th>
-                                    <th class="text-center">Action</th>
+                                    <th>ลำดับ</th>
+                                    <th class="text-center">ชื่อ-นามสกุล</th>
+                                    <th class="text-center">อีเมล</th>
+                                    <th class="text-center">เบอร์โทรศัพท์</th>
+                                    <th class="text-center">วันที่สมัครสมาชิก</th>
+                                    <th class="text-center">การจัดการ</th>
                                 </tr>
                             </thead>
 
@@ -281,7 +281,7 @@
                                             </div>
                                         </td>
                                         <td class="text-center">{{ $item->email }}</td>
-                                        <td class="text-center">{{ $item->info->mobile_phone ?? 'Empty' }}</td>
+                                        <td class="text-center">{{ $item->info->mobile_phone ?? 'ว่าง' }}</td>
                                         <td class="text-center">{{ $item->created_at }}</td>
                                         <td class="text-center">
                                             <button class="btn btn-info mb-3 show-modal-btn" data-bs-toggle="modal"
@@ -342,7 +342,7 @@
                                     </div>
 
                                     <div class="info-item">
-                                        <div class="info-label"><i class="fas fa-user info-icon"></i>ชื่อ:</div>
+                                        <div class="info-label"><i class="fas fa-user info-icon"></i>ชื่อ-นามสกุล:</div>
                                         <div class="info-value" id="newName">ไม่มีข้อมูล</div>
                                     </div>
                                     <div class="info-item">
@@ -384,7 +384,7 @@
                                         </div>
                                     </div>
                                     <div class="info-item">
-                                        <div class="info-label"><i class="fas fa-user info-icon"></i>ชื่อ:</div>
+                                        <div class="info-label"><i class="fas fa-user info-icon"></i>ชื่อ-นามสกุล:</div>
                                         <div class="info-value" id="oldName">ไม่มีข้อมูล</div>
                                     </div>
                                     <div class="info-item">

@@ -10,22 +10,38 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            {{-- แสดงแถบนำทาง --}}
-            <x-bread-crumb />
+            <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
+                <li class="breadcrumb-item"><a href="{{ route('administrator.dashboard') }}">หน้าหลัก</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('administrator.category-equipment') }}">ประเภทอุปกรณ์</a></li>
+            </ol>
 
-            {{-- เนื้อหาหลัก --}}
+            {{-- เนื้อหา --}}
             <div class="card">
                 <div class="card-body">
-                    {{-- ส่วนบนของตาราง --}}
+                    {{-- หัว --}}
                     <div class="d-flex justify-content-between align-items-center p-3">
-                        <form action="{{ route('administrator.admin') }}" method="GET"
+                        <form action="{{ route('administrator.item-equipment') }}" method="GET"
                             class="d-flex justify-content-between align-items-center w-100">
-                            {{-- ช่องค้นหา --}}
                             <x-search />
 
-                            <div class="d-flex align-items-center ms-2">
-                                {{-- ปุ่มเพิ่มข้อมูลผู้ดูแลระบบ --}}
-                                <a href="{{ route('administrator.admin.add') }}"
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="flex-grow-1">
+                                    <select class="form-select" id="itemFilter" name="category_id"
+                                        onchange="this.form.submit()">
+                                        <option value=""
+                                            {{ request()->input('category_id') == '' ? 'selected' : '' }}>
+                                            กรองตามหมวดหมู่
+                                        </option>
+                                        @foreach ($category as $item)
+                                            <option value="{{ $item->id }}"
+                                                {{ request()->input('category_id') == $item->id ? 'selected' : '' }}>
+                                                {{ $item->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <a href="{{ route('administrator.item-equipment.add') }}"
                                     class="btn btn-primary d-flex align-items-center"
                                     style="white-space: nowrap;">เพิ่มข้อมูล
                                 </a>
@@ -33,7 +49,7 @@
                         </form>
                     </div>
 
-                    {{-- ตารางรายการผู้ใช้ --}}
+                    {{-- ตาราง --}}
                     <div class="table-responsive text-nowrap">
                         <table class="table table-hover">
                             <thead>
@@ -44,9 +60,8 @@
                                         </div>
                                     </th>
                                     <th>ลำดับ</th>
-                                    <th class="text-center">ชื่อ-นามสกุล</th>
-                                    <th class="text-center">อีเมล</th>
-                                    <th class="text-center">เบอร์โทรศัพท์</th>
+                                    <th class="text-center">ชื่อหมวดหมู่อุปกรณ์</th>
+                                    <th class="text-center">ชื่อประเภทอุปกรณ์</th>
                                     <th class="text-center">สถานะเปิดใช้งาน</th>
                                     <th class="text-center">การจัดการ</th>
                                 </tr>
@@ -65,29 +80,30 @@
                                         <td>
                                             <div class="text-center">
                                                 <div class="flex-grow-1">
-                                                    {{ $item->info->first_name ?? null }}
-                                                    {{ $item->info->last_name ?? null }}
+                                                    {{ $item->category->name ?? null }}
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="text-center">{{ $item->email }}</td>
-
-                                        <td class="text-center">{{ $item->info->mobile_phone ?? 'ไม่มีข้อมูล' }}</td>
+                                        <td>
+                                            <div class="text-center">
+                                                <div class="flex-grow-1">
+                                                    {{ $item->name ?? null }}
+                                                </div>
+                                            </div>
+                                        </td>
                                         <td class="text-center">
                                             <x-status-label :status="$item->status" />
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <div class="d-inline-block text-nowrap">
-                                                    {{-- ปุ่มแก้ไข --}}
                                                     <a class="btn btn-icon btn-outline-primary border-0"
-                                                        href="{{ route('administrator.admin.edit', ['id' => $item->id]) }}">
+                                                        href="{{ route('administrator.item-equipment.edit', ['id' => $item->id]) }}">
                                                         <i class="bx bx-edit bx"></i>
                                                     </a>
 
-                                                    {{-- ปุ่มลบ --}}
                                                     <form id="deleteForm{{ $item->id }}"
-                                                        action="{{ route('administrator.admin.destroy', ['id' => $item->id, 'page' => request()->get('page')]) }}"
+                                                        action="{{ route('administrator.item-equipment.destroy', ['id' => $item->id, 'page' => request()->get('page')]) }}"
                                                         method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
@@ -105,7 +121,7 @@
                             </tbody>
                         </table>
 
-                        {{-- แสดงปุ่มแบ่งหน้า --}}
+                        {{-- การแบ่งหน้า --}}
                         <div>
                             {!! $users->links() !!}
                         </div>
@@ -115,8 +131,6 @@
             </div>
         </div>
     </div>
-
-    {{-- เตรียม URL สำหรับลบหลายรายการ --}}
     <script>
         const currentPath = window.location.pathname;
         const bulkDeleteUrl = currentPath.endsWith('/') ? currentPath + 'bulk-delete' : currentPath + '/bulk-delete';
@@ -124,7 +138,6 @@
 @endsection
 
 @section('script')
-    {{-- โหลด jQuery, SweetAlert2 และสคริปต์ลบ --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/delete.js') }}"></script>

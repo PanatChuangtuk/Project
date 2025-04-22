@@ -12,15 +12,15 @@ class Equipment extends Model
     protected $table = 'equipment';
 
     protected $fillable = [
-        'type_id',
+        'item_id',
         'name',
         'quantity',
+        'number',
         'status',
         'equipment_number',
     ];
-
-    public function type()
+    public function item()
     {
-        return $this->belongsTo(EquipmentType::class, 'type_id');
+        return $this->belongsTo(EquipmentItem::class, 'item_id');
     }
 }

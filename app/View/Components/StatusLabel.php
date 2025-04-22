@@ -20,6 +20,6 @@ class StatusLabel extends Component
 
     public function getLabel()
     {
-        return $this->status == 1 ? 'Active' : 'Inactive';
+        return $this->status == 1 ? 'เปิดใช้งาน' : 'ไม่เปิดใช้งาน';
     }
 }
