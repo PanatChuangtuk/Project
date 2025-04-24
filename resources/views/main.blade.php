@@ -8,6 +8,7 @@
     <title>@yield('title', 'Default') - KMUTNB</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
@@ -115,11 +116,6 @@
                         <li class="{{ request()->is('equipment') ? 'active' : '' }}">
                             <a href="{{ url('/equipment') }}" class="nav-link">หน้าอุปกรณ์</a>
                         </li>
-                        <div class="text-center my-4">
-                            <a href="{{ route('borrow.summary') }}" class="btn btn-lg btn-primary px-5">
-                                ไปหน้ายืมอุปกรณ์
-                            </a>
-                        </div>
                         @auth('member')
                             <div class="member-links member dropdown">
                                 <li>
@@ -147,7 +143,20 @@
                                 </li>
                             </div>
                         @endauth
-
+                        <li class="nav-item position-relative">
+                            <a href="{{ route('borrow.cart') }}" class="nav-link" title="View Borrow Summary">
+                                <i class='bx bx-cart-alt'
+                                    style="font-size: 1.8rem; color: white; position: relative;"></i>
+                                {{-- เปลี่ยนสีไอคอนเป็นสีขาว --}}
+                                @if (session('cart') && count(session('cart')) > 0)
+                                    <span
+                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                        style="font-size: 0.8rem;">
+                                        {{ count(session('cart')) }}
+                                    </span>
+                                @endif
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

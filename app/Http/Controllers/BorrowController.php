@@ -13,7 +13,7 @@ class BorrowController extends MainController
     {
         $cart = session()->get('cart', []);
 
-        dd($cart);
-        return view('borrow', compact('equipment'));
+        // dd($cart);
+        return view('borrow', compact('cart'));
     }
 }

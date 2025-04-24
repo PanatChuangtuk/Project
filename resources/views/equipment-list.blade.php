@@ -129,8 +129,9 @@
                 @foreach ($equipment as $item)
                     @php
                         $totalStock = $item->equipment->count();
+                        $borroweds = $borrowedCounts[$item->id] ?? 0;
                         $borrowed = isset($cart[$item->id]) ? $cart[$item->id]['quantity'] : 0;
-                        $available = max($totalStock - $borrowed, 0);
+                        $available = max($totalStock - $borrowed - $borroweds, 0);
                     @endphp
 
                     <div class="col-md-4">
