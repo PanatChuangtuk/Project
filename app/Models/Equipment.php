@@ -22,4 +22,8 @@ class Equipment extends Model
     {
         return $this->belongsTo(EquipmentItem::class, 'item_id');
     }
+    public function loanEquipments()
+    {
+        return $this->hasMany(LoanEquipment::class, 'equipment_id');
+    }
 }

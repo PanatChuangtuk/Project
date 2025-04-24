@@ -12,6 +12,7 @@ class LoanEquipment extends Model
 
     protected $table = 'loan_equipment';
     protected $fillable = [
+        'equipment_item_id',
         'equipment_id',
         'loan_transactions_id',
         'name',
@@ -23,8 +24,14 @@ class LoanEquipment extends Model
 
     public function equipment()
     {
-        return $this->belongsTo(Equipment::class);
+        return $this->belongsTo(Equipment::class, 'equipment_id');
     }
+
+    public function equipmentItem()
+    {
+        return $this->belongsTo(EquipmentItem::class, 'equipment_item_id');
+    }
+
     public function loanTransaction()
     {
         return $this->belongsTo(LoanTransaction::class, 'loan_transactions_id');
