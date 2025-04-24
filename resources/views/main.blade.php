@@ -115,7 +115,11 @@
                         <li class="{{ request()->is('equipment') ? 'active' : '' }}">
                             <a href="{{ url('/equipment') }}" class="nav-link">หน้าอุปกรณ์</a>
                         </li>
-
+                        <div class="text-center my-4">
+                            <a href="{{ route('borrow.summary') }}" class="btn btn-lg btn-primary px-5">
+                                ไปหน้ายืมอุปกรณ์
+                            </a>
+                        </div>
                         @auth('member')
                             <div class="member-links member dropdown">
                                 <li>

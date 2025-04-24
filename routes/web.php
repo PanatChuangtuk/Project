@@ -8,7 +8,8 @@ use App\Http\Controllers\{
     ProfileController,
     EquipmentController,
     ImageController,
-    EquipmentListController
+    EquipmentListController,
+    BorrowController
 };
 
 require base_path('routes/admin.php');
@@ -33,6 +34,8 @@ Route::middleware(['auth:member'])->group(function () {
     Route::post('profile', [ProfileController::class, 'submit'])->name('profile.submit');
     Route::get('equipment', [EquipmentController::class, 'index'])->name('equipment');
     Route::get('equipment-list', [EquipmentListController::class, 'equipmentListIndex'])->name('equipment.list');
+    Route::post('equipment-list/cart', [EquipmentListController::class, 'equipmentCart'])->name('equipment.list.cart');
+    Route::get('borrow-summary', [BorrowController::class, 'borrow'])->name('borrow.summary');
     Route::post('logout', [ProfileController::class, 'logout'])->name('logout');
 });
 // Route::get('/', function () {
