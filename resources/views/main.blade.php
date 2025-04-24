@@ -29,6 +29,7 @@
             padding: 8px 15px;
             font-weight: bold;
             transition: color 0.3s ease-in-out;
+            color: white;
         }
 
         .nav-link::after,
@@ -39,14 +40,14 @@
             bottom: 0;
             width: 0;
             height: 2px;
-            background-color: #007bff;
+            background-color: var(--color-primary);
             transition: all 0.3s ease-in-out;
             transform: translateX(-50%);
         }
 
         .nav-link:hover,
         .nav-main li a:hover {
-            color: #007bff;
+            color: var(--color-primary);
         }
 
         .nav-link:hover::after,
@@ -56,7 +57,7 @@
 
         .active .nav-link,
         .nav-main li.active a {
-            color: #007bff;
+            color: white;
             font-weight: bold;
         }
 
@@ -68,7 +69,8 @@
         /* พื้นหลัง */
         .navbar-toppage,
         .footer {
-            background-color: #333;
+            background-color: var(--color-secondary);
+            color: white;
         }
 
         /* ลิสต์ */
@@ -81,12 +83,12 @@
         .footer-links ul li a,
         .navbar-slider .nav-accordion li h5 {
             font-size: 16px;
-            color: #fff;
+            color: white;
             text-decoration: none;
         }
 
         .footer-links ul li a:hover {
-            color: #3498db;
+            color: var(--color-primary);
         }
     </style>
     @yield('stylesheet')
@@ -125,8 +127,8 @@
                                         <img class="icons avatar"
                                             src="{{ asset('upload/images/' . $profileUser->avatar) ?? null }}"
                                             alt="">
-                                        <span
-                                            class="username">{{ $profileUser->first_name . ' ' . $profileUser->last_name }}</span>
+                                        <span class="username"
+                                            style="color: aliceblue">{{ $profileUser->first_name . ' ' . $profileUser->last_name }}</span>
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li>

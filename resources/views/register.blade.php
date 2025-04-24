@@ -89,7 +89,7 @@
         }
 
         .capture-btn {
-            background-color: #28a745;
+            background-color: #007bff;
             color: white;
             padding: 10px 20px;
             font-size: 16px;
@@ -100,7 +100,7 @@
         }
 
         .capture-btn:hover {
-            background-color: #218838;
+            background-color: #0056b3;
         }
 
         .form-container {
@@ -319,7 +319,7 @@
 
                                 <input type="hidden" id="imageData" name="imageData">
                                 <div class="col-12 d-flex py-3">
-                                    <button class="btn btn-success mx-auto px-5 py-2 shadow-lg fw-bold">
+                                    <button class="btn capture-btn mx-auto px-5 py-2 shadow-lg fw-bold">
                                         ✅ ลงทะเบียน
                                     </button>
                                 </div>

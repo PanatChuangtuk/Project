@@ -7,7 +7,8 @@ use App\Http\Controllers\{
     RegisterController,
     ProfileController,
     EquipmentController,
-    ImageController
+    ImageController,
+    EquipmentListController
 };
 
 require base_path('routes/admin.php');
@@ -31,6 +32,7 @@ Route::middleware(['auth:member'])->group(function () {
     Route::get('profile', [ProfileController::class, 'profileIndex'])->name('profile');
     Route::post('profile', [ProfileController::class, 'submit'])->name('profile.submit');
     Route::get('equipment', [EquipmentController::class, 'index'])->name('equipment');
+    Route::get('equipment-list', [EquipmentListController::class, 'equipmentListIndex'])->name('equipment.list');
     Route::post('logout', [ProfileController::class, 'logout'])->name('logout');
 });
 // Route::get('/', function () {

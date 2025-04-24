@@ -43,8 +43,8 @@ maximum-scale=1.0, user-scalable=no" />
         }
 
         .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
+            border: 4px solid var(--color-gray);
+            border-top: 4px solid var(--color-primary);
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -63,7 +63,7 @@ maximum-scale=1.0, user-scalable=no" />
 
         /* Navbar */
         .navbar-toppage {
-            background-color: #333;
+            background-color: var(--color-secondary);
             padding: 10px 0;
         }
 
@@ -105,14 +105,14 @@ maximum-scale=1.0, user-scalable=no" />
 
         .nav-main li a {
             text-transform: uppercase;
-            color: #333;
+            color: var(--color-title);
             text-decoration: none;
             font-weight: bold;
             font-size: 16px;
         }
 
         .nav-main li.active a {
-            color: #3498db;
+            color: var(--color-primary);
         }
 
         .navbar-slider .nav-accordion {
@@ -126,7 +126,7 @@ maximum-scale=1.0, user-scalable=no" />
 
         .navbar-slider .nav-accordion li h5 {
             font-size: 18px;
-            color: #333;
+            color: var(--color-title);
             margin: 0;
         }
 
@@ -147,7 +147,7 @@ maximum-scale=1.0, user-scalable=no" />
 
         /* Footer */
         .footer {
-            background-color: #333;
+            background-color: var(--color-secondary);
             color: #fff;
             padding: 20px 0;
             font-size: 14px;
@@ -162,7 +162,7 @@ maximum-scale=1.0, user-scalable=no" />
         .footer-info p {
             font-size: 16px;
             text-align: center;
-            color: #ddd;
+            color: var(--color-gray);
         }
 
         .footer-info hr {
@@ -187,7 +187,7 @@ maximum-scale=1.0, user-scalable=no" />
         }
 
         .footer-links ul li a:hover {
-            color: #3498db;
+            color: var(--color-primary);
         }
 
         .followus {
@@ -206,7 +206,7 @@ maximum-scale=1.0, user-scalable=no" />
         }
 
         .totop a:hover {
-            color: #3498db;
+            color: var(--color-primary);
         }
 
         /* Responsive Design */
@@ -330,9 +330,9 @@ maximum-scale=1.0, user-scalable=no" />
             <!--container-->
         </div>
         <!--section-->
-        <footer class="footer">
+        {{-- <footer class="footer">
 
-        </footer>
+        </footer> --}}
     </div>
 
     <script src="{{ asset('js/jquery-3.4.1.min.js') }}" defer></script>
