@@ -5,9 +5,6 @@
 @endsection
 
 @section('stylesheet')
-    <!-- Font Awesome CDN (หรือใช้ locally ก็ได้) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
     <style>
         .equipment-section {
             padding: 30px 15px;
@@ -24,20 +21,17 @@
 
         .equipment-section {
             padding: 30px 0;
-            /* ตัด padding ซ้ายขวาออก */
+            margin-bottom: 70px;
         }
 
         .equipment-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 24px;
             width: 100%;
             max-width: 1200px;
-            /* ป้องกันไม่ให้กว้างเกินบนจอใหญ่ */
             margin: 0 auto;
-            /* center ทั้ง block */
             padding: 0 15px;
-            /* เพิ่ม padding เล็กน้อยแทนช่องว่าง */
         }
 
         .equipment-item {
