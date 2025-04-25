@@ -36,7 +36,9 @@ Route::middleware(['auth:member'])->group(function () {
     Route::get('equipment-list', [EquipmentListController::class, 'equipmentListIndex'])->name('equipment.list');
     Route::post('equipment-list/cart', [EquipmentListController::class, 'equipmentCart'])->name('equipment.list.cart');
     Route::get('borrow-cart', [BorrowController::class, 'borrow'])->name('borrow.cart');
+    Route::post('borrow/submit', [BorrowController::class, 'submit'])->name('borrow.submit');
     Route::post('logout', [ProfileController::class, 'logout'])->name('logout');
+    Route::post('/equipment/update', [EquipmentController::class, 'update'])->name('equipment.update');
 });
 // Route::get('/', function () {
 //     return redirect(app()->getLocale() . '/ ');

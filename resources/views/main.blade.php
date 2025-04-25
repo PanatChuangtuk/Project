@@ -19,6 +19,7 @@
     <link href="{{ asset('css/swiper.css') }}" rel="stylesheet">
     <link href="{{ asset('css/jquery.scrollbar.css') }}" rel="stylesheet">
     <link href="{{ asset('css/global.css') }}" rel="stylesheet">
+
     <style>
         .nav-link,
         .nav-main li a {
@@ -88,66 +89,49 @@
         .footer-links ul li a:hover {
             color: var(--color-primary);
         }
+
+        .main-content {
+            padding-top: 60px;
+            /* หรือมากกว่านั้นตามที่ต้องการ */
+        }
     </style>
     @yield('stylesheet')
 </head>
 
 <body>
-
-    <div class="preload">
-        <span class="loader"></span>
-    </div>
-
     <div class="page logo-hidden">
         <header class="header">
             <div class="navbar-toppage">
                 <div class="container">
-                    <button class="btn btn-icon navbar-toggle" type="button">
-                        <span class="group">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </span>
-                    </button>
                     <ul class="nav nav-general right member">
-                        <li class="{{ request()->is('profile') ? 'active' : '' }}">
+                        <li class="{{ request()->is('/') ? 'active' : '' }}">
                             <a href="{{ url('/') }}" class="nav-link">หน้าหลัก</a>
                         </li>
                         <li class="{{ request()->is('equipment') ? 'active' : '' }}">
                             <a href="{{ url('/equipment') }}" class="nav-link">หน้าอุปกรณ์</a>
                         </li>
                         @auth('member')
-                            <div class="member-links member dropdown">
-                                <li>
-                                    <a href="#" data-bs-toggle="dropdown" data-bs-display="static" class="link">
-                                        <img class="icons avatar"
-                                            src="{{ asset('upload/images/' . $profileUser->avatar) ?? null }}"
-                                            alt="">
-                                        <span class="username"
-                                            style="color: aliceblue">{{ $profileUser->first_name . ' ' . $profileUser->last_name }}</span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a href="{{ url('/profile') }}">บัญชีของฉัน</a>
-                                        </li>
-                                        <li>
-                                            <form id="logout-form" action="{{ url('/logout') }}" method="POST"
-                                                style="display: none;">
-                                                @csrf
-                                            </form>
-                                            <a href="#" class="logout" onclick="confirmLogout(event)">
-                                                ออกจากระบบ
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </div>
+                            <li class="dropdown">
+                                <a href="#" data-bs-toggle="dropdown" data-bs-display="static" class="nav-link">
+                                    <img class="icons avatar"
+                                        src="{{ $profileUser->avatar ? asset('upload/images/' . $profileUser->avatar) : asset('img/default-avatar.png') }}"
+                                        alt="" style="width: 30px; height: 30px; border-radius: 50%;">
+                                    <span
+                                        class="username text-white">{{ $profileUser->first_name . ' ' . $profileUser->last_name }}</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{ url('/profile') }}">บัญชีของฉัน</a></li>
+                                    <li>
+                                        <form id="logout-form" action="{{ url('/logout') }}" method="POST"
+                                            style="display: none;">@csrf</form>
+                                        <a href="#" class="logout" onclick="confirmLogout(event)">ออกจากระบบ</a>
+                                    </li>
+                                </ul>
+                            </li>
                         @endauth
-                        <li class="nav-item position-relative">
+                        <li class="nav-item position-relative {{ request()->is('borrow-cart') ? 'active' : '' }}">
                             <a href="{{ route('borrow.cart') }}" class="nav-link" title="View Borrow Summary">
-                                <i class='bx bx-cart-alt'
-                                    style="font-size: 1.8rem; color: white; position: relative;"></i>
-                                {{-- เปลี่ยนสีไอคอนเป็นสีขาว --}}
+                                <i class='bx bx-cart-alt' style="font-size: 1.8rem; color: white;"></i>
                                 @if (session('cart') && count(session('cart')) > 0)
                                     <span
                                         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
@@ -165,16 +149,9 @@
         <div class="navbar-slider">
             <div class="hgroup">
                 <button class="btn btn-icon navbar-toggle" type="button">
-                    <span class="group">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </span>
+                    <span class="group"><span></span><span></span><span></span></span>
                 </button>
-                <ul class="nav nav-general left">
-                </ul>
             </div>
-
             <ul class="nav nav-accordion">
                 <li>
                     <h5><a href="{{ url('/') }}">หน้าหลัก</a></h5>
@@ -187,20 +164,13 @@
 
         @yield('content')
 
-        <footer class="footer">
+        <footer class="footer mt-5">
             <div class="container">
-                <div class="cols footer-info">
+                <div class="cols footer-info ">
                     <div class="group">
-                        <p>
-                            <span class="fs-14">©</span><br class="d-none d-lg-block">
-                            2024<br>
-                            ALL RIGHTS RESERVED
-                        </p>
+                        <p><span class="fs-14">©</span> 2024<br>ALL RIGHTS RESERVED</p>
                         <hr>
-                        <p>
-                            KMUTNB<br class="d-none d-lg-block">
-                            THAILAND
-                        </p>
+                        <p>KMUTNB<br>THAILAND</p>
                     </div>
                 </div>
                 <div class="cols footer-links">
@@ -211,21 +181,16 @@
                         </ul>
                     </div>
                 </div>
-                <div class="cols footer-contact">
-                    <div class="group">
-                        <div class="followus"></div>
-                    </div>
-                </div>
             </div>
 
             <div class="totop">
-                <a class="icons" href="#">
-                    <img class="svg-js" src="{{ asset('img/icons/icon-totop.svg') }}" alt="">
-                </a>
+                <a class="icons" href="#"><img class="svg-js" src="{{ asset('img/icons/icon-totop.svg') }}"
+                        alt=""></a>
             </div>
         </footer>
     </div>
 
+    <!-- Scripts -->
     <script src="{{ asset('js/jquery-3.4.1.min.js') }}" defer></script>
     <script src="{{ asset('js/bootstrap/popper.min.js') }}" defer></script>
     <script src="{{ asset('js/bootstrap/bootstrap.min.js') }}" defer></script>
@@ -237,6 +202,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- Logout confirm -->
     <script>
         function confirmLogout(event) {
             event.preventDefault();
@@ -255,7 +221,8 @@
             });
         }
     </script>
+
+    @yield('script')
 </body>
 
 </html>
-@yield('script')

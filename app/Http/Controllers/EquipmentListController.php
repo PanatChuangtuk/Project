@@ -24,7 +24,7 @@ class EquipmentListController extends MainController
         foreach ($borrowedItems as $borrow) {
             foreach ($borrow->loanEquipments as $loanEquipment) {
                 // dump($loanEquipment);
-                $equipmentId = $loanEquipment->equipment_id;
+                $equipmentId = $loanEquipment->equipment_item_id;
 
                 if (!isset($borrowedCounts[$equipmentId])) {
                     $borrowedCounts[$equipmentId] = 0;
@@ -32,11 +32,11 @@ class EquipmentListController extends MainController
                 $borrowedCounts[$equipmentId]++;
             }
         }
-
         return view('equipment-list', compact('equipment', 'borrowedCounts'));
     }
     public function equipmentCart(Request $request)
     {
+        // dd($request->all());
         $product = EquipmentItem::find($request->input('equipment_id'));
         if (!$product) {
             return response()->json([
@@ -48,31 +48,18 @@ class EquipmentListController extends MainController
         $cart = session()->get('cart', []);
 
         if (isset($cart[$product->id])) {
-            $cart[$product->id]['quantity'] += 1;
+            $cart[$product->id]['quantity'] += $request->input('quantity');
         } else {
             $cart[$product->id] = [
                 'id' => $product->id,
                 'name' => $product->name,
-                'quantity' => 1,
+                'quantity' => $request->input('quantity'),
+                'image' => $product->image,
             ];
         }
         session()->put('cart', $cart);
         return response()->json([
             'status' => 'success'
-        ]);
-    }
-    public function addToCart($lang, $id)
-    {
-        $product = EquipmentItem::find($id);
-        $cart = session()->get('cart', []);
-        if (isset($cart[$product->id])) {
-            $cart[$product->id]['quantity'] += 1;
-        } else {
-            $cart[$product->id]['quantity'] = 1;
-        }
-        session()->put('cart', $cart);
-        return response()->json([
-            'status' => 'add'
         ]);
     }
 }

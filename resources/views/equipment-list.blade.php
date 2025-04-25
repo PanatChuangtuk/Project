@@ -1,7 +1,3 @@
-@php
-    $cart = session('cart', []);
-@endphp
-
 @extends('main')
 
 @section('title')
@@ -128,12 +124,12 @@
             <div class="row">
                 @foreach ($equipment as $item)
                     @php
+                        $cart = session('cart', []);
                         $totalStock = $item->equipment->count();
                         $borroweds = $borrowedCounts[$item->id] ?? 0;
                         $borrowed = isset($cart[$item->id]) ? $cart[$item->id]['quantity'] : 0;
                         $available = max($totalStock - $borrowed - $borroweds, 0);
                     @endphp
-
                     <div class="col-md-4">
                         <div class="equipment-item">
                             <img src="{{ $item->image ? asset('upload/file/equipment_item/' . $item->image) : asset('images/default-image.png') }}"
