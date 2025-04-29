@@ -77,6 +77,23 @@
             </ul>
         </li>
 
+        <li class="menu-item {{ $main_menu == 'approve_equipment' ? 'open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='menu-icon fas fa-user-tie'></i>
+                <div class="text-truncate" data-i18n="Layouts">คำร้องอุปกรณ์</div>
+            </a>
+
+            <ul class="menu-sub">
+                <li class="menu-item {{ Route::is('administrator.approve-equipment*') ? 'active' : '' }}">
+                    <a href="{{ route('administrator.approve-equipment') }}" class="menu-link">
+                        <div class="menu-text">อนุมัติการยืมอุปกรณ์</div>
+                    </a>
+                </li>
+
+
+            </ul>
+        </li>
+
         <li class="menu-item {{ $main_menu == 'equipment' ? 'open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon fas fa-user-tie'></i>

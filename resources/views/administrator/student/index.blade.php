@@ -10,7 +10,10 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <x-bread-crumb />
+            <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
+                <li class="breadcrumb-item"><a href="{{ route('administrator.dashboard') }}">หน้าหลัก</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('administrator.student') }}">นักศึกษา</a></li>
+            </ol>
 
             {{-- เนื้อหา --}}
             <div class="card">

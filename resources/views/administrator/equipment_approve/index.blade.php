@@ -12,30 +12,23 @@
         <div class="col-md-12">
             <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
                 <li class="breadcrumb-item"><a href="{{ route('administrator.dashboard') }}">หน้าหลัก</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('administrator.admin') }}">แอดมิน</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('administrator.approve-equipment') }}">อนุมัติการยืมอุปกรณ์</a>
+                </li>
             </ol>
 
-            {{-- เนื้อหาหลัก --}}
+            {{-- เนื้อหา --}}
             <div class="card">
                 <div class="card-body">
-                    {{-- ส่วนบนของตาราง --}}
+                    {{-- หัว --}}
                     <div class="d-flex justify-content-between align-items-center p-3">
-                        <form action="{{ route('administrator.admin') }}" method="GET"
+                        <form action="{{ route('administrator.approve-equipment') }}" method="GET"
                             class="d-flex justify-content-between align-items-center w-100">
-                            {{-- ช่องค้นหา --}}
                             <x-search />
 
-                            <div class="d-flex align-items-center ms-2">
-                                {{-- ปุ่มเพิ่มข้อมูลผู้ดูแลระบบ --}}
-                                <a href="{{ route('administrator.admin.add') }}"
-                                    class="btn btn-primary d-flex align-items-center"
-                                    style="white-space: nowrap;">เพิ่มข้อมูล
-                                </a>
-                            </div>
                         </form>
                     </div>
 
-                    {{-- ตารางรายการผู้ใช้ --}}
+                    {{-- ตาราง --}}
                     <div class="table-responsive text-nowrap">
                         <table class="table table-hover">
                             <thead>
@@ -46,10 +39,9 @@
                                         </div>
                                     </th>
                                     <th>ลำดับ</th>
-                                    <th class="text-center">ชื่อ-นามสกุล</th>
-                                    <th class="text-center">อีเมล</th>
-                                    <th class="text-center">เบอร์โทรศัพท์</th>
-                                    <th class="text-center">สถานะเปิดใช้งาน</th>
+                                    <th class="text-center">ชื่อ-นามสกุลผู้ยืม</th>
+                                    <th class="text-center">รหัสนักศึกษา</th>
+                                    <th class="text-center">สถานะคำร้อง</th>
                                     <th class="text-center">การจัดการ</th>
                                 </tr>
                             </thead>
@@ -67,29 +59,24 @@
                                         <td>
                                             <div class="text-center">
                                                 <div class="flex-grow-1">
-                                                    {{ $item->info->first_name ?? null }}
-                                                    {{ $item->info->last_name ?? null }}
+                                                    {{ $item->member->info->first_name ?? null }}
+                                                    {{ $item->member->info->last_name ?? null }}
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="text-center">{{ $item->email }}</td>
-
-                                        <td class="text-center">{{ $item->info->mobile_phone ?? 'ไม่มีข้อมูล' }}</td>
-                                        <td class="text-center">
-                                            <x-status-label :status="$item->status" />
+                                        <td class="text-center">{{ $item->member->info->student->student_number ?? null }}
                                         </td>
+                                        <td class="text-center">{{ $item->created_at }}</td>
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <div class="d-inline-block text-nowrap">
-                                                    {{-- ปุ่มแก้ไข --}}
                                                     <a class="btn btn-icon btn-outline-primary border-0"
-                                                        href="{{ route('administrator.admin.edit', ['id' => $item->id]) }}">
+                                                        href="{{ route('administrator.user.edit', ['id' => $item->id]) }}">
                                                         <i class="bx bx-edit bx"></i>
                                                     </a>
 
-                                                    {{-- ปุ่มลบ --}}
                                                     <form id="deleteForm{{ $item->id }}"
-                                                        action="{{ route('administrator.admin.destroy', ['id' => $item->id, 'page' => request()->get('page')]) }}"
+                                                        action="{{ route('administrator.user.destroy', ['id' => $item->id, 'page' => request()->get('page')]) }}"
                                                         method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
@@ -107,7 +94,7 @@
                             </tbody>
                         </table>
 
-                        {{-- แสดงปุ่มแบ่งหน้า --}}
+                        {{-- การแบ่งหน้า --}}
                         <div>
                             {!! $users->links() !!}
                         </div>
@@ -117,8 +104,6 @@
             </div>
         </div>
     </div>
-
-    {{-- เตรียม URL สำหรับลบหลายรายการ --}}
     <script>
         const currentPath = window.location.pathname;
         const bulkDeleteUrl = currentPath.endsWith('/') ? currentPath + 'bulk-delete' : currentPath + '/bulk-delete';
@@ -126,7 +111,6 @@
 @endsection
 
 @section('script')
-    {{-- โหลด jQuery, SweetAlert2 และสคริปต์ลบ --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/delete.js') }}"></script>

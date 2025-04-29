@@ -12,6 +12,7 @@ use App\Http\Controllers\Administrator\{
     EquipmentCategoryController,
     EquipmentController,
     EquipmentItemController,
+    ApproveEquipmentController
 };
 
 Route::prefix('administrator')->group(function () {
@@ -96,6 +97,11 @@ Route::prefix('administrator')->group(function () {
         Route::group(['prefix' => 'approve-user', 'as' => 'administrator.'], function () {
             Route::get('/', [ApproveUserController::class, 'index'])->name('approve-user');
             Route::post('/approve', [ApproveUserController::class, 'updateApprove'])->name('approve-user.approve');
+        });
+
+        Route::group(['prefix' => 'approve-equipment', 'as' => 'administrator.'], function () {
+            Route::get('/', [ApproveEquipmentController::class, 'index'])->name('approve-equipment');
+            // Route::post('/approve', [ApproveUserController::class, 'updateApprove'])->name('approve-user.approve');
         });
     });
 });

@@ -233,7 +233,11 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <x-bread-crumb />
+            <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
+                <li class="breadcrumb-item"><a href="{{ route('administrator.dashboard') }}">หน้าหลัก</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('administrator.approve-user') }}">อนุมัติผู้ใช้งาน</a>
+                </li>
+            </ol>
 
             {{-- Content --}}
             <div class="card">
