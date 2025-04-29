@@ -14,4 +14,5 @@ Route::controller(UserApiController::class)->group(function () {
 Route::controller(EquipmentApiController::class)->group(function () {
     Route::get('/get-type', 'getType');
     Route::get('/get-item', 'getItem');
+    Route::get('/get-equipment', 'getEquipment');
 });

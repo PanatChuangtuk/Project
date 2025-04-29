@@ -329,24 +329,29 @@
                             </div>
 
                             <div class="equipment-list">
-                                @foreach ($item->loanEquipments as $equipment)
+
+                                @php
+                                    $groupedEquipments = $item->loanEquipments->groupBy('equipment_item_id');
+                                @endphp
+
+                                @foreach ($groupedEquipments as $equipmentItemId => $equipments)
+                                    @php
+                                        $firstEquipment = $equipments->first();
+                                        $totalQuantity = $equipments->sum('quantity');
+                                    @endphp
+
                                     <ul class="ul-table ul-table-body infos">
                                         <li class="photo">
-                                            <img src="{{ $equipment->equipmentItem->image ? asset('upload/file/equipment_item/' . $equipment->equipmentItem->image) : asset('images/default-image.png') }}"
-                                                alt="{{ $equipment->name }}" />
+                                            <img src="{{ $firstEquipment->equipmentItem->image ? asset('upload/file/equipment_item/' . $firstEquipment->equipmentItem->image) : asset('images/default-image.png') }}"
+                                                alt="{{ $firstEquipment->name }}" />
                                         </li>
                                         <li class="info">
                                             <div class="product-info">
-                                                <h3>{{ $equipment->name }}</h3>
-
-                                                @if ($equipment->equipment && $equipment->equipment->equipment_number)
-                                                    <p class="text-muted mb-0">รหัสอุปกรณ์:
-                                                        {{ $equipment->equipment->equipment_number }}</p>
-                                                @endif
+                                                <h3>{{ $firstEquipment->name }}</h3>
                                             </div>
                                         </li>
                                         <li class="qty">
-                                            <strong class="fs-16 text-black">x{{ $equipment->quantity }}</strong>
+                                            <strong class="fs-16 text-black">x{{ $totalQuantity }}</strong>
                                         </li>
                                     </ul>
                                 @endforeach

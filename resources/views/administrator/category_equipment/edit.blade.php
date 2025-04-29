@@ -24,7 +24,7 @@
                     <div class="col-md-6">
                         <label for="name" class="form-label fw-semibold">ชื่อหมวดหมู่อุปกรณ์</label>
                         <div class="input-group shadow-sm">
-                            <span class="input-group-text bg-light"><i class="fas fa-envelope"></i></span>
+                            <span class="input-group-text bg-light"><i class='bx bxs-rename'></i></i></span>
                             <input type="name" id="name" name="name" class="form-control border-0 shadow-sm"
                                 value="{{ $category_equipment->name }}" />
                         </div>

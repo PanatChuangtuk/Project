@@ -41,14 +41,19 @@ class BorrowController extends MainController
             'returned_at' => null,
             'created_at' => now(),
         ]);
+
         foreach ($items as $item) {
-            LoanEquipment::create([
-                'loan_transactions_id' => $loan->id,
-                'equipment_item_id' => $item['id'],
-                'name' => $item['name'],
-                'quantity' => $item['quantity'],
-                'created_at' => now(),
-            ]);
+            $quantity = (int)$item['quantity'];
+
+            for ($i = 0; $i < $quantity; $i++) {
+                LoanEquipment::create([
+                    'loan_transactions_id' => $loan->id,
+                    'equipment_item_id' => $item['id'],
+                    'name' => $item['name'],
+                    'quantity' => 1,
+                    'created_at' => now(),
+                ]);
+            }
         }
         session()->forget('cart');
         return redirect()->back()->with('success', 'ยืนยันการยืมเรียบร้อยแล้ว');

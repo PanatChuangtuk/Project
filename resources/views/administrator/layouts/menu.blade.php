@@ -86,10 +86,14 @@
             <ul class="menu-sub">
                 <li class="menu-item {{ Route::is('administrator.approve-equipment*') ? 'active' : '' }}">
                     <a href="{{ route('administrator.approve-equipment') }}" class="menu-link">
-                        <div class="menu-text">อนุมัติการยืมอุปกรณ์</div>
+                        <div class="menu-text">อนุมัติคำร้องอุปกรณ์</div>
                     </a>
                 </li>
-
+                <li class="menu-item {{ Route::is('administrator.return-equipment*') ? 'active' : '' }}">
+                    <a href="{{ route('administrator.return-equipment') }}" class="menu-link">
+                        <div class="menu-text">คำร้องที่สำเร็จแล้ว</div>
+                    </a>
+                </li>
 
             </ul>
         </li>

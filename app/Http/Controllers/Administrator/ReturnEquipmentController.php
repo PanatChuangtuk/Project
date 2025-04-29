@@ -7,15 +7,14 @@ use Illuminate\Support\Facades\{Hash, DB};
 use App\Models\{LoanEquipment, LoanTransaction, Equipment};
 use Illuminate\Http\Request;
 
-class ApproveEquipmentController extends Controller
+class ReturnEquipmentController extends Controller
 {
     private $main_menu = 'approve_equipment';
     public function index(Request $request)
     {
         $query = $request->input('query');
 
-        $userQuery = LoanTransaction::where('status',  'in_progress');
-
+        $userQuery = LoanTransaction::whereIn('status',  ['completed', 'cancel']);
 
         if ($query) {
             $userQuery->where(function ($queryBuilder) use ($query) {
@@ -32,7 +31,7 @@ class ApproveEquipmentController extends Controller
             'query' => $query,
         ]);
         $main_menu = $this->main_menu;
-        return view('administrator.equipment_approve.index', compact('users', 'query', 'main_menu'));
+        return view('administrator.equipment_return.index', compact('users', 'query', 'main_menu'));
     }
     public function edit(Request $request, $id)
     {
@@ -40,7 +39,7 @@ class ApproveEquipmentController extends Controller
         $borrow = LoanTransaction::find($id);
         $main_menu = $this->main_menu;
 
-        return view('administrator.equipment_approve.edit', compact('main_menu', 'borrow'));
+        return view('administrator.equipment_return.edit', compact('main_menu', 'borrow'));
     }
     public function updateApprove(Request $request)
     {

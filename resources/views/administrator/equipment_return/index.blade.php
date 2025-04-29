@@ -12,7 +12,7 @@
         <div class="col-md-12">
             <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
                 <li class="breadcrumb-item"><a href="{{ route('administrator.dashboard') }}">หน้าหลัก</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('administrator.approve-equipment') }}">อนุมัติการยืมอุปกรณ์</a>
+                <li class="breadcrumb-item"><a href="{{ route('administrator.return-equipment') }}">อนุมัติการยืมอุปกรณ์</a>
                 </li>
             </ol>
 
@@ -21,7 +21,7 @@
                 <div class="card-body">
                     {{-- หัว --}}
                     <div class="d-flex justify-content-between align-items-center p-3">
-                        <form action="{{ route('administrator.approve-equipment') }}" method="GET"
+                        <form action="{{ route('administrator.return-equipment') }}" method="GET"
                             class="d-flex justify-content-between align-items-center w-100">
                             <x-search />
 
@@ -42,7 +42,7 @@
                                     <th class="text-center">ชื่อ-นามสกุล</th>
                                     <th class="text-center">รหัสนักศึกษา</th>
                                     <th class="text-center">ชนิดคำร้อง</th>
-                                    <th class="text-center">สถานะคำร้อง</th>
+                                    {{-- <th class="text-center">สถานะคำร้อง</th> --}}
                                     <th class="text-center">การจัดการ</th>
                                 </tr>
                             </thead>
@@ -76,32 +76,22 @@
                                                 <span class="badge bg-danger">เกินกำหนด</span>
                                             @endif
                                         </td>
-                                        <td class="text-center  align-middle">
-                                            @if ($item->status == 'in_progress')
-                                                <span class="badge bg-warning">รอดำเนินการดำเนินการ</span>
+                                        {{-- <td class="text-center align-middle">
+                                            @if ($item->status == 'completed')
+                                                <span class="badge bg-success">อนุมัติ</span>
+                                            @elseif ($item->status == 'cancel')
+                                                <span class="badge bg-danger">ยกเลิก</span>
                                             @endif
-                                        </td>
+                                        </td> --}}
                                         <td>
-                                            @if ($item->status_type == 'borrowed')
-                                                <div class="d-flex justify-content-center">
-                                                    <div class="d-inline-block text-nowrap">
-                                                        <a class="btn btn-icon btn-outline-primary border-0"
-                                                            href="{{ route('administrator.approve-equipment.edit', ['id' => $item->id]) }}">
-                                                            <i class="bx bx-edit bx"></i>
-                                                        </a>
-                                                    </div>
+                                            <div class="d-flex justify-content-center">
+                                                <div class="d-inline-block text-nowrap">
+                                                    <a class="btn btn-icon btn-outline-primary border-0"
+                                                        href="{{ route('administrator.return-equipment.edit', ['id' => $item->id]) }}">
+                                                        <i class="bx bx-edit bx"></i>
+                                                    </a>
                                                 </div>
-                                            @else
-                                                <div class="d-flex justify-content-center">
-                                                    <div class="d-inline-block text-nowrap">
-                                                        <a class="btn btn-icon btn-outline-primary border-0"
-                                                            href="{{ route('administrator.return-equipment.edit', ['id' => $item->id]) }}">
-                                                            <i class="bx bx-edit bx"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            @endif
-
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

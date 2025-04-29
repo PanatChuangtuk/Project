@@ -277,7 +277,7 @@ data-template="vertical-menu-template-free"
                         <script>
                             document.write(new Date().getFullYear() + 543);
                         </script>
-                        , UAV Online All Rights Reserved.
+                        , KMUTNB All Rights Reserved.
                          {{-- Powered by --}}
                         {{-- <a href="https://gramickhouse.com/" target="_blank" class="footer-link fw-bolder"> GRAMICK HOUSE </a> --}}
                         </div>

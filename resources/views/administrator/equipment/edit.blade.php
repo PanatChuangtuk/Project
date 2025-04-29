@@ -34,7 +34,7 @@
                     <div class="col-md-6">
                         <label for="equipment_number" class="form-label fw-semibold">เลขครุภัณฑ์</label>
                         <div class="input-group shadow-sm">
-                            <span class="input-group-text bg-light"><i class="fas fa-envelope"></i></span>
+                            <span class="input-group-text bg-light"><i class='bx bx-barcode'></i></i></span>
                             <input type="text" id="equipment_number" name="equipment_number"
                                 class="form-control border-0 shadow-sm" value="{{ $equipment->equipment_number }}" />
                         </div>
@@ -45,7 +45,9 @@
                     <div class="col-md-6">
                         <label for="number" class="form-label fw-semibold">เลขอุปกรณ์</label>
                         <div class="input-group shadow-sm">
-                            <span class="input-group-text bg-light"><i class="fas fa-envelope"></i></span>
+                            <span class="input-group-text bg-light">
+                                <<i class='bx bx-tag-alt'></i>
+                            </span>
                             <input type="text" id="number" value=" {{ $equipment->number }}"
                                 class="form-control border-0 shadow-sm" readonly />
                         </div>

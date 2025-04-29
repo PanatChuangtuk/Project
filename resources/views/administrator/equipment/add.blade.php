@@ -34,7 +34,7 @@
                     <div class="col-md-6">
                         <label for="equipment_number" class="form-label fw-semibold">เลขครุภัณฑ์</label>
                         <div class="input-group shadow-sm">
-                            <span class="input-group-text bg-light"><i class="fas fa-envelope"></i></span>
+                            <span class="input-group-text bg-light"><i class='bx bx-barcode'></i></span>
                             <input type="text" id="equipment_number" name="equipment_number"
                                 class="form-control border-0 shadow-sm" />
                         </div>

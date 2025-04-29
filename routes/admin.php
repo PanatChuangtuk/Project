@@ -12,7 +12,8 @@ use App\Http\Controllers\Administrator\{
     EquipmentCategoryController,
     EquipmentController,
     EquipmentItemController,
-    ApproveEquipmentController
+    ApproveEquipmentController,
+    ReturnEquipmentController
 };
 
 Route::prefix('administrator')->group(function () {
@@ -101,7 +102,16 @@ Route::prefix('administrator')->group(function () {
 
         Route::group(['prefix' => 'approve-equipment', 'as' => 'administrator.'], function () {
             Route::get('/', [ApproveEquipmentController::class, 'index'])->name('approve-equipment');
-            // Route::post('/approve', [ApproveUserController::class, 'updateApprove'])->name('approve-user.approve');
+            Route::get('/edit/{id}', [ApproveEquipmentController::class, 'edit'])->name('approve-equipment.edit');
+            Route::post('/update', [ApproveEquipmentController::class, 'updateApprove'])->name('approve-equipment.update');
+            Route::post('/equipment-update', [ApproveEquipmentController::class, 'approveEquipment'])->name('approve-equipment.approveEquipment');
+        });
+
+        Route::group(['prefix' => 'return-equipment', 'as' => 'administrator.'], function () {
+            Route::get('/', [ReturnEquipmentController::class, 'index'])->name('return-equipment');
+            Route::get('/edit/{id}', [ReturnEquipmentController::class, 'edit'])->name('return-equipment.edit');
+            Route::post('/update', [ReturnEquipmentController::class, 'updateApprove'])->name('return-equipment.update');
+            Route::post('/equipment-update', [ReturnEquipmentController::class, 'approveEquipment'])->name('return-equipment.approveEquipment');
         });
     });
 });
