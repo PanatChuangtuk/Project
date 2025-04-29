@@ -16,8 +16,8 @@
                 </a>
             </li>
 
-            <li class="{{ Request::is('/equipment') ? 'active' : '' }}">
-                <a href="{{ url('/equipment') }}">
+            <li class="{{ Request::is('/return') ? 'active' : '' }}">
+                <a href="{{ url('/return') }}">
                     <img class="icons" src="{{ asset('img/icons/icon-document.svg') }}" alt="" />
                     อุปกรณ์
                 </a>

@@ -11,8 +11,23 @@ class BorrowController extends MainController
 {
     public function borrow(Request $request)
     {
+        $borrowedItems = LoanTransaction::whereIn('status_type', ['borrowed', 'overdue'])
+            ->with('loanEquipments')
+            ->get();
+        $borrowedCounts = [];
+        foreach ($borrowedItems as $borrow) {
+            foreach ($borrow->loanEquipments as $loanEquipment) {
+                $equipmentId = $loanEquipment->equipment_item_id;
+                $quantity = $loanEquipment->quantity;
+
+                if (!isset($borrowedCounts[$equipmentId])) {
+                    $borrowedCounts[$equipmentId] = 0;
+                }
+                $borrowedCounts[$equipmentId] += $quantity;
+            }
+        }
         $cart = session()->get('cart', []);
-        return view('borrow', compact('cart'));
+        return view('borrow', compact('cart', 'borrowedCounts'));
     }
     public function submit(Request $request)
     {

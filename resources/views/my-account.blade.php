@@ -10,9 +10,9 @@
 @section('content')
     <div class="section section-profile bg-light pt-0">
         <div class="container has-sidebar">
-            <ol class="breadcrumb">
+            {{-- <ol class="breadcrumb">
                 <li class="breadcrumb-item">โปรไฟล์</li>
-            </ol>
+            </ol> --}}
 
             <x-nav-profile />
             <!--sidebar-->

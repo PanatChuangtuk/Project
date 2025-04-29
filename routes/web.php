@@ -9,7 +9,8 @@ use App\Http\Controllers\{
     EquipmentController,
     ImageController,
     EquipmentListController,
-    BorrowController
+    BorrowController,
+    ReturnController
 };
 
 require base_path('routes/admin.php');
@@ -36,6 +37,8 @@ Route::middleware(['auth:member'])->group(function () {
     Route::get('equipment-list', [EquipmentListController::class, 'equipmentListIndex'])->name('equipment.list');
     Route::post('equipment-list/cart', [EquipmentListController::class, 'equipmentCart'])->name('equipment.list.cart');
     Route::get('borrow-cart', [BorrowController::class, 'borrow'])->name('borrow.cart');
+    Route::get('return', [ReturnController::class, 'index'])->name('return.index');
+    Route::post('return-equipment/{id}', [ReturnController::class, 'returnEquipment'])->name('return.equipment');
     Route::post('borrow/submit', [BorrowController::class, 'submit'])->name('borrow.submit');
     Route::post('logout', [ProfileController::class, 'logout'])->name('logout');
     Route::post('/equipment/update', [EquipmentController::class, 'update'])->name('equipment.update');

@@ -16,22 +16,22 @@ class EquipmentListController extends MainController
         $equipment = EquipmentItem::where('category_id', $typeVaule)
             ->where('status', 1)
             ->get();
-
         $borrowedItems = LoanTransaction::whereIn('status_type', ['borrowed', 'overdue'])
             ->with('loanEquipments')
             ->get();
         $borrowedCounts = [];
         foreach ($borrowedItems as $borrow) {
             foreach ($borrow->loanEquipments as $loanEquipment) {
-                // dump($loanEquipment);
                 $equipmentId = $loanEquipment->equipment_item_id;
+                $quantity = $loanEquipment->quantity;
 
                 if (!isset($borrowedCounts[$equipmentId])) {
                     $borrowedCounts[$equipmentId] = 0;
                 }
-                $borrowedCounts[$equipmentId]++;
+                $borrowedCounts[$equipmentId] += $quantity;
             }
         }
+
         return view('equipment-list', compact('equipment', 'borrowedCounts'));
     }
     public function equipmentCart(Request $request)
