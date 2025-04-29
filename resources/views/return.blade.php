@@ -243,6 +243,56 @@
                 padding: 0;
             }
         }
+
+        .purchase-status.canceled {
+            background-color: #f8d7da;
+            /* Light red background */
+            color: #721c24;
+            /* Dark red text */
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            /* Space between icon and text */
+            transition: background-color 0.3s ease;
+        }
+
+        .purchase-status.canceled:hover {
+            background-color: #f5c6cb;
+            /* Slightly darker red on hover */
+        }
+
+        .purchase-status.canceled i {
+            font-size: 1.1em;
+            /* Slightly larger icon */
+        }
+
+        .purchase-status.unknown {
+            background-color: #f0f0f0;
+            /* Neutral gray background */
+            color: #666;
+            /* Neutral text color */
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background-color 0.3s ease;
+        }
+
+        .purchase-status.unknown:hover {
+            background-color: #e0e0e0;
+            /* Slightly darker gray on hover */
+        }
+
+        .purchase-status.unknown i {
+            font-size: 1.1em;
+        }
     </style>
 @endsection
 
@@ -307,10 +357,13 @@
                                                 {{ \Carbon\Carbon::parse($item->borrowed_at)->setTimezone('Asia/Bangkok')->addDays(7)->locale('th')->translatedFormat('d M Y H:i') }}
                                                 น.
                                             </p>
-                                        @else
+                                        @else<div class="purchase-status canceled">
+                                                <i class="fas fa-times-circle"></i>
+                                                <span>ยกเลิก</span>
+                                            </div>
                                         @endif
                                     @else
-                                        <p><strong>คืนวันที่: </strong>
+                                        <p><strong>คืนวันที่ : </strong>
                                             {{ \Carbon\Carbon::parse($item->returned_at)->setTimezone('Asia/Bangkok')->locale('th')->translatedFormat('d M Y H:i') }}
                                             น.
                                         </p>

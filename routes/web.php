@@ -11,7 +11,8 @@ use App\Http\Controllers\{
     EquipmentListController,
     BorrowController,
     ReturnController,
-    TaskController
+    TaskController,
+    RecommendController
 };
 
 require base_path('routes/admin.php');
@@ -43,6 +44,7 @@ Route::middleware(['auth:member'])->group(function () {
     Route::post('borrow/submit', [BorrowController::class, 'submit'])->name('borrow.submit');
     Route::post('logout', [ProfileController::class, 'logout'])->name('logout');
     Route::post('/equipment/update', [EquipmentController::class, 'update'])->name('equipment.update');
+    Route::get('recommend', [RecommendController::class, 'index'])->name('recommend');
 });
 // Route::get('/', function () {
 //     return redirect(app()->getLocale() . '/ ');
