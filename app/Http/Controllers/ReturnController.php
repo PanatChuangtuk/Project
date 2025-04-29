@@ -28,7 +28,13 @@ class ReturnController extends MainController
     }
     public function returnEquipment(Request $request, $id)
     {
-        dd($id);
+        LoanTransaction::find($id)->update([
+            'status_type' => 'returned',
+            'status' => 'in_progress',
+            'returned_at' => now(),
+        ]);
+
+
         return redirect()->back()
             ->with('success', 'คืนคืนอุปกรณ์เรียบร้อยแล้ว กรุณรอการตรวจสอบจากเจ้าหน้าที่');
     }

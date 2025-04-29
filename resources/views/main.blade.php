@@ -104,9 +104,6 @@
             <div class="navbar-toppage">
                 <div class="container">
                     <ul class="nav nav-general right member">
-                        <li class="{{ request()->is('/') ? 'active' : '' }}">
-                            <a href="{{ url('/') }}" class="nav-link">หน้าหลัก</a>
-                        </li>
                         <li class="{{ request()->is('equipment') ? 'active' : '' }}">
                             <a href="{{ url('/equipment') }}" class="nav-link">หน้าอุปกรณ์</a>
                         </li>
@@ -121,6 +118,7 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a href="{{ url('/profile') }}">บัญชีของฉัน</a></li>
+                                    <li><a href="{{ url('/return') }}">รายการยืมอุปกรณ์</a></li>
                                     <li>
                                         <form id="logout-form" action="{{ url('/logout') }}" method="POST"
                                             style="display: none;">@csrf</form>
@@ -173,14 +171,7 @@
                         <p>KMUTNB<br>THAILAND</p>
                     </div>
                 </div>
-                <div class="cols footer-links">
-                    <div class="group">
-                        <ul class="nav">
-                            <li><a href="{{ url('/profile') }}">โปรไฟล์</a></li>
-                            <li><a href="{{ url('/equipment') }}">หน้าอุปกรณ์</a></li>
-                        </ul>
-                    </div>
-                </div>
+
             </div>
 
             <div class="totop">

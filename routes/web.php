@@ -10,7 +10,8 @@ use App\Http\Controllers\{
     ImageController,
     EquipmentListController,
     BorrowController,
-    ReturnController
+    ReturnController,
+    TaskController
 };
 
 require base_path('routes/admin.php');
@@ -19,7 +20,7 @@ require base_path('routes/api.php');
 
 Route::get('login', [LoginController::class, 'loginIndex'])->name('login');
 Route::post('login', [LoginController::class, 'submit'])->name('login.submit');
-
+Route::get('/run-hourly-task', [TaskController::class, 'hourlyTask']);
 
 
 Route::get('/capture', [ImageController::class, 'showCaptureForm']);

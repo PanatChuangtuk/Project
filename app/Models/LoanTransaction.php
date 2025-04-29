@@ -18,6 +18,7 @@ class LoanTransaction extends Model
         'status',
         'borrowed_at',
         'returned_at',
+        'is_overdue',
     ];
 
 
