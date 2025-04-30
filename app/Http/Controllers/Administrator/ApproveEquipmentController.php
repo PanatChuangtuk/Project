@@ -44,7 +44,6 @@ class ApproveEquipmentController extends Controller
     }
     public function updateApprove(Request $request)
     {
-
         $item = $request->get('item');
         $status = $request->get('status');
         DB::table('loan_transactions')

@@ -45,6 +45,12 @@ class EquipmentApiController extends Controller
     }
     public function getEquipment(Request $request)
     {
+        $borrowedItems = LoanTransaction::whereIn('status_type', ['borrowed', 'overdue'])->whereIn('status', ['in_progress', 'completed'])
+            ->with('loanEquipments')
+            ->get();
+        $borrowedEquipmentIds = $borrowedItems->flatMap(function ($transaction) {
+            return $transaction->loanEquipments->pluck('equipment_id');
+        })->filter()->unique()->values()->toArray();
         $query = $request->get('query');
         $item_id = $request->get('item_id');
         $types = DB::table('equipment')
@@ -53,13 +59,13 @@ class EquipmentApiController extends Controller
                 $queryBuilder->where('id', 'like', '%' . $query . '%')
                     ->orWhere('number', 'like', '%' . $query . '%')->orWhere('equipment_number', 'like', '%' . $query . '%');
             })
-            // ->whereNotIn('id', $selectedIds)
+            ->whereNotIn('id', $borrowedEquipmentIds)
             ->where('item_id', $item_id)
             ->where('status', 1)
             ->whereNull('deleted_at')
             ->take(10)
             ->get();
-
+        // dd($borrowedEquipmentIds);
         return response()->json(['results' => $types]);
     }
 }

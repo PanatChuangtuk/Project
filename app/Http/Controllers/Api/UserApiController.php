@@ -16,7 +16,7 @@ class UserApiController extends Controller
         $student = DB::table('student')->select('id', 'student_number')->where(function ($queryBuilder) use ($query) {
             $queryBuilder->where('id', 'like', '%' . $query . '%')
                 ->orWhere('student_number', 'like', '%' . $query . '%');
-        })->whereNotIn('id', $selectedIds)->whereNull('deleted_at')->take(10)->get();
+        })->whereNotIn('id', $selectedIds)->whereNull('deleted_at')->where('status', 1)->take(10)->get();
 
         return response()->json(['results' => $student]);
     }

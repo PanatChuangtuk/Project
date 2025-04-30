@@ -24,7 +24,7 @@ class EquipmentController extends MainController
         $item = EquipmentItem::withCount('equipment')->findOrFail($id);
         $totalStock = $item->equipment_count;
 
-        $borrowedItems = LoanTransaction::whereIn('status_type', ['borrowed', 'overdue'])
+        $borrowedItems = LoanTransaction::whereIn('status_type', ['borrowed', 'overdue'])->whereIn('status', ['in_progress', 'completed'])
             ->with('loanEquipments')
             ->get();
         $borrowedCounts = [];
