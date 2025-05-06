@@ -96,6 +96,9 @@
         <!--container-->
     </div>
     <!--section-->
+    {{-- <form action="{{ url('/send-email') }}" method="GET">
+        <button type="submit">ส่งอีเมล</button>
+    </form> --}}
 @endsection
 
 @section('script')

@@ -12,8 +12,11 @@ use App\Http\Controllers\{
     BorrowController,
     ReturnController,
     TaskController,
-    RecommendController
+    RecommendController,
+    EmailController
 };
+
+
 
 require base_path('routes/admin.php');
 require base_path('routes/api.php');
@@ -28,8 +31,6 @@ Route::get('/capture', [ImageController::class, 'showCaptureForm']);
 Route::post('/save-image', [ImageController::class, 'saveImage'])->name('save.image');
 
 // Route::get('/student/dashboard', [MemberController::class, 'studentDashboard'])->name('student.dashboard');
-
-
 Route::get('register', [RegisterController::class, 'registerIndex'])->name('register');
 Route::post('register/submit', [RegisterController::class, 'submit'])->name('register.submit');
 Route::middleware(['auth:member'])->group(function () {
@@ -45,6 +46,7 @@ Route::middleware(['auth:member'])->group(function () {
     Route::post('logout', [ProfileController::class, 'logout'])->name('logout');
     Route::post('/equipment/update', [EquipmentController::class, 'update'])->name('equipment.update');
     Route::get('recommend', [RecommendController::class, 'index'])->name('recommend');
+    Route::get('/send-email', [EmailController::class, 'sendWelcomeEmail']);
 });
 // Route::get('/', function () {
 //     return redirect(app()->getLocale() . '/ ');
