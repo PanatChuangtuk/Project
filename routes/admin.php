@@ -112,6 +112,8 @@ Route::prefix('administrator')->group(function () {
             Route::get('/edit/{id}', [ReturnEquipmentController::class, 'edit'])->name('return-equipment.edit');
             Route::post('/update', [ReturnEquipmentController::class, 'updateApprove'])->name('return-equipment.update');
             Route::post('/equipment-update', [ReturnEquipmentController::class, 'approveEquipment'])->name('return-equipment.approveEquipment');
+            Route::post('/export', [ReturnEquipmentController::class, 'exportData'])->name('return-equipment.export');
+            Route::get('/print-report', [ReturnEquipmentController::class, 'printReportByYear'])->name('loan.printReport');
         });
     });
 });

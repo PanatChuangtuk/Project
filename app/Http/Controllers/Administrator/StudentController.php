@@ -142,12 +142,12 @@ class StudentController extends Controller
                 ]
             );
             return Student::updateOrCreate(
-                ['student_number' => $line['studentnumber']],
+                ['student_number' => $line['รหัสนักศึกษา'] ?? null],
                 [
-                    'first_name'   => $line['firstname'] ?? null,
-                    'last_name'    => $line['lastname'] ?? null,
-                    'mobile_phone' => $line['mobilephone'] ?? null,
-                    'email'        => $line['email'] ?? null,
+                    'first_name'   => $line['ชื่อ'] ?? null,
+                    'last_name'    => $line['นามสุกล'] ?? null,
+                    'mobile_phone' => $line['เบอร์โทรศัพท์'] ?? null,
+                    'email'        => $line['อีเมล'] ?? null,
                     'adviser_id'   => $adviser->id,
                     'status'       => 1,
                     'created_at'   => now(),

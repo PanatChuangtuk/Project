@@ -3930,6 +3930,7 @@ Sign up / Sign in
     border-radius: 16px;
     width: 100%;
     max-width: 589px;
+    max-height: 650px;
 }
 .section-column .col-form {
     width: 50%;

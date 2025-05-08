@@ -64,7 +64,8 @@ maximum-scale=1.0, user-scalable=no" />
         /* Navbar */
         .navbar-toppage {
             background-color: var(--color-secondary);
-            padding: 10px 0;
+            padding: 10px;
+            height: 80px;
         }
 
         .navbar-toggle {
@@ -238,6 +239,100 @@ maximum-scale=1.0, user-scalable=no" />
                 margin: 0 15px;
             }
         }
+
+        .header {
+            background-color: #f8f9fa;
+
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-toppage {
+            padding: 15px 20px;
+
+            margin: 0 auto;
+
+        }
+
+        .logo-container {
+            gap: 10px;
+            /* Space between logo and text */
+        }
+
+        .logo-img {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+
+            /* Blue border for accent */
+            transition: transform 0.3s ease;
+            /* Smooth hover effect */
+        }
+
+        .logo-img:hover {
+            transform: scale(1.1);
+            /* Slight zoom on hover */
+        }
+
+        .logo-text {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            /* เพิ่มช่องว่างระหว่างโลโก้และข้อความ */
+        }
+
+        .logo-img {
+            height: 60px;
+            width: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .text-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .faculty-name {
+            font-size: 1.25rem;
+            /* Slightly larger for emphasis */
+            font-weight: 600;
+            /* Bold for hierarchy */
+            color: #FFFFFF;
+            /* Darker color for readability */
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .university-name {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #FFFFFF;
+            margin: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+
+
+            .logo-img {
+                height: 20px;
+                width: 20px;
+            }
+
+            .faculty-name {
+                font-size: 0.75rem;
+            }
+
+            .university-name {
+                font-size: 0.675rem;
+            }
+        }
     </style>
 
 </head>
@@ -248,92 +343,100 @@ maximum-scale=1.0, user-scalable=no" />
         <span class="loader"></span>
     </div>
 
-    <div class="page logo-hidden">
-        <header class="header">
-            <div class="navbar-toppage">
-                <div class="container">
 
+    <header class="header">
+        <div class="navbar-toppage">
+            <div class="container">
+                <div class="logo-container d-flex flex-column align-items-left">
+                    <div class="logo-text text-left">
+                        <img src="{{ asset('img/thumb/images.png') }}" alt="Faculty Logo" class="logo-img" />
+                        <div class="text-content">
+                            <h1 class="faculty-name">Faculty of Technical Education</h1>
+                            <p class="university-name">KMUTNB</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </header>
+        </div>
+    </header>
 
-        <div class="section section-column">
-            <div class="container">
-                <div class="row row-main">
-                    <div class="cols col-photo" data-aos="fade-in">
-                        <img src="{{ asset('img/thumb/images.jpg') }}" alt="" />
-                    </div>
-                    <!--cols-->
-                    <div class="cols col-form" data-aos="fade-in">
-                        <div class="boxed me-lg-0">
-                            <div class="article pb-3" style="--font-size: 14px; --color: #375b51">
-                                <h2>เข้าสู่ระบบ</h2>
-                                <p> กรุณากรอกข้อมูลเพื่อเข้าสู่ระบบ
-                                    ระบบนี้ช่วยให้คุณสามารถเข้าถึงบัญชีของคุณได้
-                                    โปรดป้อนข้อมูลที่ถูกต้องเพื่อดำเนินการต่อ
-                                </p>
-                            </div>
-                            <form class="form" method="POST" action="{{ route('login.submit') }}">
-                                @csrf
-                                <div class="row g-4">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label class="title">อีเมล</label>
-                                            <input type="text" class="form-control" name="email_or_phone"
-                                                value="{{ old('email_or_phone') }}" placeholder="กรุณากรอกอีเมล" />
-                                            @error('email_or_phone')
+    <div class="section section-column">
+        <div class="container">
+            <div class="row row-main">
+                <div class="cols col-photo" data-aos="fade-in">
+                    <img src="{{ asset('img/thumb/44image.jpg') }}" alt="" />
+                </div>
+                <!--cols-->
+                <div class="cols col-form" data-aos="fade-in">
+                    <div class="boxed me-lg-0">
+                        <div class="article pb-3" style="--font-size: 14px; --color: #375b51">
+                            <h2>เข้าสู่ระบบ</h2>
+                            <p> กรุณากรอกข้อมูลเพื่อเข้าสู่ระบบ
+                                ระบบนี้ช่วยให้คุณสามารถเข้าถึงบัญชีของคุณได้
+                                โปรดป้อนข้อมูลที่ถูกต้องเพื่อดำเนินการต่อ
+                            </p>
+                        </div>
+                        <form class="form" method="POST" action="{{ route('login.submit') }}">
+                            @csrf
+                            <div class="row g-4">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="title">อีเมล</label>
+                                        <input type="text" class="form-control" name="email_or_phone"
+                                            value="{{ old('email_or_phone') }}" placeholder="กรุณากรอกอีเมล" />
+                                        @error('email_or_phone')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="title">รหัสผ่าน</label>
+                                        <div class="group mb-3">
+                                            <span class="icons icon-eye right"></span>
+                                            <input type="password" class="form-control pw" name="password"
+                                                id="password" placeholder="กรุณากรอกรหัสผ่านของคุณ" />
+                                            @error('password')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label class="title">รหัสผ่าน</label>
-                                            <div class="group mb-3">
-                                                <span class="icons icon-eye right"></span>
-                                                <input type="password" class="form-control pw" name="password"
-                                                    id="password" placeholder="กรุณากรอกรหัสผ่านของคุณ" />
-                                                @error('password')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                            {{-- <label class="title mb-0">
+                                        {{-- <label class="title mb-0">
                                                 <a href="{{ url('/otp-forgot-password-login') }}">ลืมรหัสผ่าน?</a>
                                             </label> --}}
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12 d-flex pt-sm-4">
-                                        <button class="btn px-5 ms-auto me-sm-0 " type="submit">
-                                            <span class="px-3">เข้าสู่ระบบ</span>
-                                        </button>
-                                    </div>
-
-                                    <div class="col-12 py-4">
-                                        <div class="form-note">
-                                            <h6>ยังไม่มีบัญชี?</h6>
-                                            <a href="{{ url('/register') }}" class="btn btn-32 btn-light rounded-14">
-                                                <span class="fs-14 px-2">สมัครสมาชิก</span>
-                                            </a>
-                                        </div>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-                        <!--boxed-->
+
+                                <div class="col-12 d-flex pt-sm-4">
+                                    <button class="btn px-5 ms-auto me-sm-0 " type="submit">
+                                        <span class="px-3">เข้าสู่ระบบ</span>
+                                    </button>
+                                </div>
+
+                                <div class="col-12 py-4">
+                                    <div class="form-note">
+                                        <h6>ยังไม่มีบัญชี?</h6>
+                                        <a href="{{ url('/register') }}" class="btn btn-32 btn-light rounded-14">
+                                            <span class="fs-14 px-2">สมัครสมาชิก</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <!--cols-->
+                    <!--boxed-->
                 </div>
-                <!--row-main-->
+                <!--cols-->
             </div>
-            <!--container-->
+            <!--row-main-->
         </div>
-        <!--section-->
-        {{-- <footer class="footer">
+        <!--container-->
+    </div>
+    <!--section-->
+    {{-- <footer class="footer">
 
         </footer> --}}
-    </div>
+
 
     <script src="{{ asset('js/jquery-3.4.1.min.js') }}" defer></script>
     <script src="{{ asset('js/bootstrap/popper.min.js') }}" defer></script>

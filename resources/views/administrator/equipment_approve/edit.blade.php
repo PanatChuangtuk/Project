@@ -159,6 +159,9 @@
                             icon: 'success',
                             text: 'อัปเดตสถานะสำเร็จ',
                             confirmButtonText: 'OK'
+                        }).then(function() {
+                            window.location.href =
+                                '{{ route('administrator.approve-equipment') }}';
                         });
                     }
                 },

@@ -24,8 +24,57 @@
                         <form action="{{ route('administrator.return-equipment') }}" method="GET"
                             class="d-flex justify-content-between align-items-center w-100">
                             <x-search />
-
+                            <button type="button" class="btn btn-outline-primary btn-lg me-2" data-bs-toggle="modal"
+                                data-bs-target="#registerModal">
+                                ข้อมูลการยืม-คืนอุปกรณ์
+                            </button>
                         </form>
+                    </div>
+                    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="registerModalLabel">ข้อมูลนักศึกษา</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="ปิด"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Dropdown ปี -->
+                                    <div class="mb-3">
+                                        <label for="year" class="form-label">เลือกปีที่ต้องการออกรายงาน</label>
+                                        <select id="year" class="form-select" required>
+                                            <option value="">-- เลือกปี --</option>
+                                            @foreach ($years as $item)
+                                                <option value="{{ $item }}">{{ $item }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <!-- Export Form -->
+                                    <form id="exportForm" action="{{ route('administrator.return-equipment.export') }}"
+                                        method="POST">
+                                        @csrf
+                                        <input type="hidden" name="year" id="exportYear">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class='bx bx-download'></i> ดาวน์โหลดรายงาน
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                    <!-- Print Form -->
+                                    <form id="printForm" action="{{ route('administrator.loan.printReport') }}"
+                                        method="GET" target="_blank">
+                                        <input type="hidden" name="year" id="printYear">
+                                        <button type="submit" class="btn btn-secondary mt-2">ดูรายงาน</button>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     {{-- ตาราง --}}
@@ -115,7 +164,45 @@
 @endsection
 
 @section('script')
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: 'สำเร็จ!',
+                text: "{{ session('success') }}",
+                icon: 'success',
+                confirmButtonText: 'ตกลง'
+            }).then(function() {
+                window.location.href = '{{ route('administrator.return-equipment') }}';
+            });
+        </script>
+    @endif
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/delete.js') }}"></script>
+    <script>
+        const yearSelect = document.getElementById('year');
+        const exportForm = document.getElementById('exportForm');
+        const printForm = document.getElementById('printForm');
+
+        // set hidden input value on change
+        yearSelect.addEventListener('change', function() {
+            document.getElementById('exportYear').value = this.value;
+            document.getElementById('printYear').value = this.value;
+        });
+
+        // prevent submit if year not selected
+        exportForm.addEventListener('submit', function(e) {
+            if (!yearSelect.value) {
+                e.preventDefault();
+                alert('กรุณาเลือกปีเพื่อส่งออกรายงาน');
+            }
+        });
+
+        printForm.addEventListener('submit', function(e) {
+            if (!yearSelect.value) {
+                e.preventDefault();
+                alert('กรุณาเลือกปีก่อนดูรายงาน');
+            }
+        });
+    </script>
 @endsection

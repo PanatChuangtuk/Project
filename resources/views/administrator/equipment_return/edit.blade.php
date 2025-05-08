@@ -131,7 +131,7 @@
                 icon: 'success',
                 confirmButtonText: 'ตกลง'
             }).then(function() {
-                window.location.href = '{{ route('administrator.approve-equipment') }}';
+                window.location.href = '{{ route('administrator.return-equipment') }}';
             });
         </script>
     @endif

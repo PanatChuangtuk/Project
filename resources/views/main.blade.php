@@ -92,7 +92,74 @@
 
         .main-content {
             padding-top: 60px;
-            /* หรือมากกว่านั้นตามที่ต้องการ */
+        }
+
+        .logo-container {
+            gap: 10px;
+        }
+
+        .logo-img {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-img:hover {
+            transform: scale(1.1);
+        }
+
+        .logo-text {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
+        .logo-img {
+            height: 60px;
+            width: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .text-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .faculty-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #FFFFFF;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .university-name {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #FFFFFF;
+            margin: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+
+
+            .logo-img {
+                height: 20px;
+                width: 20px;
+            }
+
+            .faculty-name {
+                font-size: 0.75rem;
+            }
+
+            .university-name {
+                font-size: 0.675rem;
+            }
         }
     </style>
     @yield('stylesheet')
@@ -102,7 +169,17 @@
     <div class="page logo-hidden">
         <header class="header">
             <div class="navbar-toppage">
+
                 <div class="container">
+                    <div class="logo-container d-flex flex-column align-items-left">
+                        <div class="logo-text text-left">
+                            <img src="{{ asset('img/thumb/images.png') }}" alt="Faculty Logo" class="logo-img" />
+                            <div class="text-content">
+                                <h1 class="faculty-name">Faculty of Technical Education</h1>
+                                <p class="university-name">KMUTNB</p>
+                            </div>
+                        </div>
+                    </div>
                     <ul class="nav nav-general right member">
                         <li class="{{ request()->is('equipment') ? 'active' : '' }}">
                             <a href="{{ url('/equipment') }}" class="nav-link">หน้าอุปกรณ์</a>
