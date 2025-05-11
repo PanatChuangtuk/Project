@@ -241,26 +241,63 @@
 
         <footer class="footer mt-auto">
             <div class="container">
-                <div class="footer-info">
-                    <div class="group">
-                        <p><span class="fs-14">©</span> 2024<br>ALL RIGHTS RESERVED</p>
-                        <hr>
-                        <p>KMUTNB<br>THAILAND</p>
+                <div class="col-lg-5 mb-4 mb-lg-0">
+                    <div class="footer-info">
+
+                        <div class="group py-5">
+
+                            <p><span class="fs-14">©</span> 2024<br>ALL RIGHTS RESERVED</p>
+                            <hr>
+                            <p>KMUTNB<br>THAILAND</p>
+                        </div>
                     </div>
                 </div>
-                <div class="social-icons mt-3">
-                    <a href="#"><i class="bi bi-facebook"></i></a>
-                    <a href="#"><i class="bi bi-twitter"></i></a>
-                    <a href="#"><i class="bi bi-instagram"></i></a>
-                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                <div class="cols footer-contact">
+                    <div class="group">
+                        <div class="followus">
+                            <a href="#" target="_blank">
+                                <img class="icons" src="https://uandvholding.gramick.dev/upload/file/social/25cc7.svg"
+                                    alt="Facebook">
+                            </a>
+                            <a href="#" target="_blank">
+                                <img class="icons" src="https://uandvholding.gramick.dev/upload/file/social/25cc7.svg"
+                                    alt="Instagram">
+                            </a>
+                        </div>
+
+                        <ul class="nav nav-contact">
+                            <li>
+                                <img class="icons" src="https://uandvholding.gramick.dev/img/icons/icon-map.svg"
+                                    alt="">
+                                <span>11 Soi Tansamrit 6/3 Thasai Muang Nonthaburi 11000</span>
+                            </li>
+                            <li>
+                                <img class="icons" src="https://uandvholding.gramick.dev/img/icons/icon-call.svg"
+                                    alt="">
+                                <a href="tel:0295077331">+(66)29-507-7331</a>
+                            </li>
+                            <li>
+                                <img class="icons" src="https://uandvholding.gramick.dev/img/icons/icon-notebook.svg"
+                                    alt="">
+                                <a href="tel:0891223456">+(66)89-122-3456</a>
+                            </li>
+                            <li>
+                                <img class="icons" src="https://uandvholding.gramick.dev/img/icons/icon-sms.svg"
+                                    alt="">
+                                <a href="mailto:contact@example.com">contact@example.com</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
             {{-- <div class="totop">
-                <a class="icons" href="#"><img class="svg-js" src="{{ asset('img/icons/icon-totop.svg') }}"
-                        alt=""></a>
+                <a class="icons" href="#">
+                    <img src="https://uandvholding.gramick.dev/img/icons/icon-totop.svg" alt="Back to Top">
+                </a>
             </div> --}}
         </footer>
+
     </div>
 
     <!-- Scripts -->
