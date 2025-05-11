@@ -241,20 +241,25 @@
 
         <footer class="footer mt-auto">
             <div class="container">
-                <div class="cols footer-info ">
+                <div class="footer-info">
                     <div class="group">
                         <p><span class="fs-14">©</span> 2024<br>ALL RIGHTS RESERVED</p>
                         <hr>
                         <p>KMUTNB<br>THAILAND</p>
                     </div>
                 </div>
-
+                <div class="social-icons mt-3">
+                    <a href="#"><i class="bi bi-facebook"></i></a>
+                    <a href="#"><i class="bi bi-twitter"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
+                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                </div>
             </div>
 
-            <div class="totop">
+            {{-- <div class="totop">
                 <a class="icons" href="#"><img class="svg-js" src="{{ asset('img/icons/icon-totop.svg') }}"
                         alt=""></a>
-            </div>
+            </div> --}}
         </footer>
     </div>
 
