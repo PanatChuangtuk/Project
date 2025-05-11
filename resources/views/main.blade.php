@@ -239,7 +239,7 @@
 
         @yield('content')
 
-        <footer class="footer mt-5">
+        <footer class="footer mt-auto">
             <div class="container">
                 <div class="cols footer-info ">
                     <div class="group">

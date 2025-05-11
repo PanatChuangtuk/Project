@@ -490,9 +490,6 @@
         </div>
     </div>
     {{-- </form> --}}
-    <div class="equipment-grid py-3">
-        <div class="equipment-grid py-1"></div>
-    </div>
 @endsection
 
 @section('script')

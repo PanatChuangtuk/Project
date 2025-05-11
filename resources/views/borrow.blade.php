@@ -532,16 +532,12 @@
                                 <p>กรุณาเลือกอุปกรณ์ที่ต้องการยืม</p>
                             </div>
                         @endif
-
-
                     </div>
                 </div>
             </div>
         </div>
     </form>
-    <div class="equipment-grid py-3">
-        <div class="equipment-grid py-1"></div>
-    </div>
+
 @endsection
 
 @section('script')
