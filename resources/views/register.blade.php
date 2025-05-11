@@ -167,6 +167,11 @@
             border-top: 0;
             border-bottom: 6px solid #697A8D;
         }
+
+        #video,
+        #canvas {
+            transform: scaleX(-1);
+        }
     </style>
 </head>
 
@@ -384,6 +389,7 @@
 
             $captureButton.on('click', function() {
                 const context = $canvas.getContext('2d');
+
                 context.drawImage($video[0], 0, 0, $canvas.width, $canvas.height);
                 const imageData = $canvas.toDataURL('image/png');
                 $imageDataInput.val(imageData);
