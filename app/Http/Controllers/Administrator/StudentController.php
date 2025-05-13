@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Administrator;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\{Validator, Log};
 use Illuminate\Http\Request;
 use App\Models\{Student, Adviser};
 use Rap2hpoutre\FastExcel\FastExcel;
@@ -92,8 +92,12 @@ class StudentController extends Controller
         $filePath = public_path('upload/' . $filePath);
 
         (new FastExcel)->import($filePath, function ($line) {
+
+            $line = array_map(function ($value) {
+                return mb_convert_encoding($value, 'UTF-8', 'auto');
+            }, $line);
             $line = array_change_key_case($line, CASE_LOWER);
-            $fullName = trim($line['advisername'] ?? '');
+            $fullName = trim($line['ชื่ออาจารย์ที่ปรึกษา'] ?? '');
 
             $prefixes = [
                 'นาย',
@@ -107,6 +111,8 @@ class StudentController extends Controller
                 'ผศ.',
                 'รศ.',
                 'ศ.ดร.',
+                'ผศ. ดร.',
+                'รศ. ดร.',
                 'รองศาสตราจารย์',
                 'ผู้ช่วยศาสตราจารย์',
                 'ศาสตราจารย์',
@@ -132,9 +138,9 @@ class StudentController extends Controller
             $fullName = preg_replace($pattern, '', $fullName);
 
             $parts = explode(' ', $fullName, 2);
+
             $firstName = $parts[0] ?? null;
             $lastName = $parts[1] ?? null;
-
             $adviser = Adviser::firstOrCreate(
                 [
                     'first_name' => $firstName,

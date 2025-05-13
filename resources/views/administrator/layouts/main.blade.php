@@ -273,11 +273,9 @@ data-template="vertical-menu-template-free"
             <footer class="content-footer footer bg-footer-theme">
                 <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
                     <div class="mb-2 mb-md-0">
-                        ©
-                        <script>
-                            document.write(new Date().getFullYear() + 543);
-                        </script>
-                        , KMUTNB All Rights Reserved.
+                        © {{now()->year + 543}}
+                    
+                         มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ ภาควิชาคอมพิวเตอร์ศึกษา.
                          {{-- Powered by --}}
                         {{-- <a href="https://gramickhouse.com/" target="_blank" class="footer-link fw-bolder"> GRAMICK HOUSE </a> --}}
                         </div>

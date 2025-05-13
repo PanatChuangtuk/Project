@@ -17,4 +17,8 @@ class RecommendEquipment extends Model
     ];
 
     protected $dates = ['deleted_at'];
+    public function member()
+    {
+        return $this->belongsTo(Member::class, 'member_id');
+    }
 }

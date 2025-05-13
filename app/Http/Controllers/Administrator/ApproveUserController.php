@@ -16,7 +16,7 @@ class ApproveUserController extends Controller
         $query = $request->input('query');
 
         $userQuery = Member::with('info')->where('role', 'user')
-            ->where('status', 0);
+            ->where('status', 0)->orderBy('created_at', 'desc');
         if ($query) {
             $userQuery->where(function ($queryBuilder) use ($query) {
                 $queryBuilder->where('email', 'LIKE', "%{$query}%")

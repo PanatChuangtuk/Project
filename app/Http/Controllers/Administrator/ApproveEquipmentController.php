@@ -14,7 +14,7 @@ class ApproveEquipmentController extends Controller
     {
         $query = $request->input('query');
 
-        $userQuery = LoanTransaction::where('status',  'in_progress');
+        $userQuery = LoanTransaction::where('status',  'in_progress')->orderBy('id', 'desc');
 
 
         if ($query) {

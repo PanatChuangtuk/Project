@@ -232,7 +232,7 @@
 
                         <div class="group">
 
-                            <p><span class="fs-14 py-5">©</span> {{ now()->year }}<br>
+                            <p><span class="fs-14 py-5">©</span> {{ now()->year + 543 }}<br>
                                 สงวนลิขสิทธิ์</p>
                             <hr>
                             <p>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</p>

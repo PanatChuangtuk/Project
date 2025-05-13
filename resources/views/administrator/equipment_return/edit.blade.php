@@ -170,7 +170,7 @@
                 } else if (status == 'cancel') {
                     button.text('ยกเลิก');
                 } else {
-                    button.text('รอดำเนินการดำเนินการ');
+                    button.text('รอดำเนินการ');
                 }
             });
         });
