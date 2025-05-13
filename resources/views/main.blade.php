@@ -165,7 +165,7 @@
     @yield('stylesheet')
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <div class="page logo-hidden">
         <header class="header">
             <div class="navbar-toppage">
@@ -175,8 +175,8 @@
                         <div class="logo-text text-left">
                             <img src="{{ asset('img/thumb/images.png') }}" alt="Faculty Logo" class="logo-img" />
                             <div class="text-content">
-                                <h1 class="faculty-name">Faculty of Technical Education</h1>
-                                <p class="university-name">KMUTNB</p>
+                                <h1 class="faculty-name">คณะครุศาสตร์อุตสาหกรรม</h1>
+                                <p class="university-name">มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</p>
                             </div>
                         </div>
                     </div>
@@ -221,21 +221,7 @@
             </div>
         </header>
 
-        <div class="navbar-slider">
-            <div class="hgroup">
-                <button class="btn btn-icon navbar-toggle" type="button">
-                    <span class="group"><span></span><span></span><span></span></span>
-                </button>
-            </div>
-            <ul class="nav nav-accordion">
-                <li>
-                    <h5><a href="{{ url('/') }}">หน้าหลัก</a></h5>
-                </li>
-                <li>
-                    <h5><a href="{{ url('/equipment') }}">หน้าอุปกรณ์</a></h5>
-                </li>
-            </ul>
-        </div>
+
 
         @yield('content')
 
@@ -244,56 +230,56 @@
                 <div class="col-lg-5 mb-4 mb-lg-0">
                     <div class="footer-info">
 
-                        <div class="group py-5">
+                        <div class="group">
 
-                            <p><span class="fs-14">©</span> 2024<br>ALL RIGHTS RESERVED</p>
+                            <p><span class="fs-14 py-5">©</span> {{ now()->year }}<br>
+                                สงวนลิขสิทธิ์</p>
                             <hr>
-                            <p>KMUTNB<br>THAILAND</p>
+                            <p>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</p>
                         </div>
                     </div>
                 </div>
-                <div class="cols footer-contact">
+
+                {{-- <div class="cols footer-contact">
                     <div class="group">
                         <div class="followus">
                             <a href="#" target="_blank">
-                                <img class="icons" src="https://uandvholding.gramick.dev/upload/file/social/25cc7.svg"
-                                    alt="Facebook">
+                                <img class="icons" src="" alt="Facebook">
                             </a>
                             <a href="#" target="_blank">
-                                <img class="icons" src="https://uandvholding.gramick.dev/upload/file/social/25cc7.svg"
-                                    alt="Instagram">
+                                <img class="icons" src="" alt="Instagram">
                             </a>
                         </div>
 
                         <ul class="nav nav-contact">
                             <li>
-                                <img class="icons" src="https://uandvholding.gramick.dev/img/icons/icon-map.svg"
+                                <img class="icons" src=""
                                     alt="">
-                                <span>11 Soi Tansamrit 6/3 Thasai Muang Nonthaburi 11000</span>
+                                <span></span>
                             </li>
                             <li>
-                                <img class="icons" src="https://uandvholding.gramick.dev/img/icons/icon-call.svg"
+                                <img class="icons" src=""
                                     alt="">
-                                <a href="tel:0295077331">+(66)29-507-7331</a>
+                                <a href="tel:"></a>
                             </li>
                             <li>
-                                <img class="icons" src="https://uandvholding.gramick.dev/img/icons/icon-notebook.svg"
+                                <img class="icons" src=""
                                     alt="">
-                                <a href="tel:0891223456">+(66)89-122-3456</a>
+                                <a href="tel:"></a>
                             </li>
                             <li>
-                                <img class="icons" src="https://uandvholding.gramick.dev/img/icons/icon-sms.svg"
+                                <img class="icons" src=""
                                     alt="">
-                                <a href="mailto:contact@example.com">contact@example.com</a>
+                                <a href="mailto:"></a>
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> --}}
             </div>
 
             {{-- <div class="totop">
                 <a class="icons" href="#">
-                    <img src="https://uandvholding.gramick.dev/img/icons/icon-totop.svg" alt="Back to Top">
+                    <img src="" alt="Back to Top">
                 </a>
             </div> --}}
         </footer>

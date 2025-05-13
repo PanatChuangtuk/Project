@@ -107,7 +107,6 @@
             <div class="card-body">
                 <div class="equipment-section">
                     <h2 class="section-title">หมวดหมู่อุปกรณ์</h2>
-
                     <div class="equipment-grid">
                         @foreach ($equipment as $item)
                             <a href="{{ url('/equipment-list/?type=' . $item->id) }}" class="equipment-item">

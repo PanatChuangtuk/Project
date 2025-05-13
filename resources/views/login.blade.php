@@ -339,9 +339,9 @@ maximum-scale=1.0, user-scalable=no" />
 
 <body>
 
-    <div class="preload">
+    {{-- <div class="preload">
         <span class="loader"></span>
-    </div>
+    </div> --}}
 
 
     <header class="header">
@@ -363,7 +363,7 @@ maximum-scale=1.0, user-scalable=no" />
     <div class="section section-column">
         <div class="container">
             <div class="row row-main">
-                <div class="cols col-photo" data-aos="fade-in">
+                <div class="cols col-photo" data-aos="flip-up">
                     <img src="{{ asset('img/thumb/44image.jpg') }}" alt="" />
                 </div>
                 <!--cols-->
