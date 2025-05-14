@@ -27,7 +27,7 @@
             color: #1a3c6d;
             font-weight: 700;
             margin-bottom: 2rem;
-            font-size: 2rem;
+            font-size: 1.7rem;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
