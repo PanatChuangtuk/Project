@@ -4,7 +4,11 @@
 @endsection
 
 @section('stylesheet')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        .swal2-container {
+            z-index: 999990 !important;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -180,29 +184,36 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/delete.js') }}"></script>
     <script>
-        const yearSelect = document.getElementById('year');
-        const exportForm = document.getElementById('exportForm');
-        const printForm = document.getElementById('printForm');
+        $(document).ready(function() {
+            $('#year').on('change', function() {
+                let selectedYear = $(this).val();
+                $('#exportYear').val(selectedYear);
+                $('#printYear').val(selectedYear);
+            });
 
-        // set hidden input value on change
-        yearSelect.addEventListener('change', function() {
-            document.getElementById('exportYear').value = this.value;
-            document.getElementById('printYear').value = this.value;
-        });
+            $('#exportForm').on('submit', function(e) {
+                if (!$('#year').val()) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'กรุณาเลือกปี',
+                        text: 'กรุณาเลือกปีเพื่อดาวน์โหลดรายงาน',
+                        confirmButtonText: 'ตกลง'
+                    });
+                }
+            });
 
-        // prevent submit if year not selected
-        exportForm.addEventListener('submit', function(e) {
-            if (!yearSelect.value) {
-                e.preventDefault();
-                alert('กรุณาเลือกปีเพื่อส่งออกรายงาน');
-            }
-        });
-
-        printForm.addEventListener('submit', function(e) {
-            if (!yearSelect.value) {
-                e.preventDefault();
-                alert('กรุณาเลือกปีก่อนดูรายงาน');
-            }
+            $('#printForm').on('submit', function(e) {
+                if (!$('#year').val()) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'กรุณาเลือกปี',
+                        text: 'กรุณาเลือกปีก่อนดูรายงาน',
+                        confirmButtonText: 'ตกลง'
+                    });
+                }
+            });
         });
     </script>
 @endsection
