@@ -78,7 +78,7 @@
                                         </td>
                                         <td class="text-center  align-middle">
                                             @if ($item->status == 'in_progress')
-                                                <span class="badge bg-warning">รอดำเนินการดำเนินการ</span>
+                                                <span class="badge bg-warning">รอดำเนินการ</span>
                                             @endif
                                         </td>
                                         <td>
