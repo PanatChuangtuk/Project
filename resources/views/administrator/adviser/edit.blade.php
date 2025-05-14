@@ -1,60 +1,53 @@
 @extends('administrator.layouts.main')
 
 @section('title')
-@endsection
+
 @section('content')
+    <!-- Breadcrumb -->
     <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
-        <li class="breadcrumb-item"><a href="{{ route('administrator.dashboard') }}">หน้าหลัก</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('administrator.equipment') }}">อุปกรณ์</a></li>
-        <li class="breadcrumb-item active" aria-current="page">เพิ่ม</li>
+        <li class="breadcrumb-item"><a href="{{ route('administrator.dashboard') }}">หน้าแรก</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('administrator.adviser') }}">อาจารย์ที่ปรึกษา</a></li>
+        <li class="breadcrumb-item active" aria-current="page">แก้ไขข้อมูล</li>
     </ol>
 
+    <!-- Card Form -->
     <div class="card shadow-lg border-0 rounded-4">
         <div class="card-header text-white rounded-top-4">
-            <h5 class="mb-0"><i class="fas fa-user-plus"></i> เพิ่มอุปกรณ์</h5>
+            <h5 class="mb-0"><i class="fas fa-user-edit"></i> แก้ไขข้อมูลอาจารย์ที่ปรึกษา</h5>
         </div>
         <div class="card-body">
-            <form id="form-create" method="POST" action="{{ route('administrator.equipment.update', $equipment->id) }}"
+            <form id="form-update" method="POST" action="{{ route('administrator.adviser.update', $adviser->id) }}"
                 class="mx-1 mx-md-4" enctype="multipart/form-data">
                 @csrf
+
                 <div class="row g-4">
-                    <!-- Email -->
+
+                    <!-- ชื่อ -->
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="fw-bold w-100 d-block">ประเภทอุปกรณ์<span class="text-danger">*</span></label>
-                            <select name="item_id" id="typeSelect" class="form-control">
-                                <option value="">{{ $equipment->item->name }}</option>
-                            </select>
-                            @error('item_id')
-                                <span class="text-danger w-100">{{ $message }}</span>
-                            @enderror
+                        <label for="first_name" class="form-label fw-semibold">ชื่อ</label>
+                        <div class="input-group shadow-sm">
+                            <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
+                            <input type="text" id="first_name" name="first_name" class="form-control border-0 shadow-sm"
+                                value="{{ old('first_name', $adviser->first_name) }}" />
                         </div>
+                        @error('first_name')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
+                        @enderror
                     </div>
 
+                    <!-- นามสกุล -->
                     <div class="col-md-6">
-                        <label for="equipment_number" class="form-label fw-semibold">เลขครุภัณฑ์</label>
+                        <label for="last_name" class="form-label fw-semibold">นามสกุล</label>
                         <div class="input-group shadow-sm">
-                            <span class="input-group-text bg-light"><i class='bx bx-barcode'></i></i></span>
-                            <input type="text" id="equipment_number" name="equipment_number"
-                                class="form-control border-0 shadow-sm" value="{{ $equipment->equipment_number }}" />
+                            <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
+                            <input type="text" id="last_name" name="last_name" class="form-control border-0 shadow-sm"
+                                value="{{ old('last_name', $adviser->last_name) }}" />
                         </div>
-                        @error('equipment_number')
+                        @error('last_name')
                             <div class="text-danger small mt-1">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="col-md-6">
-                        <label for="number" class="form-label fw-semibold">เลขอุปกรณ์</label>
-                        <div class="input-group shadow-sm">
-                            <span class="input-group-text bg-light">
-                                <<i class='bx bx-tag-alt'></i>
-                            </span>
-                            <input type="text" id="number" value=" {{ $equipment->number }}"
-                                class="form-control border-0 shadow-sm" readonly />
-                        </div>
-                        @error('number')
-                            <div class="text-danger small mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
+
                     <div class="col-md-12">
                         <label for="image" class="col-md-2 col-form-label">รูปภาพ</label>
                         <div class="col-md-12">
@@ -64,27 +57,26 @@
                             @enderror
                         </div>
                     </div>
-                    <!-- สถานะ -->
+                    <!-- สถานะการใช้งาน -->
                     <div class="col-md-12 mt-3">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="status" value="1" name="status"
-                                {{ $equipment->status ? 'checked' : '' }} />
-                            <label class="form-check-label fw-semibold" for="status">สถานะเปิดใช้งาน</label>
+                                {{ $adviser->status ? 'checked' : '' }} />
+                            <label class="form-check-label fw-semibold" for="status">สถานะใช้งาน</label>
                         </div>
                     </div>
 
-                    <!-- ปุ่ม -->
+                    <!-- ปุ่มบันทึก -->
                     <div class="col-md-12 mt-4 text-end">
                         <button type="submit" class="btn btn-success px-4 shadow-sm">
-                            <i class="fas fa-save"></i> อัปเดต
+                            <i class="fas fa-save"></i> บันทึก
                         </button>
-                        <a href="{{ route('administrator.equipment') }}" class="btn btn-danger px-4 shadow-sm">
+                        <a href="{{ route('administrator.adviser') }}" class="btn btn-danger px-4 shadow-sm">
                             <i class="fas fa-times"></i> ยกเลิก
                         </a>
                     </div>
                 </div>
             </form>
-
         </div>
     </div>
 @endsection
@@ -98,39 +90,14 @@
                 icon: 'success',
                 confirmButtonText: 'ตกลง'
             }).then(function() {
-                window.location.href = '{{ route('administrator.equipment') }}';
+                window.location.href = '{{ route('administrator.adviser') }}';
             });
         </script>
     @endif
     <script>
-        $('#typeSelect').select2({
-            ajax: {
-                url: '{{ url('api/get-item') }}',
-                dataType: 'json',
-                delay: 250,
-                data: function(params) {
-                    return {
-                        query: params.term,
-                    };
-                },
-                processResults: function(data) {
-                    return {
-                        results: data.results.map(function(item) {
-                            return {
-                                id: item.id,
-                                text: item.name
-                            };
-                        })
-                    };
-                },
-                cache: true
-            }
-        });
-    </script>
-    <script>
         $(document).ready(function() {
             $("#image").fileinput({
-                deleteUrl: "{{ route('administrator.equipment.delete.image', $equipment->id) . '?_token=' . csrf_token() }}",
+                deleteUrl: "{{ route('administrator.adviser.delete.image', $adviser->id) . '?_token=' . csrf_token() }}",
                 enableResumableUpload: true,
                 showRemove: false,
                 uploadAsync: false,
@@ -143,17 +110,17 @@
                     chunkSize: 5,
                 },
                 initialPreview: [
-                    @if ($equipment->image)
+                    @if ($adviser->image)
                         src =
-                            "{{ asset('upload/file/qr_code/' . basename($equipment->image)) }}"
+                            "{{ asset('upload/file/adviser/' . basename($adviser->image)) }}"
                     @else
                         null
                     @endif
                 ],
                 initialPreviewConfig: [
-                    @if ($equipment)
+                    @if ($adviser)
                         {
-                            caption: "{{ basename($equipment->image) }}",
+                            caption: "{{ basename($adviser->image) }}",
                             key: 1
                         }
                     @else

@@ -36,6 +36,7 @@ class ReturnEquipmentController extends Controller
             ->distinct()
             ->orderBy('year', 'desc')
             ->pluck('year');
+
         $main_menu = $this->main_menu;
         return view('administrator.equipment_return.index', compact('users', 'query', 'main_menu', 'years'));
     }

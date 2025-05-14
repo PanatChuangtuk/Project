@@ -13,7 +13,8 @@ use App\Http\Controllers\Administrator\{
     EquipmentController,
     EquipmentItemController,
     ApproveEquipmentController,
-    ReturnEquipmentController
+    ReturnEquipmentController,
+    AdviserController
 };
 
 Route::prefix('administrator')->group(function () {
@@ -114,6 +115,16 @@ Route::prefix('administrator')->group(function () {
             Route::post('/equipment-update', [ReturnEquipmentController::class, 'approveEquipment'])->name('return-equipment.approveEquipment');
             Route::post('/export', [ReturnEquipmentController::class, 'exportData'])->name('return-equipment.export');
             Route::get('/print-report', [ReturnEquipmentController::class, 'printReportByYear'])->name('loan.printReport');
+        });
+        Route::group(['prefix' => 'adviser', 'as' => 'administrator.'], function () {
+            Route::get('/', [AdviserController::class, 'index'])->name('adviser');
+            Route::get('/add', [AdviserController::class, 'add'])->name('adviser.add');
+            Route::post('/submit', [AdviserController::class, 'submit'])->name('adviser.submit');
+            Route::get('/edit/{id}', [AdviserController::class, 'edit'])->name('adviser.edit');
+            Route::post('/update/{id}', [AdviserController::class, 'update'])->name('adviser.update');
+            Route::delete('/{id}', [AdviserController::class, 'destroy'])->name('adviser.destroy');
+            Route::post('/bulk-delete', [AdviserController::class, 'bulkDelete'])->name('adviser.bulk.delete');
+            Route::post('image/{id}', [AdviserController::class, 'deleteImage'])->name('adviser.delete.image');
         });
     });
 });

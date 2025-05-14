@@ -15,6 +15,7 @@ class Adviser extends Model
         'first_name',
         'last_name',
         'avatar',
+        'status'
     ];
 
     protected $dates = [

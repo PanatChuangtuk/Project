@@ -88,6 +88,12 @@
                         <div class="menu-text">นักศึกษา</div>
                     </a>
                 </li>
+
+                <li class="menu-item {{ Route::is('administrator.adviser*') ? 'active' : '' }}">
+                    <a href="{{ route('administrator.adviser') }}" class="menu-link">
+                        <div class="menu-text">อาจารย์ที่ปรึกษา</div>
+                    </a>
+                </li>
             </ul>
         </li>
 
