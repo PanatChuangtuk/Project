@@ -6,12 +6,12 @@
     <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
         <li class="breadcrumb-item"><a href="{{ route('administrator.dashboard') }}">หน้าหลัก</a></li>
         <li class="breadcrumb-item"><a href="{{ route('administrator.equipment') }}">อุปกรณ์</a></li>
-        <li class="breadcrumb-item active" aria-current="page">เพิ่ม</li>
+        <li class="breadcrumb-item active" aria-current="page">แก้ไข</li>
     </ol>
 
     <div class="card shadow-lg border-0 rounded-4">
         <div class="card-header text-white rounded-top-4">
-            <h5 class="mb-0"><i class="fas fa-user-plus"></i> เพิ่มอุปกรณ์</h5>
+            <h5 class="mb-0"><i class="fas fa-user-plus"></i> แก้ไขอุปกรณ์</h5>
         </div>
         <div class="card-body">
             <form id="form-create" method="POST" action="{{ route('administrator.equipment.update', $equipment->id) }}"

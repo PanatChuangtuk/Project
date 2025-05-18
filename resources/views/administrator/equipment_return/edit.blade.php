@@ -72,53 +72,92 @@
             </div>
         </div>
         <div class="mb-4 row">
-            <label for="member_id" class="col-md-2 fw-bold">สถานะคำร้อง :</label>
+            <label for="member_id" class="col-md-2 fw-bold">ชนิดคำร้อง :</label>
             <div class="col-md-10">
-                <x-approve-dropdown :status="$borrow->status" :item="$borrow->id" />
+                <td class="text-center  align-middle">
+                    @if ($borrow->status_type == 'borrowed')
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <span class="badge bg-warning px-3 py-2 rounded-pill fw-normal">
+                                    <i class="fas fa-hand-holding me-1"></i> ยืมอุปกรณ์
+                                </span>
+                            </div>
+                        </div>
+                    @elseif ($borrow->status_type == 'returned')
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <span class="badge bg-success px-3 py-2 rounded-pill fw-normal">
+                                    <i class="fas fa-undo-alt me-1"></i> คืนอุปกรณ์
+                                </span>
+                            </div>
+                        </div>
+                    @elseif ($borrow->status_type == 'overdue')
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <span class="badge bg-danger px-3 py-2 rounded-pill fw-normal">
+                                    <i class="fas fa-clock me-1"></i> เกินกำหนด
+                                </span>
+                            </div>
+                        </div>
+                    @endif
+                </td>
             </div>
         </div>
 
-        <div class="card p-4">
-            <h4 class="display-4">อุปกรณ์</h4>
-            <form method="POST" action="{{ route('administrator.approve-equipment.approveEquipment') }}">
-                @csrf
-                <div class="table">
-                    <table class="table table-bordered border-light">
-                        <thead>
-                            <tr>
-                                <th class="text-center"> </th>
-                                <th class="text-center">ชื่ออุปกรณ์</th>
-                                <th class="text-center">จำนวน</th>
-                                <th class="text-center">เลขอุปกรณ์</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table-border-bottom-0" id="orderTableBody">
-                            @foreach ($borrow->loanEquipments as $key => $item)
-                                <input type="hidden" name="item_id[]" value="{{ $item->id }}">
+        <div class="mb-4 row">
+            <label for="member_id" class="col-md-2 fw-bold">สถานะคำร้อง :</label>
+            <div class="col-md-10">
+                @if ($borrow->status == 'completed')
+                    <span class="badge badge-pill badge-success">อนุมัติ</span>
+                @elseif ($borrow->status == 'cancel')
+                    <span class="badge badge-pill badge-danger">ยกเลิก</span>
+                @else
+                    <span class="badge badge-pill badge-warning">รอดำเนินการ</span>
+                @endif
+            </div>
+
+            <div class="card p-4">
+                <h4 class="display-4">อุปกรณ์</h4>
+                <form method="POST" action="{{ route('administrator.approve-equipment.approveEquipment') }}">
+                    @csrf
+                    <div class="table">
+                        <table class="table table-bordered border-light">
+                            <thead>
                                 <tr>
-                                    <td class="text-center align-middle">
-                                        <img src="{{ $item->equipmentItem->image ? asset('upload/file/equipment_item/' . $item->equipmentItem->image) : asset('images/default-image.png') }}"
-                                            class="equipment-img">
-                                    </td>
-                                    <td class="text-center align-middle">
-                                        {{ $item->name ?? null }}
-                                    </td>
-                                    <td class="text-center align-middle">
-                                        {{ $item->quantity ?? null }} ชิ้น
-                                    </td>
-                                    <td class="text-center align-middle">
-                                        {{ $item->equipment->number ?? null }}
-                                    </td>
+                                    <th class="text-center"> </th>
+                                    <th class="text-center">ชื่ออุปกรณ์</th>
+                                    <th class="text-center">จำนวน</th>
+                                    <th class="text-center">เลขอุปกรณ์</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody class="table-border-bottom-0" id="orderTableBody">
+                                @foreach ($borrow->loanEquipments as $key => $item)
+                                    <input type="hidden" name="item_id[]" value="{{ $item->id }}">
+                                    <tr>
+                                        <td class="text-center align-middle">
+                                            <img src="{{ $item->equipmentItem->image ? asset('upload/file/equipment_item/' . $item->equipmentItem->image) : asset('images/default-image.png') }}"
+                                                class="equipment-img">
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            {{ $item->name ?? null }}
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            {{ $item->quantity ?? null }} ชิ้น
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            {{ $item->equipment->number ?? null }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
 
-            </form>
+                </form>
+            </div>
+
+
         </div>
-
-
     </div>
 @endsection
 

@@ -19,6 +19,7 @@
     <link href="{{ asset('css/swiper.css') }}" rel="stylesheet">
     <link href="{{ asset('css/jquery.scrollbar.css') }}" rel="stylesheet">
     <link href="{{ asset('css/global.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
         .nav-link,
@@ -165,7 +166,7 @@
     @yield('stylesheet')
 </head>
 
-<body class="d-flex flex-column min-vh-100">
+<body>
     <div class="page logo-hidden">
         <header class="header">
             <div class="navbar-toppage">

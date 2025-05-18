@@ -72,7 +72,7 @@ class ReturnEquipmentController extends Controller
         foreach ($itemIds as $index => $itemId) {
             $equipmentId = $equipmentIds[$index];
             $loanEquipment = LoanEquipment::find($itemId);
-            if ($loanEquipment->loanTransaction->status == 'in_progress') {
+            if ($loanEquipment->loanTransaction->status == 'in_process') {
                 $loanEquipment->loanTransaction->update([
                     'status' => 'completed',
                 ]);
@@ -113,7 +113,7 @@ class ReturnEquipmentController extends Controller
                     'สถานะการอนุมัติ' => match ($loan->status) {
                         'completed' => 'อนุมัติ',
                         'cancel' => 'ไม่อนุมัติ',
-                        'in_progress' => 'รอดำเนินการ',
+                        'in_process' => 'รอดำเนินการ',
                     },
                     'ชื่ออุปกรณ์' => $equipment->equipment_names,
                     'จำนวน' => $equipment->total_qty,

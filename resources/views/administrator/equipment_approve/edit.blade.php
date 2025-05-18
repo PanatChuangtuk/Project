@@ -71,10 +71,52 @@
                 {{ $borrow->member->info->student->student_number ?? null }}
             </div>
         </div>
+
+        <div class="mb-4 row">
+            <label for="member_id" class="col-md-2 fw-bold">ชนิดคำร้อง :</label>
+            <div class="col-md-10">
+                <td class="text-center  align-middle">
+                    @if ($borrow->status_type == 'borrowed')
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <span class="badge bg-warning px-3 py-2 rounded-pill fw-normal">
+                                    <i class="fas fa-hand-holding me-1"></i> ยืมอุปกรณ์
+                                </span>
+                            </div>
+                        </div>
+                    @elseif ($borrow->status_type == 'returned')
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <span class="badge bg-success px-3 py-2 rounded-pill fw-normal">
+                                    <i class="fas fa-undo-alt me-1"></i> คืนอุปกรณ์
+                                </span>
+                            </div>
+                        </div>
+                    @elseif ($borrow->status_type == 'overdue')
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <span class="badge bg-danger px-3 py-2 rounded-pill fw-normal">
+                                    <i class="fas fa-clock me-1"></i> เกินกำหนด
+                                </span>
+                            </div>
+                        </div>
+                    @endif
+                </td>
+            </div>
+        </div>
+
         <div class="mb-4 row">
             <label for="member_id" class="col-md-2 fw-bold">สถานะคำร้อง :</label>
             <div class="col-md-10">
-                <x-approve-dropdown :status="$borrow->status" :item="$borrow->id" />
+
+                @if ($borrow->status == 'completed')
+                    <span class="badge badge-pill badge-success">อนุมัติ</span>
+                @elseif ($borrow->status == 'cancel')
+                    <span class="badge badge-pill badge-danger">ยกเลิก</span>
+                @else
+                    <span class="badge badge-pill badge-warning">รอดำเนินการ</span>
+                @endif
+
             </div>
         </div>
 
@@ -118,8 +160,14 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="d-flex justify-content-md-end mt-3">
-                    <button type="submit" class="btn btn-primary">ยืนยันการยืม</button>
+                <div class="d-flex justify-content-end mt-4 gap-2">
+                    <button type="button" class="btn btn-outline-danger btn-cancel" data-item="{{ $borrow->id }}"
+                        data-status="cancel">
+                        <i class="fas fa-times-circle me-1"></i> ยกเลิกการยืม
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check-circle me-1"></i> ยืนยันการยืม
+                    </button>
                 </div>
             </form>
         </div>
@@ -142,7 +190,7 @@
         </script>
     @endif
     <script>
-        $(document).on('click', '.dropdown-item', function() {
+        $(document).on('click', '.btn-cancel', function() {
             var status = $(this).data('status');
             var item = $(this).data('item');
             $.ajax({
@@ -165,22 +213,6 @@
                         });
                     }
                 },
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('.dropdown-item').on('click', function() {
-                var status = $(this).data('status');
-                var button = $(this).closest('.dropdown').find('button');
-
-                if (status == 'completed') {
-                    button.text('อนุมัติ');
-                } else if (status == 'cancel') {
-                    button.text('ยกเลิก');
-                } else {
-                    button.text('รอดำเนินการ');
-                }
             });
         });
     </script>

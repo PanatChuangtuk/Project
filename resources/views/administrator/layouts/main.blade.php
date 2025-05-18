@@ -275,7 +275,7 @@ data-template="vertical-menu-template-free"
                     <div class="mb-2 mb-md-0">
                         © {{now()->year + 543}}
                     
-                         มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ ภาควิชาคอมพิวเตอร์ศึกษา.
+                         มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ ภาควิชาคอมพิวเตอร์ศึกษา
                          {{-- Powered by --}}
                         {{-- <a href="https://gramickhouse.com/" target="_blank" class="footer-link fw-bolder"> GRAMICK HOUSE </a> --}}
                         </div>

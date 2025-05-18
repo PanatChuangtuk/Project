@@ -102,7 +102,7 @@
             font-weight: 600;
         }
 
-        td.status-in_progress {
+        td.status-in_process {
             color: #d97706;
             font-weight: 600;
         }
@@ -261,7 +261,7 @@
                                 อนุมัติ
                             @elseif ($equipment->loanTransaction->status == 'cancel')
                                 ไม่อนุมัติ
-                            @elseif ($equipment->loanTransaction->status == 'in_progress')
+                            @elseif ($equipment->loanTransaction->status == 'in_process')
                                 รอดำเนินการ
                             @endif
                         </td>

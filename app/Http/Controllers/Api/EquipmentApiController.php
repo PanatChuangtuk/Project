@@ -45,7 +45,7 @@ class EquipmentApiController extends Controller
     }
     public function getEquipment(Request $request)
     {
-        $borrowedItems = LoanTransaction::whereIn('status_type', ['borrowed', 'overdue'])->whereIn('status', ['in_progress', 'completed'])
+        $borrowedItems = LoanTransaction::whereIn('status_type', ['borrowed', 'overdue'])->whereIn('status', ['in_process', 'completed'])
             ->with('loanEquipments')
             ->get();
         $borrowedEquipmentIds = $borrowedItems->flatMap(function ($transaction) {

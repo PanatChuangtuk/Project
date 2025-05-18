@@ -30,12 +30,21 @@ class ReturnController extends MainController
     {
         LoanTransaction::find($id)->update([
             'status_type' => 'returned',
-            'status' => 'in_progress',
+            'status' => 'in_process',
             'returned_at' => now(),
         ]);
 
 
         return redirect()->back()
-            ->with('success', 'คืนคืนอุปกรณ์เรียบร้อยแล้ว กรุณรอการตรวจสอบจากเจ้าหน้าที่');
+            ->with('success', 'คืนอุปกรณ์เรียบร้อยแล้ว กรุณรอการตรวจสอบจากเจ้าหน้าที่');
+    }
+    public function cancelEquipment(Request $request, $id)
+    {
+        LoanTransaction::find($id)->update([
+            'status' => 'cancel',
+        ]);
+
+        return redirect()->back()
+            ->with('success', 'คุณได้ทำการยกเลิกอุปกรณ์เรียบร้อยแล้ว');
     }
 }

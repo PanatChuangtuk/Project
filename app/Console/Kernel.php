@@ -9,7 +9,7 @@ class Kernel extends ConsoleKernel
 {
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('app:hourly-task-command')->hourly();
+        $schedule->command('app:hourly-task-command')->dailyAt('08:00');
     }
 
     protected function commands()

@@ -16,7 +16,7 @@ class EquipmentListController extends MainController
         $equipment = EquipmentItem::where('category_id', $typeVaule)
             ->where('status', 1)
             ->get();
-        $borrowedItems = LoanTransaction::whereIn('status_type', ['borrowed', 'overdue'])->whereIn('status', ['in_progress', 'completed'])
+        $borrowedItems = LoanTransaction::whereIn('status_type', ['borrowed', 'overdue'])->whereIn('status', ['in_process', 'completed'])
             ->with('loanEquipments')
             ->get();
         $borrowedCounts = [];

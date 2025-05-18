@@ -14,7 +14,7 @@ class ApproveEquipmentController extends Controller
     {
         $query = $request->input('query');
 
-        $userQuery = LoanTransaction::where('status',  'in_progress')->orderBy('id', 'desc');
+        $userQuery = LoanTransaction::where('status',  'in_process')->orderBy('id', 'desc');
 
 
         if ($query) {
@@ -65,7 +65,7 @@ class ApproveEquipmentController extends Controller
         foreach ($itemIds as $index => $itemId) {
             $equipmentId = $equipmentIds[$index];
             $loanEquipment = LoanEquipment::find($itemId);
-            if ($loanEquipment->loanTransaction->status == 'in_progress') {
+            if ($loanEquipment->loanTransaction->status == 'in_process') {
                 $loanEquipment->loanTransaction->update([
                     'status' => 'completed',
                 ]);

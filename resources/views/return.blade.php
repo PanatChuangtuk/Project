@@ -50,7 +50,7 @@
             color: #00cc88;
         }
 
-        .purchase-status.in_progress {
+        .purchase-status.in_process {
             background-color: #e6f7ff;
             color: #0088cc;
         }
@@ -98,6 +98,23 @@
             background-color: #3e8e41;
             box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
         }
+
+        .cancel-btn {
+            display: inline-block;
+            padding: 8px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .cancel-btn:hover {
+            background-color: #3e8e41;
+            box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+        }
+
 
         .equipment-status {
             display: flex;
@@ -211,6 +228,10 @@
             }
 
             .return-btn {
+                width: 100%;
+            }
+
+            .cancel-btn {
                 width: 100%;
             }
 
@@ -344,7 +365,7 @@
                             <div class="info-row border-bottom-1">
                                 <div>
                                     @if ($item->status_type == 'borrowed' || $item->status_type == 'overdue')
-                                        @if ($item->status === 'in_progress')
+                                        @if ($item->status === 'in_process')
                                             <label class="purchase-status {{ $item->status_type }}">
                                                 อยู่ระหว่างดำเนินการ
                                             </label>
@@ -411,7 +432,7 @@
                             </div>
 
                             <div class="info-row d-flex justify-content-between align-items-center">
-                                @if ($item->status === 'in_progress')
+                                @if ($item->status === 'in_process')
                                     <div class="delivery-info" style="border-left: 3px solid #3f51b5;">
                                         <i class="fas fa-spinner me-2" style="color: #3f51b5;"></i>
                                         <span>อยู่ระหว่างการดำเนินการ กรุณารอการยืนยัน</span>
@@ -443,7 +464,16 @@
                                         @if ($item->status_type == 'overdue') style="background-color: #ff5722;" @endif>
                                         <i class="fas fa-undo-alt me-1"></i> คืนอุปกรณ์
                                     </a>
-                                @elseif($item->status === 'cancel')
+                                @elseif($item->status_type == 'borrowed' && $item->status === 'in_process')
+                                    <a href="javascript:void(0);" class="cancel-btn" data-id="{{ $item->id }}"
+                                        @if ($item->status == 'in_process') style="background-color: #ff0000;" @endif>
+                                        <i class="bi-trash"></i> ยกเลิก
+                                    </a>
+                                    {{-- @elseif($item->status === 'cancel')
+                                    <div class="d-flex justify-content-end align-items-center text-danger">
+                                        <i class="bi bi-x-octagon me-1"></i>
+                                        <span>ถูกยกเลิก</span>
+                                    </div> --}}
                                 @endif
                             </div>
                         </div>
@@ -469,6 +499,53 @@
             Swal.fire({
                 title: 'ยืนยันการคืนอุปกรณ์?',
                 text: "คุณต้องการคืนอุปกรณ์นี้ใช่หรือไม่",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'ยืนยัน',
+                cancelButtonText: 'ยกเลิก'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                title: 'คืนอุปกรณ์สำเร็จ!',
+                                text: 'ทำการคืนอุปกรณ์เรียบร้อยแล้ว',
+                                icon: 'success',
+                                confirmButtonText: 'ตกลง'
+                            }).then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire({
+                                title: 'เกิดข้อผิดพลาด!',
+                                text: 'ไม่สามารถคืนอุปกรณ์ได้',
+                                icon: 'error',
+                                confirmButtonText: 'ตกลง'
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).on('click', '.cancel-btn', function(e) {
+            e.preventDefault();
+
+            var id = $(this).data('id');
+            var url = '/cancel-equipment/' + id;
+
+            Swal.fire({
+                title: 'ยืนยันการยกเลิกอุปกรณ์?',
+                text: "คุณต้องการยกเลิกอุปกรณ์นี้ใช่หรือไม่",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',

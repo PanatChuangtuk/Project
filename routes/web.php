@@ -42,6 +42,7 @@ Route::middleware(['auth:member'])->group(function () {
     Route::get('borrow-cart', [BorrowController::class, 'borrow'])->name('borrow.cart');
     Route::get('return', [ReturnController::class, 'index'])->name('return.index');
     Route::post('return-equipment/{id}', [ReturnController::class, 'returnEquipment'])->name('return.equipment');
+    Route::post('cancel-equipment/{id}', [ReturnController::class, 'cancelEquipment'])->name('cancel.equipment');
     Route::post('borrow/submit', [BorrowController::class, 'submit'])->name('borrow.submit');
     Route::post('logout', [ProfileController::class, 'logout'])->name('logout');
     Route::post('/equipment/update', [EquipmentController::class, 'update'])->name('equipment.update');

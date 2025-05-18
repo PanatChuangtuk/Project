@@ -95,7 +95,7 @@
                                     <th class="text-center">ชื่อ-นามสกุล</th>
                                     <th class="text-center">รหัสนักศึกษา</th>
                                     <th class="text-center">ชนิดคำร้อง</th>
-                                    {{-- <th class="text-center">สถานะคำร้อง</th> --}}
+                                    <th class="text-center">สถานะคำร้อง</th>
                                     <th class="text-center">การจัดการ</th>
                                 </tr>
                             </thead>
@@ -129,13 +129,13 @@
                                                 <span class="badge bg-danger">เกินกำหนด</span>
                                             @endif
                                         </td>
-                                        {{-- <td class="text-center align-middle">
+                                        <td class="text-center align-middle">
                                             @if ($item->status == 'completed')
                                                 <span class="badge bg-success">อนุมัติ</span>
                                             @elseif ($item->status == 'cancel')
                                                 <span class="badge bg-danger">ยกเลิก</span>
                                             @endif
-                                        </td> --}}
+                                        </td>
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <div class="d-inline-block text-nowrap">

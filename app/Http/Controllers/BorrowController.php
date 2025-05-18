@@ -36,7 +36,7 @@ class BorrowController extends MainController
         $loan = LoanTransaction::create([
             'member_id' => Auth::user()->id,
             'status_type' => 'borrowed',
-            'status' => 'in_progress',
+            'status' => 'in_process',
             'borrowed_at' => now(),
             'returned_at' => null,
             'created_at' => now(),

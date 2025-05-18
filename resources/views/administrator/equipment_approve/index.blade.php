@@ -77,31 +77,19 @@
                                             @endif
                                         </td>
                                         <td class="text-center  align-middle">
-                                            @if ($item->status == 'in_progress')
+                                            @if ($item->status == 'in_process')
                                                 <span class="badge bg-warning">รอดำเนินการ</span>
                                             @endif
                                         </td>
                                         <td>
-                                            @if ($item->status_type == 'borrowed')
-                                                <div class="d-flex justify-content-center">
-                                                    <div class="d-inline-block text-nowrap">
-                                                        <a class="btn btn-icon btn-outline-primary border-0"
-                                                            href="{{ route('administrator.approve-equipment.edit', ['id' => $item->id]) }}">
-                                                            <i class="bx bx-edit bx"></i>
-                                                        </a>
-                                                    </div>
+                                            <div class="d-flex justify-content-center">
+                                                <div class="d-inline-block text-nowrap">
+                                                    <a class="btn btn-icon btn-outline-primary border-0"
+                                                        href="{{ route('administrator.approve-equipment.edit', ['id' => $item->id]) }}">
+                                                        <i class="bx bx-edit bx"></i>
+                                                    </a>
                                                 </div>
-                                            @else
-                                                <div class="d-flex justify-content-center">
-                                                    <div class="d-inline-block text-nowrap">
-                                                        <a class="btn btn-icon btn-outline-primary border-0"
-                                                            href="{{ route('administrator.return-equipment.edit', ['id' => $item->id]) }}">
-                                                            <i class="bx bx-edit bx"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            @endif
-
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
