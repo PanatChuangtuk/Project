@@ -90,7 +90,36 @@ data-template="vertical-menu-template-free"
 
 <style>/* ---- Cross-editor content styles. --------------------------------------------------------------- */
  
-  
+  .custom-tooltip {
+  position: relative;
+}
+
+.custom-tooltip:hover::after {
+  content: attr(data-tooltip); /* ดึงข้อความจาก data-tooltip */
+  position: absolute;
+  bottom: 100%; /* แสดงด้านบนของปุ่ม */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333; /* สีพื้นหลัง tooltip */
+  color: #fff; /* สีตัวอักษร */
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+/* ลูกศรเล็กๆ ใต้ tooltip (ถ้าต้องการ) */
+.custom-tooltip:hover::before {
+  content: "";
+  position: absolute;
+  bottom: 90%; /* ปรับตำแหน่งลูกศร */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
   /* Make sure all content containers are distinguishable on a web page even of not focused. */
   .ck.ck-content:not(:focus) {
     border: 1px solid var(--ck-color-base-border);

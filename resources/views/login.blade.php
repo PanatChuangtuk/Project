@@ -20,6 +20,30 @@ maximum-scale=1.0, user-scalable=no" />
     <link href="{{ asset('css/jquery.scrollbar.css') }}" rel="stylesheet">
     <link href="{{ asset('css/global.css') }}" rel="stylesheet">
     <style>
+        body {
+            padding: 0;
+            margin: 0;
+            height: 100vh;
+            position: relative;
+            z-index: 0;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("{{ asset('img/thumb/44image.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.3;
+            z-index: -1;
+
+        }
+
         .empty-cart-message {
             display: flex;
             justify-content: center;
@@ -333,6 +357,152 @@ maximum-scale=1.0, user-scalable=no" />
                 font-size: 0.675rem;
             }
         }
+
+        .section-column {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90%;
+
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Container และ Row */
+        .container {
+            max-width: 500px;
+            /* จำกัดความกว้างของฟอร์ม */
+            width: 100%;
+            padding: 0 15px;
+        }
+
+        .row-main {
+            justify-content: center;
+            width: 100%;
+        }
+
+        /* ปรับ col-photo (ซ่อนไว้) */
+        .col-photo {
+            display: none;
+        }
+
+        /* ปรับ col-form */
+        .col-form {
+            width: 100%;
+            max-width: 400px;
+            /* ขนาดฟอร์ม */
+        }
+
+        .boxed {
+            background-color: rgba(255, 255, 255, 0.9);
+            /* กล่องโปร่งใสขาว */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            /* เงา */
+        }
+
+        .article h1 {
+            font-size: 32px;
+            color: var(--color-primary);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .article h4 {
+            font-size: 16px;
+            color: var(--color-primary);
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .form-group label {
+            font-size: 16px;
+            color: var(--color-primary);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .form-control {
+            font-size: 14px;
+            padding: 10px;
+            border: 1px solid var(--color-gray);
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .text-danger {
+            font-size: 12px;
+            color: var(--color-accent);
+            margin-top: 5px;
+            display: block;
+        }
+
+        .btn {
+            font-size: 16px;
+            background-color: var(--color-primary);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #2d4a40;
+        }
+
+        .form-note h6 {
+            font-size: 14px;
+            color: var(--color-primary);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .btn-light {
+            font-size: 14px;
+            background-color: #e9ecef;
+            color: var(--color-primary);
+            border-radius: 5px;
+            padding: 8px 16px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-light:hover {
+            background-color: #dee2e6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .article h1 {
+                font-size: 24px;
+            }
+
+            .article h4 {
+                font-size: 14px;
+            }
+
+            .boxed {
+                padding: 20px;
+            }
+
+            .form-group label {
+                font-size: 14px;
+            }
+
+            .form-control {
+                font-size: 12px;
+            }
+
+            .btn {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+        }
     </style>
 
 </head>
@@ -363,18 +533,16 @@ maximum-scale=1.0, user-scalable=no" />
     <div class="section section-column">
         <div class="container">
             <div class="row row-main">
-                <div class="cols col-photo" data-aos="flip-up">
-                    <img src="{{ asset('img/thumb/44image.jpg') }}" alt="" />
-                </div>
+
                 <!--cols-->
-                <div class="cols col-form" data-aos="fade-in">
-                    <div class="boxed me-lg-0">
+                <div class="cols" data-aos="fade-in">
+                    <div class="boxed me-lg">
                         <div class="article pb-3" style="--font-size: 14px; --color: #375b51">
-                            <h2>เข้าสู่ระบบ</h2>
-                            <p> กรุณากรอกข้อมูลเพื่อเข้าสู่ระบบ
+                            <h1>เข้าสู่ระบบ</h1>
+                            <h4> กรุณากรอกข้อมูลเพื่อเข้าสู่ระบบ
                                 ระบบนี้ช่วยให้คุณสามารถเข้าถึงบัญชีของคุณได้
                                 โปรดป้อนข้อมูลที่ถูกต้องเพื่อดำเนินการต่อ
-                            </p>
+                            </h4>
                         </div>
                         <form class="form" method="POST" action="{{ route('login.submit') }}">
                             @csrf
@@ -412,10 +580,9 @@ maximum-scale=1.0, user-scalable=no" />
                                         <span class="px-3">เข้าสู่ระบบ</span>
                                     </button>
                                 </div>
-
-                                <div class="col-12 py-4">
+                                <h6>ยังไม่มีบัญชี?</h6>
+                                <div class="col-12">
                                     <div class="form-note">
-                                        <h6>ยังไม่มีบัญชี?</h6>
                                         <a href="{{ url('/register') }}" class="btn btn-32 btn-light rounded-14">
                                             <span class="fs-14 px-2">สมัครสมาชิก</span>
                                         </a>
@@ -432,11 +599,6 @@ maximum-scale=1.0, user-scalable=no" />
         </div>
         <!--container-->
     </div>
-    <!--section-->
-    {{-- <footer class="footer">
-
-        </footer> --}}
-
 
     <script src="{{ asset('js/jquery-3.4.1.min.js') }}" defer></script>
     <script src="{{ asset('js/bootstrap/popper.min.js') }}" defer></script>

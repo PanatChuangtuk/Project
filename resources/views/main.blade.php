@@ -162,6 +162,30 @@
                 font-size: 0.675rem;
             }
         }
+
+        body {
+            padding: 0;
+            margin: 0;
+            height: 100vh;
+            position: relative;
+            z-index: 0;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("{{ asset('img/thumb/44image.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.3;
+            z-index: -1;
+
+        }
     </style>
     @yield('stylesheet')
 </head>

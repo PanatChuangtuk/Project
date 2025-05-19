@@ -4,7 +4,11 @@
 @endsection
 
 @section('stylesheet')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        .text-cutome {
+            font-size: 16px;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -67,24 +71,25 @@
                                         </td>
                                         <td class="text-center">{{ $item->member->info->student->student_number ?? null }}
                                         </td>
-                                        <td class="text-center  align-middle">
+                                        <td class="text-center">
                                             @if ($item->status_type == 'borrowed')
-                                                <span class="badge bg-warning">ยืมอุปกรณ์</span>
+                                                <span class="badge bg-warning text-cutome">ยืมอุปกรณ์</span>
                                             @elseif ($item->status_type == 'returned')
-                                                <span class="badge bg-success">คืนอุปกรณ์</span>
+                                                <span class="badge bg-success text-cutome">คืนอุปกรณ์</span>
                                             @elseif ($item->status_type == 'overdue')
-                                                <span class="badge bg-danger">เกินกำหนด</span>
+                                                <span class="badge bg-danger text-cutome">เกินกำหนด</span>
                                             @endif
                                         </td>
-                                        <td class="text-center  align-middle">
+                                        <td class="text-center">
                                             @if ($item->status == 'in_process')
-                                                <span class="badge bg-warning">รอดำเนินการ</span>
+                                                <span class="badge bg-warning text-cutome">รอดำเนินการ</span>
                                             @endif
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <div class="d-inline-block text-nowrap">
-                                                    <a class="btn btn-icon btn-outline-primary border-0"
+                                                    <a class="btn btn-icon btn-outline-primary border-0 custom-tooltip"
+                                                        data-tooltip="ดูคำร้อง"
                                                         href="{{ route('administrator.approve-equipment.edit', ['id' => $item->id]) }}">
                                                         <i class="bx bx-edit bx"></i>
                                                     </a>

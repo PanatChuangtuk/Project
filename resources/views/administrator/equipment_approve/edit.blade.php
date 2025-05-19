@@ -34,6 +34,24 @@
             margin-right: 0;
             margin-bottom: 1rem;
         }
+
+        .table-bordered.custom-table {
+            border: 3px solid #3EB489;
+            /* เส้นขอบตารางหนา 3px สีดำ */
+        }
+
+        .table-bordered.custom-table th,
+        .table-bordered.custom-table td {
+            border: 3px solid #3EB489;
+            /* เส้นขอบเซลล์หนา 3px สีดำ */
+        }
+
+        .table-bordered.custom-table thead th {
+            background-color: #f7f7f7;
+            /* พื้นหลังส่วนหัวสีเทาเข้ม */
+            color: #000000;
+            /* ตัวอักษรสีขาว */
+        }
     </style>
 @endsection
 
@@ -125,16 +143,16 @@
             <form method="POST" action="{{ route('administrator.approve-equipment.approveEquipment') }}">
                 @csrf
                 <div class="table">
-                    <table class="table table-bordered border-light">
+                    <table class="table table-bordered  custom-table">
                         <thead>
                             <tr>
-                                <th class="text-center"> </th>
+                                <th class="text-center">รูปอุปกรณ์</th>
                                 <th class="text-center">ชื่ออุปกรณ์</th>
                                 <th class="text-center">จำนวน</th>
                                 <th class="text-center">อุปกรณ์ที่ให้ยืม</th>
                             </tr>
                         </thead>
-                        <tbody class="table-border-bottom-0" id="orderTableBody">
+                        <tbody class="table-border-bottom-dark" id="orderTableBody">
                             @foreach ($borrow->loanEquipments as $key => $item)
                                 <input type="hidden" name="item_id[]" value="{{ $item->id }}">
                                 <tr>

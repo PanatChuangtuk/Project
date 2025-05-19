@@ -78,7 +78,8 @@
                                             <div class="d-flex justify-content-center">
                                                 <div class="d-inline-block text-nowrap">
                                                     {{-- ปุ่มแก้ไข --}}
-                                                    <a class="btn btn-icon btn-outline-primary border-0"
+                                                    <a class="btn btn-icon btn-outline-primary border-0 custom-tooltip"
+                                                        data-tooltip="แก้ไข"
                                                         href="{{ route('administrator.adviser.edit', ['id' => $item->id]) }}">
                                                         <i class="bx bx-edit bx"></i>
                                                     </a>
@@ -90,8 +91,8 @@
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="button"
-                                                            class="btn btn-icon btn-outline-danger border-0 btn-delete"
-                                                            data-id="{{ $item->id }}">
+                                                            class="btn btn-icon btn-outline-danger border-0 btn-delete custom-tooltip"
+                                                            data-tooltip="ลบ" data-id="{{ $item->id }}">
                                                             <i class="bx bx-trash"></i>
                                                         </button>
                                                     </form>

@@ -8,6 +8,10 @@
         .swal2-container {
             z-index: 999990 !important;
         }
+
+        .text-cutome {
+            font-size: 16px;
+        }
     </style>
 @endsection
 
@@ -120,28 +124,29 @@
                                         </td>
                                         <td class="text-center">{{ $item->member->info->student->student_number ?? null }}
                                         </td>
-                                        <td class="text-center  align-middle">
+                                        <td class="text-center align-middle">
                                             @if ($item->status_type == 'borrowed')
-                                                <span class="badge bg-warning">ยืมอุปกรณ์</span>
+                                                <span class="badge bg-warning text-cutome">ยืมอุปกรณ์</span>
                                             @elseif ($item->status_type == 'returned')
-                                                <span class="badge bg-success">คืนอุปกรณ์</span>
+                                                <span class="badge bg-success text-cutome">คืนอุปกรณ์</span>
                                             @elseif ($item->status_type == 'overdue')
-                                                <span class="badge bg-danger">เกินกำหนด</span>
+                                                <span class="badge bg-danger text-cutome">เกินกำหนด</span>
                                             @endif
                                         </td>
                                         <td class="text-center align-middle">
                                             @if ($item->status == 'completed')
-                                                <span class="badge bg-success">อนุมัติ</span>
+                                                <span class="badge bg-success text-cutome">อนุมัติ</span>
                                             @elseif ($item->status == 'cancel')
-                                                <span class="badge bg-danger">ยกเลิก</span>
+                                                <span class="badge bg-danger text-cutome">ยกเลิก</span>
                                             @endif
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <div class="d-inline-block text-nowrap">
-                                                    <a class="btn btn-icon btn-outline-primary border-0"
+                                                    <a class="btn btn-icon btn-outline-primary border-0 custom-tooltip"
+                                                        data-tooltip="รายละเอียดคำร้อง"
                                                         href="{{ route('administrator.return-equipment.edit', ['id' => $item->id]) }}">
-                                                        <i class="bx bx-edit bx"></i>
+                                                        <i class="bi bi-eye-fill"></i>
                                                     </a>
                                                 </div>
                                             </div>
