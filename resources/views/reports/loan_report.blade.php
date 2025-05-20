@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>รายงานการยืม-คืนอุปกรณ์ ปี {{ $year }}</title>
+    <title>รายงานการยืม-คืนอุปกรณ์ ตั้งแต่วันที่ {{ $startDate }} ถึง
+        {{ $endDate }}</title>
     <style>
         /* Import Google Fonts for Thai typography */
         @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap');
@@ -222,7 +223,8 @@
 </head>
 
 <body>
-    <h2>รายงานการยืม-คืนอุปกรณ์ภาควิชาคอมพิวเตอร์ศึกษา คณะครุศาสตร์อุตสาหกรรม ปี {{ $year }}</h2>
+    <h2>รายงานการยืม-คืนอุปกรณ์ภาควิชาคอมพิวเตอร์ศึกษา คณะครุศาสตร์อุตสาหกรรม <br>ตั้งแต่วันที่ {{ $startDate }} ถึง
+        {{ $endDate }} </h2>
 
     <table>
         <thead>

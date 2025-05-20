@@ -90,6 +90,121 @@
             border: 2px solid #dee2e6;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
+        .welcome-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #c5f56d, #59ff53, #07974f);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .welcome-logo {
+            max-width: 200px;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+        }
+
+        .welcome-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            line-height: 1.4;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 800px;
+        }
+
+        .welcome-card {
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2.5rem;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .welcome-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .welcome-button {
+            padding: 0.75rem 1.5rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .welcome-button:hover {
+            background-color: white;
+            color: #1a2a6c;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .welcome-footer {
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .welcome-title {
+                font-size: 1.75rem;
+            }
+
+            .welcome-card {
+                padding: 1.5rem;
+            }
+        }
     </style>
 @endsection
 
@@ -190,7 +305,12 @@
         <div class="d-flex justify-content-center mt-4">
             {{ $recommendations->links() }}
         </div>
-    </div> --}}
+    </div> --}}<div class="welcome-container">
+        <div class="welcome-card">
+            <img src="{{ asset('upload/logo_fac.png') }}" alt="Faculty Logo" class="welcome-logo">
+            <h1 class="welcome-title">มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ <br>คณะครุศาสตร์อุตสาหกรรม</h1>
+        </div>
+    </div>
 @endsection
 
 @section('script')

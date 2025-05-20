@@ -85,7 +85,8 @@ class ReturnEquipmentController extends Controller
     }
     public function exportData(Request $request)
     {
-        $year = $request->input('year');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
 
         $loans = LoanTransaction::with([
             'member.info',
@@ -94,7 +95,7 @@ class ReturnEquipmentController extends Controller
                     ->groupBy('loan_transactions_id', 'equipment_item_id');
             }
         ])
-            ->whereYear('created_at', $year)
+            ->whereBetween('created_at', [$startDate, $endDate])
             ->get();
 
         $exportRows = [];
@@ -124,20 +125,25 @@ class ReturnEquipmentController extends Controller
             }
         }
         return (new FastExcel(collect($exportRows)))
-            ->download('รายงานการยืม-คืนอุปกรณ์-ปี-' . $year . '.xlsx');
+            ->download('รายงานการยืม-คืนอุปกรณ์ ตั้งแต่วันที่ ' . $this->formatThaiDate($startDate) . ' ถึง ' . $this->formatThaiDate($endDate) . '.xlsx');
     }
     public function printReportByYear(Request $request)
     {
-        $year = $request->input('year');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
 
-        $loans = LoanTransaction::with(['loanEquipments' => function ($query) {
-            $query->selectRaw('loan_transactions_id, equipment_item_id, GROUP_CONCAT(DISTINCT name) as equipment_names, SUM(quantity) as total_qty')
-                ->groupBy('loan_transactions_id', 'equipment_item_id');
-        }])
-            ->whereYear('created_at', $year)
+        $loans = LoanTransaction::with([
+            'member.info',
+            'loanEquipments' => function ($query) {
+                $query->selectRaw('loan_transactions_id, equipment_item_id, GROUP_CONCAT(DISTINCT name) as equipment_names, SUM(quantity) as total_qty')
+                    ->groupBy('loan_transactions_id', 'equipment_item_id');
+            }
+        ])
+            ->whereBetween('created_at', [$startDate, $endDate])
             ->get();
 
-
-        return view('reports.loan_report', compact('loans', 'year'));
+        $startDate =    $this->formatThaiDate($startDate);
+        $endDate =  $this->formatThaiDate($endDate);
+        return view('reports.loan_report', compact('loans', 'startDate', 'endDate'));
     }
 }

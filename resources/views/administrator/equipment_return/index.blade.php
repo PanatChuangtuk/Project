@@ -48,22 +48,23 @@
                                         aria-label="ปิด"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <!-- Dropdown ปี -->
+                                    <!-- Date Range Inputs -->
                                     <div class="mb-3">
-                                        <label for="year" class="form-label">เลือกปีที่ต้องการออกรายงาน</label>
-                                        <select id="year" class="form-select" required>
-                                            <option value="">-- เลือกปี --</option>
-                                            @foreach ($years as $item)
-                                                <option value="{{ $item }}">{{ $item }}</option>
-                                            @endforeach
-                                        </select>
+                                        <label for="start_date" class="form-label">วันที่เริ่มต้น</label>
+                                        <input type="text" id="start_date" name="start_date" class="form-control"
+                                            required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="end_date" class="form-label">วันที่สิ้นสุด</label>
+                                        <input type="text" id="end_date" name="end_date" class="form-control" required>
                                     </div>
 
                                     <!-- Export Form -->
                                     <form id="exportForm" action="{{ route('administrator.return-equipment.export') }}"
                                         method="POST">
                                         @csrf
-                                        <input type="hidden" name="year" id="exportYear">
+                                        <input type="hidden" name="start_date" id="exportStartDate">
+                                        <input type="hidden" name="end_date" id="exportEndDate">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <button type="submit" class="btn btn-primary">
                                                 <i class='bx bx-download'></i> ดาวน์โหลดรายงาน
@@ -74,7 +75,8 @@
                                     <!-- Print Form -->
                                     <form id="printForm" action="{{ route('administrator.loan.printReport') }}"
                                         method="GET" target="_blank">
-                                        <input type="hidden" name="year" id="printYear">
+                                        <input type="hidden" name="start_date" id="printStartDate">
+                                        <input type="hidden" name="end_date" id="printEndDate">
                                         <button type="submit" class="btn btn-secondary mt-2">ดูรายงาน</button>
                                     </form>
                                 </div>
@@ -84,6 +86,7 @@
                             </div>
                         </div>
                     </div>
+
 
                     {{-- ตาราง --}}
                     <div class=" text-nowrap">
@@ -190,35 +193,62 @@
     <script src="{{ asset('js/delete.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $('#year').on('change', function() {
-                let selectedYear = $(this).val();
-                $('#exportYear').val(selectedYear);
-                $('#printYear').val(selectedYear);
-            });
+            function updateHiddenFields() {
+                let startDate = $('#start_date').val();
+                let endDate = $('#end_date').val();
+                $('#exportStartDate').val(startDate);
+                $('#exportEndDate').val(endDate);
+                $('#printStartDate').val(startDate);
+                $('#printEndDate').val(endDate);
+            }
+
+            $('#start_date, #end_date').on('change', updateHiddenFields);
 
             $('#exportForm').on('submit', function(e) {
-                if (!$('#year').val()) {
+                if (!$('#start_date').val() || !$('#end_date').val()) {
                     e.preventDefault();
                     Swal.fire({
                         icon: 'warning',
-                        title: 'กรุณาเลือกปี',
-                        text: 'กรุณาเลือกปีเพื่อดาวน์โหลดรายงาน',
+                        title: 'กรุณาเลือกช่วงวันที่',
+                        text: 'กรุณาระบุวันที่เริ่มต้นและสิ้นสุดก่อนดาวน์โหลดรายงาน',
                         confirmButtonText: 'ตกลง'
                     });
                 }
             });
 
             $('#printForm').on('submit', function(e) {
-                if (!$('#year').val()) {
+                if (!$('#start_date').val() || !$('#end_date').val()) {
                     e.preventDefault();
                     Swal.fire({
                         icon: 'warning',
-                        title: 'กรุณาเลือกปี',
-                        text: 'กรุณาเลือกปีก่อนดูรายงาน',
+                        title: 'กรุณาเลือกช่วงวันที่',
+                        text: 'กรุณาระบุวันที่เริ่มต้นและสิ้นสุดก่อนดูรายงาน',
                         confirmButtonText: 'ตกลง'
                     });
                 }
             });
+        });
+    </script>
+    <script>
+        let startPicker = flatpickr("#start_date", {
+
+            locale: "th",
+            altInput: true,
+            altFormat: "j F Y",
+            defaultDate: "today",
+            onChange: function(selectedDates, dateStr, instance) {
+                endPicker.set('minDate', dateStr);
+            }
+        });
+
+        let endPicker = flatpickr("#end_date", {
+
+            locale: "th",
+            altInput: true,
+            altFormat: "j F Y",
+            onChange: function(selectedDates, dateStr, instance) {
+                startPicker.set('maxDate', dateStr);
+            }
         });
     </script>
 @endsection

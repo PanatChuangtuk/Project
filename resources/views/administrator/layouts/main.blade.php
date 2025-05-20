@@ -34,7 +34,7 @@ data-template="vertical-menu-template-free"
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    <!-- Favicon -->
+    <!-- Favicon -->  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="icon" type="image/x-icon" href="{{ URL::asset('administrator') }}/assets/img/gas_logo.png" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!-- Fonts -->
@@ -407,20 +407,12 @@ data-template="vertical-menu-template-free"
     <!-- Custom JS -->
     <script src="{{ URL::asset('administrator') }}/js/function.js?{{ <?= time(); ?> }}"></script>
     <script src="{{ URL::asset('administrator') }}/js/custom-alert.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
+<!-- Thai Language Support -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/th.js"></script>
     @yield('script')
-
-    <script>
-        $(".date-flatpick").flatpickr({
-            monthSelectorType: "static"
-        });
-
-        $(".date-flatpick-time").flatpickr({
-            enableTime: true,
-            dateFormat: "Y-m-d H:i",
-            time_24hr: true,
-        });
-    </script><script>
+<script>
         document.addEventListener('DOMContentLoaded', function() {
             const logoutButton = document.querySelector('.logout-btn');
             logoutButton.addEventListener('click', function() {

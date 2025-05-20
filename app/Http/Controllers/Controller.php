@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 abstract class Controller
@@ -11,5 +12,26 @@ abstract class Controller
         $filename = substr(Str::uuid(), 0, 5) . '.' . $file->getClientOriginalExtension();
         $file->storeAs('file/' . $path . '/', $filename, 'public');
         return $filename;
+    }
+    protected function formatThaiDate($date)
+    {
+        $date = Carbon::parse($date);
+        $months = [
+            "",
+            "มกราคม",
+            "กุมภาพันธ์",
+            "มีนาคม",
+            "เมษายน",
+            "พฤษภาคม",
+            "มิถุนายน",
+            "กรกฎาคม",
+            "สิงหาคม",
+            "กันยายน",
+            "ตุลาคม",
+            "พฤศจิกายน",
+            "ธันวาคม"
+        ];
+
+        return $date->day . ' ' . $months[$date->month] . ' ' . ($date->year + 543);
     }
 }
