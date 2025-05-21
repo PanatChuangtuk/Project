@@ -97,7 +97,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #c5f56d, #59ff53, #07974f);
+            /* background: linear-gradient(135deg, #c5f56d, #59ff53, #07974f); */
             background-size: 400% 400%;
             animation: gradient 15s ease infinite;
             color: white;
