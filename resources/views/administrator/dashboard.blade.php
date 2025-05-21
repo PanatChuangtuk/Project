@@ -92,7 +92,7 @@
         }
 
         .welcome-container {
-            min-height: 100vh;
+            min-height: 80vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -189,13 +189,7 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .welcome-footer {
-            margin-top: 3rem;
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
 
-        /* Responsive adjustments */
         @media (max-width: 768px) {
             .welcome-title {
                 font-size: 1.75rem;

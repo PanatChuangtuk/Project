@@ -52,6 +52,59 @@
             color: #000000;
             /* ตัวอักษรสีขาว */
         }
+
+        .status-row {
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+            margin-left: 15px;
+        }
+
+        .status-value {
+            display: inline-block;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        .status-overdue {
+            background-color: #ffebee;
+            color: #d32f2f;
+            border: 1px solid #ffcdd2;
+        }
+
+        .status-icon {
+            margin-right: 6px;
+            font-size: 16px;
+        }
+
+        /* สไตล์สำหรับหัวข้อที่มีสถานะ */
+        h4.display-4 {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        /* รองรับการแสดงผลบนอุปกรณ์มือถือ */
+        @media (max-width: 768px) {
+            h4.display-4 {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .status-row {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
     </style>
 @endsection
 
@@ -133,48 +186,60 @@
                     <span class="badge badge-pill badge-warning">รอดำเนินการ</span>
                 @endif
             </div>
+        </div>
 
-            <div class="card p-4">
-                <h4 class="display-4">อุปกรณ์</h4>
-                <form method="POST" action="{{ route('administrator.approve-equipment.approveEquipment') }}">
-                    @csrf
-                    <div class="table">
-                        <table class="table table-bordered custom-table">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">รูปอุปกรณ์</th>
-                                    <th class="text-center">ชื่ออุปกรณ์</th>
-                                    <th class="text-center">จำนวน</th>
-                                    <th class="text-center">เลขอุปกรณ์</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-border-bottom-0" id="orderTableBody">
-                                @foreach ($borrow->loanEquipments as $key => $item)
-                                    <input type="hidden" name="item_id[]" value="{{ $item->id }}">
-                                    <tr>
-                                        <td class="text-center align-middle">
-                                            <img src="{{ $item->equipmentItem->image ? asset('upload/file/equipment_item/' . $item->equipmentItem->image) : asset('images/default-image.png') }}"
-                                                class="equipment-img">
-                                        </td>
-                                        <td class="text-center align-middle">
-                                            {{ $item->name ?? null }}
-                                        </td>
-                                        <td class="text-center align-middle">
-                                            {{ $item->quantity ?? null }} ชิ้น
-                                        </td>
-                                        <td class="text-center align-middle">
-                                            {{ $item->equipment->number ?? null }}
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+
+
+
+        <div class="card p-4">
+            <h4 class="display-4">
+                อุปกรณ์
+                @if ($borrow->is_overdue == 1)
+                    <div class="status-row">
+                        <div class="status-value">
+                            <span class="status-badge status-overdue" id="overdue">
+                                <span class="status-icon">⚠️</span> ยืมเกินกำหนดเวลา
+                            </span>
+                        </div>
                     </div>
+                @endif
+            </h4>
+            <form method="POST" action="{{ route('administrator.approve-equipment.approveEquipment') }}">
+                @csrf
+                <div class="table">
+                    <table class="table table-bordered custom-table">
+                        <thead>
+                            <tr>
+                                <th class="text-center">รูปอุปกรณ์</th>
+                                <th class="text-center">ชื่ออุปกรณ์</th>
+                                <th class="text-center">จำนวน</th>
+                                <th class="text-center">เลขอุปกรณ์</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0" id="orderTableBody">
+                            @foreach ($borrow->loanEquipments as $key => $item)
+                                <input type="hidden" name="item_id[]" value="{{ $item->id }}">
+                                <tr>
+                                    <td class="text-center align-middle">
+                                        <img src="{{ $item->equipmentItem->image ? asset('upload/file/equipment_item/' . $item->equipmentItem->image) : asset('images/default-image.png') }}"
+                                            class="equipment-img">
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        {{ $item->name ?? null }}
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        {{ $item->quantity ?? null }} ชิ้น
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        {{ $item->equipment->number ?? null }}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
-                </form>
-            </div>
-
-
+            </form>
         </div>
     </div>
 @endsection

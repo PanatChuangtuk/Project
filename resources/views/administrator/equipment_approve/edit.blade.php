@@ -140,7 +140,7 @@
 
         <div class="card p-4">
             <h4 class="display-4">อุปกรณ์</h4>
-            <form method="POST" action="{{ route('administrator.approve-equipment.approveEquipment') }}">
+            <form id="approveForm" method="POST" action="{{ route('administrator.approve-equipment.approveEquipment') }}">
                 @csrf
                 <div class="table">
                     <table class="table table-bordered  custom-table">
@@ -183,7 +183,7 @@
                         data-status="cancel">
                         <i class="fas fa-times-circle me-1"></i> ยกเลิกการยืม
                     </button>
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit"id="submitBtn" class="btn btn-primary">
                         <i class="fas fa-check-circle me-1"></i> ยืนยันการยืม
                     </button>
                 </div>
@@ -208,32 +208,63 @@
         </script>
     @endif
     <script>
-        $(document).on('click', '.btn-cancel', function() {
-            var status = $(this).data('status');
-            var item = $(this).data('item');
-            $.ajax({
-                url: '{{ route('administrator.approve-equipment.update') }}',
-                type: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    item: item,
-                    status: status
-                },
-                success: function(response) {
-                    if (response.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            text: 'อัปเดตสถานะสำเร็จ',
-                            confirmButtonText: 'OK'
-                        }).then(function() {
-                            window.location.href =
-                                '{{ route('administrator.approve-equipment') }}';
-                        });
-                    }
-                },
+        $('#submitBtn').on('click', function(e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'ยืนยันการดำเนินการ',
+                text: 'คุณต้องการยืนยันการยืมอุปกรณ์ใช่หรือไม่?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'ใช่, ยืนยัน',
+                cancelButtonText: 'ยกเลิก'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#approveForm').submit();
+                }
             });
         });
     </script>
+    <script>
+        $(document).on('click', '.btn-cancel', function() {
+            var status = $(this).data('status');
+            var item = $(this).data('item');
+
+            Swal.fire({
+                title: 'ยืนยันการดำเนินการ',
+                text: 'คุณต้องการยกเลิกรายการนี้ใช่หรือไม่?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'ยืนยัน',
+                cancelButtonText: 'ยกเลิก'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ route('administrator.approve-equipment.update') }}',
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            item: item,
+                            status: status
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    text: 'อัปเดตสถานะสำเร็จ',
+                                    confirmButtonText: 'OK'
+                                }).then(function() {
+                                    window.location.href =
+                                        '{{ route('administrator.approve-equipment') }}';
+                                });
+                            }
+                        },
+                    });
+                }
+            });
+        });
+    </script>
+
     <script>
         $(document).ready(function() {
             $('.adviser-select').each(function(index) {
