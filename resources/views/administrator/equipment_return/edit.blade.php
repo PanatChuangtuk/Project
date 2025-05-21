@@ -188,9 +188,6 @@
             </div>
         </div>
 
-
-
-
         <div class="card p-4">
             <h4 class="display-4">
                 อุปกรณ์
