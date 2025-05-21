@@ -20,7 +20,22 @@
     <link href="{{ asset('css/jquery.scrollbar.css') }}" rel="stylesheet">
     <link href="{{ asset('css/global.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-
+    <style>
+        #rotateNotice {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #000c;
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+            padding-top: 40vh;
+            z-index: 9999;
+        }
+    </style>
     <style>
         .nav-link,
         .nav-main li a {
@@ -191,6 +206,8 @@
 </head>
 
 <body>
+    <div id="rotateNotice">กรุณาหมุนหน้าจอเป็นแนวนอนเพื่อใช้งานเว็บไซต์นี้</div>
+
     <div class="page logo-hidden">
         <header class="header">
             <div class="navbar-toppage">
@@ -324,6 +341,23 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Logout confirm -->
+    <script>
+        function checkOrientation() {
+            const notice = document.getElementById('rotateNotice');
+            if (window.innerHeight > window.innerWidth) {
+                // ถ้าเป็นแนวตั้ง (portrait)
+                notice.style.display = 'block';
+                document.body.style.overflow = 'hidden'; // ป้องกัน scroll
+            } else {
+                // แนวนอน (landscape)
+                notice.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        }
+
+        window.addEventListener('resize', checkOrientation);
+        window.addEventListener('load', checkOrientation);
+    </script>
     <script>
         function confirmLogout(event) {
             event.preventDefault();
