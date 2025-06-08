@@ -67,8 +67,7 @@
         <li class="menu-item {{ Route::is('administrator.dashboard*') ? 'active' : '' }}">
             <a href="{{ route('administrator.dashboard') }}" class="menu-link">
                 <i class="menu-icon fas fa-home"></i>
-                <div class="menu-text">หน้าแรก</div>
-                {{-- <div class="menu-text">แดชบอร์ด</div> --}}
+                <div class="menu-text">แดชบอร์ด</div>
             </a>
         </li>
 
