@@ -933,10 +933,10 @@ class Application extends Container implements ApplicationContract, CachesConfig
      * @param  string  $provider
      * @return \Illuminate\Support\ServiceProvider
      */
-    // public function resolveProvider($provider)
-    // {
-    //     return new $provider($this);
-    // }
+    public function resolveProvider($provider)
+    {
+        return new $provider($this);
+    }
 
     /**
      * Mark the given provider as registered.
