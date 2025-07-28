@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>แจ้งเตือนการยืมที่เกินกำหนด</title>
+    <title>แจ้งเตือนการยืมอุปกรณ์ครุภัณฑ์</title>
 </head>
 
 <body
@@ -24,7 +24,11 @@
             <p style="font-size: 16px; margin: 0 0 20px; font-weight: 500;">เรียน
                 {{ $transaction->member->info->first_name . ' ' . $transaction->member->info->last_name }}</p>
             <p style="font-size: 15px; line-height: 1.6; margin: 0 0 20px; color: #4b5563;">
-                เราได้ตรวจพบว่ารายการยืมต่อไปนี้ของท่านเกินกำหนดเวลาคืนแล้ว กรุณาดำเนินการคืนอุปกรณ์โดยเร็ว
+                @if ($transaction->status_type === 'overdue')
+                    รายการยืมของท่านเกินกำหนดแล้ว!
+                @else
+                    เราได้ตรวจพบว่ารายการยืมต่อไปนี้ของท่านใกล้เกินกำหนดเวลาคืนอุปกรณ์แล้ว
+                @endif
             </p>
 
             <ul style="list-style: none; padding: 0; margin: 0 0 20px;">

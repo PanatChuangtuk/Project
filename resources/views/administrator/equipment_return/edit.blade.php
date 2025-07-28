@@ -195,7 +195,7 @@
                     <div class="status-row">
                         <div class="status-value">
                             <span class="status-badge status-overdue" id="overdue">
-                                <span class="status-icon">⚠️</span> ยืมเกินกำหนดเวลา <span class="ms-2 text-danger">
+                                <span class="status-icon">⚠️</span> ยืมอุปกรณ์เกินกำหนด <span class="ms-2 text-danger">
                                     @if ($borrow->returned_at == null)
                                         ({{ floor(\Carbon\Carbon::parse($borrow->borrowed_at)->diffInDays(\Carbon\Carbon::now())) }}
                                         วัน)

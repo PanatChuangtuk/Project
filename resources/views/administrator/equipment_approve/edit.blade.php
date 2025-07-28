@@ -167,11 +167,20 @@
                                         {{ $item->quantity ?? null }} ชิ้น
                                     </td>
                                     <td class="text-center align-middle">
-                                        <select name="equipments_id[]" id="equipmentsSelect{{ $key }}"
-                                            class="form-control adviser-select"
-                                            data-item-id="{{ $item->equipment_item_id ?? '' }}" required>
-                                            <option value="">เลขอุปกรณ์</option>
-                                        </select>
+
+                                        @if ($item->loanTransaction->status_type !== 'borrowed')
+                                            <span class="badge bg-success">
+                                                <input type="hidden"name="equipments_id[]"
+                                                    value="{{ $item->equipment_id }}">
+                                                {{ $item->equipment->number ?? null }}
+                                            </span>
+                                        @else
+                                            <select name="equipments_id[]" id="equipmentsSelect{{ $key }}"
+                                                class="form-control adviser-select"
+                                                data-item-id="{{ $item->equipment_item_id ?? '' }}" required>
+                                                <option value="">เลขอุปกรณ์</option>
+                                            </select>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

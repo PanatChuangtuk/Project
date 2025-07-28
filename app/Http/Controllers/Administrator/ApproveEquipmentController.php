@@ -61,7 +61,7 @@ class ApproveEquipmentController extends Controller
     {
         $itemIds = $request->input('item_id');
         $equipmentIds = $request->input('equipments_id');
-
+        // dd($request->all());
         foreach ($itemIds as $index => $itemId) {
             $equipmentId = $equipmentIds[$index];
             $loanEquipment = LoanEquipment::find($itemId);

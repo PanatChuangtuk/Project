@@ -44,7 +44,6 @@ class BorrowController extends MainController
 
         foreach ($items as $item) {
             $quantity = (int)$item['quantity'];
-
             for ($i = 0; $i < $quantity; $i++) {
                 LoanEquipment::create([
                     'loan_transactions_id' => $loan->id,
