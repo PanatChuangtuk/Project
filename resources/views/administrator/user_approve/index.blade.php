@@ -291,17 +291,13 @@
                                             <button class="btn btn-info mb-3 show-modal-btn" data-bs-toggle="modal"
                                                 data-bs-target="#twoColumnModal" data-id="{{ $item->id }}"
                                                 data-bs-target=".disapproveBtn" data-id="{{ $item->id }}"
-                                                data-name-new="{{ $item->info->first_name ?? '' }} {{ $item->info->last_name ?? '' }}"
-                                                data-email-new="{{ $item->email }}"
-                                                data-adviser-new="{{ $item->info->adviser->first_name . ' ' . $item->info->adviser->last_name }}"
                                                 {{-- data-student-new="{{ $item->info->student->student_number ?? null }}" --}}
-                                                data-avatar-new="{{ asset('upload/images/' . $item->info->avatar) }}"
-                                                data-phone-new="{{ $item->info->mobile_phone ?? '' }}"
+                                                data-avatar-old="{{ asset('upload/images/' . $item->info->avatar) }}"
                                                 data-name-old="{{ $item->info->student->first_name ?? '' }} {{ $item->info->student->last_name ?? '' }}"
                                                 data-email-old="{{ $item->info->student->email ?? '' }}"
                                                 data-phone-old="{{ $item->info->student->mobile_phone ?? '' }}"
-                                                {{-- data-student-old="{{ $item->info->student->student_number ?? null }}" --}}
-                                                data-adviser-old="{{ $item->info->student->adviser->first_name . ' ' . $item->info->student->adviser->last_name }}">
+                                                data-student-old="{{ $item->info->student->student_number ?? '' }}"
+                                                data-adviser-old="{{ $item->info->student->adviser->first_name ?? '' }} {{ $item->info->student->adviser->last_name ?? '' }} ">
                                                 <i class='bx bx-user'></i>
                                             </button>
                                         </td>
@@ -321,7 +317,7 @@
     </div>
 
     <div class="modal fade" id="twoColumnModal" tabindex="-1" aria-labelledby="twoColumnModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered custom-modal-xl">
+        <div class="modal-dialog modal-dialog-centered custom-modal-l">
 
             <div class="modal-content">
                 <div class="modal-header">
@@ -329,53 +325,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row g-4">
-
-                        <div class="col-md-6">
-                            <div class="info-card">
-                                <div class="card-header new-data-header text-white">
-                                    <i class="fas fa-star-of-life me-2"></i>ข้อมูลผู้สมัครใหม่
-                                </div>
-                                <div class="card-body">
-
-                                    <div class="text-center mb-3">
-                                        <div class="avatar-wrapper rounded-circle overflow-hidden mx-auto">
-                                            <img src="" id="newAvatar" class="img-fluid" alt="Avatar"
-                                                onclick="showFullScreen(this)"
-                                                onerror="this.src='{{ asset('images/default-avatar.png') }}'; this.onerror=null;">
-                                        </div>
-                                    </div>
-
-                                    <div class="info-item">
-                                        <div class="info-label"><i class="fas fa-user info-icon"></i>ชื่อ-นามสกุล:</div>
-                                        <div class="info-value" id="newName">ไม่มีข้อมูล</div>
-                                    </div>
-                                    <div class="info-item">
-                                        <div class="info-label"><i class="fas fa-envelope info-icon"></i>อีเมล:</div>
-                                        <div class="info-value" id="newEmail">ไม่มีข้อมูล</div>
-                                    </div>
-                                    <div class="info-item">
-                                        <div class="info-label"><i class="fas fa-phone-alt info-icon"></i>เบอร์โทร:</div>
-                                        <div class="info-value" id="newPhone">ไม่มีข้อมูล</div>
-                                    </div>
-                                    {{-- <div class="info-item mt-3">
-                                        <div class="info-label"><i class="fas fa-id-card info-icon"></i>รหัสนักศึกษา:
-                                        </div>
-                                        <div class="info-value fw-bold" id="oldStudent">ไม่มีข้อมูล</div>
-                                    </div> --}}
-                                    <div class="info-item mt-1">
-                                        <div class="info-label"><i class="fas fa-id-card info-icon"></i>อาจารย์ที่ปรึกษา:
-                                        </div>
-                                        <div class="info-value fw-bold" id="newAdviser">ไม่มีข้อมูล</div>
-                                    </div>
-                                    {{-- <div class="info-item mt-3">
-                                        <div class="info-label"><i class="fas fa-id-card info-icon"></i>รหัสนักศึกษา:</div>
-                                        <div class="info-value fw-bold" id="newStudent">ไม่มีข้อมูล</div>
-                                    </div> --}}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
+                        <div class="col-md">
                             <div class="info-card">
                                 <div class="card-header old-data-header text-white">
                                     <i class="fas fa-history me-2"></i>ข้อมูลนักศึกษา
@@ -404,11 +354,11 @@
                                         </div>
                                         <div class="info-value fw-bold" id="oldAdviser">ไม่มีข้อมูล</div>
                                     </div>
-                                    {{-- <div class="info-item mt-3">
+                                    <div class="info-item mt-3">
                                         <div class="info-label"><i class="fas fa-id-card info-icon"></i>รหัสนักศึกษา:
                                         </div>
                                         <div class="info-value fw-bold" id="oldStudent">ไม่มีข้อมูล</div>
-                                    </div> --}}
+                                    </div>
 
                                 </div>
                             </div>
@@ -460,7 +410,7 @@
                 const oldEmail = $(this).data('email-old');
                 const oldPhone = $(this).data('phone-old');
                 const oldAvatar = $(this).data('avatar-old');
-                // const oldStudent = $(this).data('student-old');
+                const oldStudent = $(this).data('student-old');
                 const oldAdviser = $(this).data('adviser-old');
                 const newAdviser = $(this).data('adviser-new');
                 $('#newName').text(newName || 'ไม่มีข้อมูล');
@@ -470,7 +420,7 @@
                 $('#oldName').text(oldName || 'ไม่มีข้อมูล');
                 $('#oldEmail').text(oldEmail || 'ไม่มีข้อมูล');
                 $('#oldPhone').text(oldPhone || 'ไม่มีข้อมูล');
-                // $('#oldStudent').text(oldStudent || 'ไม่มีข้อมูล');
+                $('#oldStudent').text(oldStudent || 'ไม่มีข้อมูล');
                 $('#oldAdviser').text(oldAdviser || 'ไม่มีข้อมูล');
                 $('#newAdviser').text(newAdviser || 'ไม่มีข้อมูล');
                 // ตั้งค่ารูปภาพ

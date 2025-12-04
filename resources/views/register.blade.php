@@ -221,34 +221,16 @@
                         <form class="form" method="post" action="{{ route('register.submit') }}">
                             @csrf
                             <div class="row form-row">
-                                {{-- <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fw-bold">ชื่อผู้ใช้ <span class="text-danger">*</span></label>
-                                        <input type="text" name="username" class="form-control"
-                                            placeholder="กรอกชื่อผู้ใช้" value="{{ old('username') }}" />
-                                        @error('username')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div> --}}
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fw-bold">อีเมล <span class="text-danger">*</span></label>
-                                        <input type="email" name="email" class="form-control"
-                                            placeholder="กรอกอีเมล" value="{{ old('email') }}" />
-                                        @error('email')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="fw-bold">เบอร์โทรศัพท์ <span class="text-danger">*</span></label>
-                                        <input type="text" name="mobile_phone" class="form-control"
-                                            placeholder="กรอกเบอร์โทรศัพท์" value="{{ old('mobile_phone') }}" />
-                                        @error('mobile_phone')
-                                            <span class="text-danger">{{ $message }}</span>
+                                        <label class="fw-bold w-200 d-block">รหัสนักศึกษา <span
+                                                class="text-danger">*</span></label>
+                                        <select name="student_id" id="studentSelect"class="form-control">
+                                            <option value="">รหัสนักศึกษา</option>
+                                        </select>
+                                        @error('student_id')
+                                            <span class="text-danger w-200">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
@@ -263,10 +245,10 @@
                                         @enderror
                                     </div>
                                 </div>
+                                <br>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="fw-bold">ยืนยันรหัสผ่าน <span
-                                                class="text-danger">*</span></label>
+                                        <label class="fw-bold">ยืนยันรหัสผ่าน <span class="text-danger">*</span></label>
                                         <input type="password" class="form-control" name="password_confirmation"
                                             placeholder="ยืนยันรหัสผ่าน" />
                                         @error('password_confirmation')
@@ -275,52 +257,6 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fw-bold">ชื่อ <span class="text-danger">*</span></label>
-                                        <input type="text" name="first_name" class="form-control"
-                                            placeholder="กรอกชื่อ" value="{{ old('first_name') }}" />
-                                        @error('first_name')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fw-bold">นามสกุล <span class="text-danger">*</span></label>
-                                        <input type="text" name="last_name" class="form-control"
-                                            placeholder="กรอกนามสกุล" value="{{ old('last_name') }}" />
-                                        @error('last_name')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fw-bold w-100 d-block">รหัสนักศึกษา <span
-                                                class="text-danger">*</span></label>
-                                        <select name="student_id" id="studentSelect"class="form-control">
-                                            <option value="">รหัสนักศึกษา</option>
-                                        </select>
-                                        @error('student_id')
-                                            <span class="text-danger  w-100">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fw-bold w-100 d-block">อาจารย์ที่ปรึกษา <span
-                                                class="text-danger">*</span></label>
-                                        <select name="adviser_id" id="adviserSelect"class="form-control">
-                                            <option value="">อาจารย์ที่ปรึกษา</option>
-                                        </select>
-                                        @error('adviser_id')
-                                            <span class="text-danger  w-100">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
 
                                 <input type="hidden" id="imageData" name="imageData">
                                 <div class="col-12 d-flex py-3">
@@ -432,31 +368,6 @@
                             return {
                                 id: item.id,
                                 text: item.student_number
-                            };
-                        })
-                    };
-                },
-                cache: true
-            }
-        });
-    </script>
-    <script>
-        $('#adviserSelect').select2({
-            ajax: {
-                url: '{{ url('api/get-adviser') }}',
-                dataType: 'json',
-                delay: 250,
-                data: function(params) {
-                    return {
-                        query: params.term,
-                    };
-                },
-                processResults: function(data) {
-                    return {
-                        results: data.results.map(function(item) {
-                            return {
-                                id: item.id,
-                                text: item.first_name + ' ' + item.last_name,
                             };
                         })
                     };

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\{Hash, Auth, Storage};
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Http\Requests\{RegisterMemberRequest};
-use App\Models\{Member, MemberInfo};
+use App\Models\{Member, MemberInfo, Student};
 
 class RegisterController extends MainController
 {
@@ -23,10 +23,15 @@ class RegisterController extends MainController
     {
         // dd($request->all());
         $fileName = '';
+        if ($request->student_id) {
+            $student = Student::find($request->student_id);
+        } else {
+            exit('ไม่พบรหัสนักศึกษานี้');
+        }
         $user = Member::create([
             // 'username' => $request->username,
             'role' => 'user',
-            'email' => $request->email,
+            'email' => $student->email,
             'password' => Hash::make($request->password),
             'status' => 0,
             'created_at' => Carbon::now(),
@@ -43,11 +48,11 @@ class RegisterController extends MainController
 
         MemberInfo::create([
             'member_id' => $user->id,
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'student_id' => $request->student_id,
-            'adviser_id' => $request->adviser_id,
-            'mobile_phone' => $request->mobile_phone,
+            'first_name' => $student->first_name,
+            'last_name' => $student->last_name,
+            'student_id' => $student->id,
+            'adviser_id' => $student->adviser_id,
+            'mobile_phone' => $student->mobile_phone,
             'avatar' => $fileName,
         ]);
         return redirect()->back()

@@ -73,7 +73,7 @@
                                             </div>
                                         </td>
                                         <td class="text-center">{{ $item->email }}</td>
-                                        <td class="text-center">{{ $item->mobile_phone ?? 'ว่าง' }}</td>
+                                        <td class="text-center">{{ $item->info->mobile_phone ?? 'ว่าง' }}</td>
                                         <td class="text-center">{{ $item->info->student->student_number ?? null }}</td>
                                         {{-- <td class="text-center">{{ $item->created_at }}</td> --}}
                                         <td>
