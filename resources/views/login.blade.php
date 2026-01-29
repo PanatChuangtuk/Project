@@ -532,7 +532,7 @@ maximum-scale=1.0, user-scalable=no" />
 
     <div class="section section-column">
         <div class="container">
-            <div class="row row-main">
+            <div class="row">
 
                 <!--cols-->
                 <div class="cols" data-aos="fade-in">
