@@ -75,24 +75,24 @@
         <li class="menu-item {{ $main_menu == 'admin' ? 'open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon fas fa-user-cog'></i>
-                <div class="text-truncate" data-i18n="Layouts">ผู้ดูแลระบบ</div>
+                <div class="text-truncate" data-i18n="Layouts">ตั้งค่าบัญชี</div>
             </a>
             <ul class="menu-sub">
                 <li class="menu-item {{ Route::is('administrator.admin*') ? 'active' : '' }}">
                     <a href="{{ route('administrator.admin') }}" class="menu-link">
-                        <div class="menu-text">ผู้ดูแลระบบ</div>
+                        <div class="menu-text">รายชื่อผู้ดูแลระบบ</div>
                     </a>
                 </li>
 
                 <li class="menu-item {{ Route::is('administrator.student*') ? 'active' : '' }}">
                     <a href="{{ route('administrator.student') }}" class="menu-link">
-                        <div class="menu-text">นักศึกษา</div>
+                        <div class="menu-text">รายชื่อนักศึกษา</div>
                     </a>
                 </li>
 
                 <li class="menu-item {{ Route::is('administrator.adviser*') ? 'active' : '' }}">
                     <a href="{{ route('administrator.adviser') }}" class="menu-link">
-                        <div class="menu-text">อาจารย์ที่ปรึกษา</div>
+                        <div class="menu-text">รายชื่ออาจารย์ที่ปรึกษา</div>
                     </a>
                 </li>
             </ul>
@@ -101,19 +101,19 @@
         <li class="menu-item {{ $main_menu == 'user' ? 'open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon fas fa-user-tie'></i>
-                <div class="text-truncate" data-i18n="Layouts">ผู้ใช้งาน</div>
+                <div class="text-truncate" data-i18n="Layouts">คำร้องการสมัครสมาชิก</div>
             </a>
 
             <ul class="menu-sub">
                 <li class="menu-item {{ Route::is('administrator.user*') ? 'active' : '' }}">
                     <a href="{{ route('administrator.user') }}" class="menu-link">
-                        <div class="menu-text">ผู้ใช้งาน</div>
+                        <div class="menu-text">รายชื่อผู้ใช้งาน</div>
                     </a>
                 </li>
 
                 <li class="menu-item {{ Route::is('administrator.approve-user*') ? 'active' : '' }}">
                     <a href="{{ route('administrator.approve-user') }}" class="menu-link">
-                        <div class="menu-text">อนุมัติผู้ใช้งาน</div>
+                        <div class="menu-text">ยืนยันการสมัครสมาชิก</div>
                     </a>
                 </li>
             </ul>
@@ -122,18 +122,18 @@
         <li class="menu-item {{ $main_menu == 'approve_equipment' ? 'open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon fas fa-user-tie'></i>
-                <div class="text-truncate" data-i18n="Layouts">คำร้องอุปกรณ์</div>
+                <div class="text-truncate" data-i18n="Layouts">จัดการคำร้องของอุปกรณ์</div>
             </a>
 
             <ul class="menu-sub">
                 <li class="menu-item {{ Route::is('administrator.approve-equipment*') ? 'active' : '' }}">
                     <a href="{{ route('administrator.approve-equipment') }}" class="menu-link">
-                        <div class="menu-text">อนุมัติคำร้องอุปกรณ์</div>
+                        <div class="menu-text">ยืนยันคำร้องของอุปกรณ์</div>
                     </a>
                 </li>
                 <li class="menu-item {{ Route::is('administrator.return-equipment*') ? 'active' : '' }}">
                     <a href="{{ route('administrator.return-equipment') }}" class="menu-link">
-                        <div class="menu-text">คำร้องที่สำเร็จแล้ว</div>
+                        <div class="menu-text">รายการคำร้องที่สำเร็จ</div>
                     </a>
                 </li>
 
@@ -143,7 +143,7 @@
         <li class="menu-item {{ $main_menu == 'equipment' ? 'open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon fas fa-user-tie'></i>
-                <div class="text-truncate" data-i18n="Layouts">อุปกรณ์</div>
+                <div class="text-truncate" data-i18n="Layouts">จัดการอุปกรณ์</div>
             </a>
 
             <ul class="menu-sub">
@@ -161,7 +161,7 @@
 
                 <li class="menu-item {{ Route::is('administrator.equipment*') ? 'active' : '' }}">
                     <a href="{{ route('administrator.equipment') }}" class="menu-link">
-                        <div class="menu-text">อุปกรณ์</div>
+                        <div class="menu-text">ข้อมูลอุปกรณ์</div>
                     </a>
                 </li>
 

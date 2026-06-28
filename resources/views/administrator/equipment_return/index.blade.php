@@ -31,7 +31,7 @@
                     <div class="d-flex justify-content-between align-items-center p-3">
                         <form action="{{ route('administrator.return-equipment') }}" method="GET"
                             class="d-flex justify-content-between align-items-center w-100">
-                            <x-search />
+                            <x-search-only />
                             <button type="button" class="btn btn-outline-primary btn-lg me-2" data-bs-toggle="modal"
                                 data-bs-target="#registerModal">
                                 ข้อมูลการยืม-คืนอุปกรณ์
@@ -94,9 +94,9 @@
                             <thead>
                                 <tr>
                                     <th style="font-size: 1rem;">
-                                        <div class="form-check">
+                                        {{-- <div class="form-check">
                                             <input class="form-check-input check-item" type="checkbox" id="checkAll" />
-                                        </div>
+                                        </div> --}}
                                     </th>
                                     <th>ลำดับ</th>
                                     <th class="text-center">ชื่อ-นามสกุล</th>
@@ -111,10 +111,10 @@
                                 @foreach ($users as $item)
                                     <tr>
                                         <td>
-                                            <div class="form-check" style="font-size: 1rem;">
+                                            {{-- <div class="form-check" style="font-size: 1rem;">
                                                 <input type="checkbox" class="form-check-input check-item"
                                                     value="{{ $item->id }}">
-                                            </div>
+                                            </div> --}}
                                         </td>
                                         <td>{{ $item->id }}</td>
                                         <td>

@@ -59,11 +59,16 @@ class ApproveEquipmentController extends Controller
     }
     public function approveEquipment(Request $request)
     {
+        // dd($request->all());
         $itemIds = $request->input('item_id');
         $equipmentIds = $request->input('equipments_id');
+
         // dd($request->all());
         foreach ($itemIds as $index => $itemId) {
             $equipmentId = $equipmentIds[$index];
+            if ($equipmentIds === null || !isset($equipmentIds[$index])) {
+                return redirect()->back()->with('error', 'กรุณาเลือกหมายเลขอุปกรณ์');
+            }
             $loanEquipment = LoanEquipment::find($itemId);
             if ($loanEquipment->loanTransaction->status == 'in_process') {
                 $loanEquipment->loanTransaction->update([

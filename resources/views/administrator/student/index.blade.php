@@ -29,7 +29,7 @@
                                     <!-- ปุ่มเปิด Modal -->
                                     <button type="button" class="btn btn-outline-primary btn-lg me-2"
                                         data-bs-toggle="modal" data-bs-target="#registerModal">
-                                        เพิ่มนักศึกษาจากไฟล์
+                                        นำเข้ารายชื่อนักศึกษาจากไฟล์
                                     </button>
 
                                     <!-- ปุ่มเพิ่มผู้ใช้งาน -->

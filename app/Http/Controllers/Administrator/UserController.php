@@ -90,7 +90,7 @@ class UserController extends Controller
 
         $filename = $member->info->avatar;
         if ($request->hasFile('image')) {
-            $filename = $this->uploadsImage($request->file('image'), 'admin');
+            $filename = $this->uploadsImageUser($request->file('image'));
         }
 
         $member->info->update([

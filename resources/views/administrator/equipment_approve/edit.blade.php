@@ -215,6 +215,15 @@
                 window.location.href = '{{ route('administrator.approve-equipment') }}';
             });
         </script>
+    @elseif (session('error'))
+        <script>
+            Swal.fire({
+                // title: 'กรุณาเลือกหมายเลขอุปกรณ์!',
+                text: "{{ session('error') }}",
+                icon: 'error',
+                confirmButtonText: 'ตกลง'
+            });
+        </script>
     @endif
     <script>
         $('#submitBtn').on('click', function(e) {

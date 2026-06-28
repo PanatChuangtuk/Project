@@ -13,6 +13,13 @@ abstract class Controller
         $file->storeAs('file/' . $path . '/', $filename, 'public');
         return $filename;
     }
+    public function uploadsImageUser($file)
+    {
+        // dd($file);
+        $filename = substr(Str::uuid(), 0, 5) . '.' . $file->getClientOriginalExtension();
+        $file->storeAs('images/', $filename, 'public');
+        return $filename;
+    }
     protected function formatThaiDate($date)
     {
         $date = Carbon::parse($date);
