@@ -116,7 +116,7 @@
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="status" value="1"
                                 name="status" {{ $admin->status ? 'checked' : '' }} />
-                            <label class="form-check-label fw-semibold" for="status">สถานะใช้งาน</label>
+                            <label class="form-check-label fw-semibold" for="status" check>สถานะใช้งาน</label>
                         </div>
                     </div>
 

@@ -1,6 +1,6 @@
 @extends('administrator.layouts.main')
 
-@section('title', 'เพิ่มแอดมิน')
+@section('title')
 
 @section('content')
     <ol class="breadcrumb bg-light p-3 rounded shadow-sm">

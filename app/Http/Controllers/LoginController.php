@@ -28,6 +28,7 @@ class LoginController extends MainController
         ], [
             'email_or_phone.required' => 'กรุณากรอกอีเมล',
             'password.required' => 'กรุณากรอกรหัสผ่าน',
+            'password.min' => 'รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร',
         ]);
 
         if ($validator->fails()) {
