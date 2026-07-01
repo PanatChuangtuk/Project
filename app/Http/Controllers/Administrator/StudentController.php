@@ -90,12 +90,25 @@ class StudentController extends Controller
 
         $filePath = $file->storeAs('file/student', $file->getClientOriginalName(), 'public');
         $filePath = public_path('upload/' . $filePath);
-
         (new FastExcel)->import($filePath, function ($line) {
 
             $line = array_map(function ($value) {
-                return mb_convert_encoding($value, 'UTF-8', 'auto');
-            }, $line);
+
+        if (!is_string($value)) {
+            return $value;
+        }
+
+        $encoding = mb_detect_encoding(
+            $value,
+            ['UTF-8', 'Windows-874', 'TIS-620', 'ISO-8859-1'],
+            true
+        );
+
+            return $encoding
+                ? mb_convert_encoding($value, 'UTF-8', $encoding)
+                : $value;
+
+        }, $line);
             $line = array_change_key_case($line, CASE_LOWER);
             $fullName = trim($line['ชื่ออาจารย์ที่ปรึกษา'] ?? '');
             $prefixes = [

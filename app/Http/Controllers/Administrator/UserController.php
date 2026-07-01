@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Administrator;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Models\{Member, MemberInfo};
+use App\Models\{Member, MemberInfo,Student};
 use Illuminate\Http\Request;
 use App\Http\Requests\{MemberCreateRequest, MemberUpdateRequest};
 
@@ -92,7 +92,9 @@ class UserController extends Controller
         if ($request->hasFile('image')) {
             $filename = $this->uploadsImageUser($request->file('image'));
         }
-
+        if($request->filled('adviser_id')){
+            Student::where('id', $request->student_id ?? $member->info->student_id)->update(['adviser_id' => $request->adviser_id]);
+        }
         $member->info->update([
             'adviser_id' => $request->adviser_id ?? $member->info->adviser_id,
             'student_id' => $request->student_id ?? $member->info->student_id,
@@ -101,7 +103,7 @@ class UserController extends Controller
             'mobile_phone' => $request->mobile_phone,
             'avatar' => $filename,
         ]);
-
+        
         return redirect()->back()
             ->with('success', 'ข้อมูลถูกอัพเดตเรียบร้อยแล้ว');
     }

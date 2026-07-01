@@ -111,8 +111,7 @@
                                     class="text-danger">*</span></label>
                             <select name="adviser_id" id="adviserSelect" class="form-control select2">
                                 <option value="">
-                                    {{ $admin->info?->student?->adviser->first_name . ' ' . $admin->info?->student?->adviser->last_name }}
-                                </option>
+                                    {{ $admin->info?->adviser->first_name . ' ' . $admin->info?->adviser->last_name }}
                                 </option>
                             </select>
                             @error('adviser_id')
