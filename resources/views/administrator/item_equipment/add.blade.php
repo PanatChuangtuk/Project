@@ -53,7 +53,7 @@
                     <!-- สถานะ -->
                     <div class="col-md-12 mt-3">
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="status" value="1" name="status" />
+                            <input class="form-check-input" type="checkbox" id="status" value="1" name="status" checked/>
                             <label class="form-check-label fw-semibold" for="status">สถานะเปิดใช้งาน</label>
                         </div>
                     </div>
