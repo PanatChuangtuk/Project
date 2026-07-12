@@ -172,6 +172,19 @@
         #canvas {
             transform: scaleX(-1);
         }
+        .form-control::file-selector-button {
+        background-color: #0d6efd;
+        color: #fff;
+        border: none;
+        padding: .5rem 1rem;
+        margin-right: 1rem;
+        border-radius: .375rem;
+        transition: background-color .2s;
+    }
+
+    .form-control::file-selector-button:hover {
+        background-color: #0b5ed7;
+    }
     </style>
 </head>
 
@@ -218,7 +231,7 @@
 
                 <div class="tab-pane fade" id="form-section">
                     <div class=" shadow-lg p-4 ">
-                        <form class="form" method="post" action="{{ route('register.submit') }}">
+                        <form class="form" method="post" action="{{ route('register.submit') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="row form-row">
 
@@ -257,6 +270,30 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-6">
+                                    <label for="imageData" class="form-label fw-semibold text-primary">
+                                        อัปโหลดรูปภาพ
+                                    </label>
+
+                                    <div class="input-group">
+                                        <label for="imageData" class="btn btn-primary">
+                                            เลือกรูปภาพ
+                                        </label>
+
+                                        <span id="file-name" class="form-control bg-white">
+                                            ยังไม่ได้เลือกไฟล์
+                                        </span>
+                                    </div>
+
+                                    <input type="file" id="imageData" name="imageData" class="d-none"
+                                        accept="image/*">
+
+                                    @error('imageData')
+                                        <div class="text-danger mt-2">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
 
                                 <input type="hidden" id="imageData" name="imageData">
                                 <div class="col-12 d-flex py-3">
@@ -376,7 +413,12 @@
             }
         });
     </script>
-
+    <script>
+        $('#imageData').on('change', function() {
+            const fileName = $(this).val().split('\\').pop();
+            $('#file-name').text(fileName || 'ยังไม่ได้เลือกไฟล์');
+        });
+    </script>
 </body>
 
 </html>

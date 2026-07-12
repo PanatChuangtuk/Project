@@ -549,7 +549,7 @@
                 icon: 'success',
                 confirmButtonText: 'ตกลง'
             }).then(function() {
-                window.location.href = '{{ route('profile') }}';
+                window.location.href = '{{ route('return.index') }}';
             });
         </script>
     @endif

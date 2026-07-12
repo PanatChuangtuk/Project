@@ -60,7 +60,7 @@
                                                     value="{{ $item->id }}">
                                             </div>
                                         </td>
-                                        <td>{{ $item->id }}</td>
+                                        <td>{{ $users->firstItem() + $loop->index }}</td>
                                         <td>
                                             <div class="text-center">
                                                 <div class="flex-grow-1">

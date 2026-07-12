@@ -62,7 +62,7 @@
                                                     value="{{ $item->id }}">
                                             </div>
                                         </td>
-                                        <td>{{ $item->id }}</td>
+                                        <td>{{$adviser->firstItem() + $loop->index  }}</td>
                                         <td>
                                             <div class="text-center">
 
