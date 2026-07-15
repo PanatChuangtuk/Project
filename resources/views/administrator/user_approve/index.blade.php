@@ -275,7 +275,7 @@
                                         <td>
 
                                         </td>
-                                        <td>{{$users->firstItem() + $loop->index }}</td>
+                                        <td>{{ $users->firstItem() + $loop->index }}</td>
                                         <td>
                                             <div class="text-center">
                                                 <div class="flex-grow-1">
@@ -292,7 +292,7 @@
                                                 data-bs-target="#twoColumnModal" data-id="{{ $item->id }}"
                                                 data-bs-target=".disapproveBtn" data-id="{{ $item->id }}"
                                                 {{-- data-student-new="{{ $item->info->student->student_number ?? null }}" --}}
-                                                data-avatar-old="{{ asset('upload/images/' . $item->info->avatar) }}"
+                                                data-avatar-old="{{ asset('upload/images/' . $item->info->avatar) ?? asset('upload/ไม่มีรูป.jpg') }}"
                                                 data-name-old="{{ $item->info->student->first_name ?? '' }} {{ $item->info->student->last_name ?? '' }}"
                                                 data-email-old="{{ $item->info->student->email ?? '' }}"
                                                 data-phone-old="{{ $item->info->student->mobile_phone ?? '' }}"

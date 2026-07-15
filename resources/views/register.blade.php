@@ -172,19 +172,20 @@
         #canvas {
             transform: scaleX(-1);
         }
-        .form-control::file-selector-button {
-        background-color: #0d6efd;
-        color: #fff;
-        border: none;
-        padding: .5rem 1rem;
-        margin-right: 1rem;
-        border-radius: .375rem;
-        transition: background-color .2s;
-    }
 
-    .form-control::file-selector-button:hover {
-        background-color: #0b5ed7;
-    }
+        .form-control::file-selector-button {
+            background-color: #0d6efd;
+            color: #fff;
+            border: none;
+            padding: .5rem 1rem;
+            margin-right: 1rem;
+            border-radius: .375rem;
+            transition: background-color .2s;
+        }
+
+        .form-control::file-selector-button:hover {
+            background-color: #0b5ed7;
+        }
     </style>
 </head>
 
@@ -223,15 +224,16 @@
                         @enderror
 
                         <div class="capture-btn-container mt-4">
-                            <button id="capture" class="capture-btn">อัปโหลดรูปภาพ</button>
-                            <button id="retake" class="capture-btn"style="display: none;">อัปโหลดรูปภาพใหม่</button>
+                            <button type="button" id="capture" class="capture-btn">ถ่ายภาพ</button>
+                            <button id="retake" class="capture-btn"style="display: none;">ถ่ายภาพใหม่</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="tab-pane fade" id="form-section">
                     <div class=" shadow-lg p-4 ">
-                        <form class="form" method="post" action="{{ route('register.submit') }}" enctype="multipart/form-data">
+                        <form class="form" method="post" action="{{ route('register.submit') }}"
+                            enctype="multipart/form-data">
                             @csrf
                             <div class="row form-row">
 
@@ -284,7 +286,6 @@
                                             ยังไม่ได้เลือกไฟล์
                                         </span>
                                     </div>
-
                                     <input type="file" id="imageData" name="imageData" class="d-none"
                                         accept="image/*">
 
@@ -295,7 +296,7 @@
                                     @enderror
                                 </div>
 
-                                <input type="hidden" id="imageData" name="imageData">
+                                <input type="hidden" name="imageData" id="imageDataHidden">
                                 <div class="col-12 d-flex py-3">
                                     <button class="btn capture-btn mx-auto px-5 py-2 shadow-lg fw-bold">
                                         ✅ ลงทะเบียน
@@ -336,55 +337,167 @@
     @endif
     <script>
         $(document).ready(function() {
-            const $video = $('#video');
-            const $canvas = $('#canvas')[0];
-            const $captureButton = $('#capture');
-            const $retakeButton = $('#retake');
-            const $imageDataInput = $('#imageData');
-            const $capturedImage = $('#capturedImage');
 
-            let stream;
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            const preview = document.getElementById('capturedImage');
 
-            function startCamera() {
-                navigator.mediaDevices.getUserMedia({
+            const captureBtn = document.getElementById('capture');
+            const retakeBtn = document.getElementById('retake');
+
+            const fileInput = document.getElementById('imageData');
+            const fileName = document.getElementById('file-name');
+
+            let stream = null;
+
+            // =========================
+            // เปิดกล้อง
+            // =========================
+            async function startCamera() {
+                try {
+                    stream = await navigator.mediaDevices.getUserMedia({
                         video: true
-                    })
-                    .then(function(cameraStream) {
-                        stream = cameraStream;
-                        $video[0].srcObject = stream;
-                    })
-                    .catch(function(err) {
-                        console.log("Error accessing camera: " + err);
                     });
+
+                    video.srcObject = stream;
+
+                } catch (err) {
+                    console.log(err);
+                }
             }
+
+            // =========================
+            // ปิดกล้อง
+            // =========================
+            function stopCamera() {
+                if (!stream) return;
+
+                stream.getTracks().forEach(track => track.stop());
+
+                stream = null;
+            }
+
+            // =========================
+            // ถ่ายภาพ
+            // =========================
+            function captureImage() {
+
+                const ctx = canvas.getContext('2d');
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                ctx.save();
+
+                ctx.translate(canvas.width, 0);
+                ctx.scale(-1, 1);
+
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                ctx.restore();
+
+                preview.src = canvas.toDataURL('image/png');
+
+                canvas.toBlob(function(blob) {
+
+                    const file = new File(
+                        [blob],
+                        'camera.png', {
+                            type: 'image/png'
+                        }
+                    );
+
+                    const dataTransfer = new DataTransfer();
+
+                    dataTransfer.items.add(file);
+
+                    fileInput.files = dataTransfer.files;
+
+                    fileName.textContent = 'ถ่ายรูปสำเร็จ ✅';
+
+                }, 'image/png');
+
+                preview.style.display = 'block';
+                video.style.display = 'none';
+
+                captureBtn.style.display = 'none';
+                retakeBtn.style.display = 'inline-block';
+
+                stopCamera();
+            }
+
+            // =========================
+            // ถ่ายใหม่
+            // =========================
+            async function retakeImage() {
+
+                fileInput.value = '';
+
+                fileName.textContent = 'ยังไม่ได้เลือกไฟล์';
+
+                preview.style.display = 'none';
+                video.style.display = 'block';
+
+                captureBtn.style.display = 'inline-block';
+                retakeBtn.style.display = 'none';
+
+                await startCamera();
+            }
+
+            // =========================
+            // เลือกรูปจากเครื่อง
+            // =========================
+            fileInput.addEventListener('change', function() {
+
+                if (this.files.length === 0) {
+
+                    fileName.textContent = 'ยังไม่ได้เลือกไฟล์';
+                    return;
+                }
+
+                const file = this.files[0];
+
+                fileName.textContent = file.name;
+
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+
+                    preview.src = e.target.result;
+
+                    preview.style.display = 'block';
+                    video.style.display = 'none';
+
+                    captureBtn.style.display = 'none';
+                    retakeBtn.style.display = 'inline-block';
+
+                    stopCamera();
+                };
+
+                reader.readAsDataURL(file);
+
+            });
+
+            // =========================
+            // Event
+            // =========================
+
+            // ปุ่มอัปโหลด
+            captureBtn.addEventListener('click', function() {
+                captureImage();
+            });
+
+            // ปุ่มถ่ายใหม่
+            retakeBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                retakeImage();
+            });
+
+            // เริ่มต้น
+            fileInput.value = '';
+            fileName.textContent = 'ยังไม่ได้เลือกไฟล์';
 
             startCamera();
 
-            $captureButton.on('click', function() {
-                const context = $canvas.getContext('2d');
-
-                context.drawImage($video[0], 0, 0, $canvas.width, $canvas.height);
-                const imageData = $canvas.toDataURL('image/png');
-                $imageDataInput.val(imageData);
-                $capturedImage.attr('src', imageData).show();
-                $video.hide();
-                $captureButton.hide();
-
-                if (stream) {
-                    stream.getTracks().forEach(track => track.stop());
-
-                }
-                $retakeButton.show();
-            });
-
-            $retakeButton.on('click', function() {
-                $capturedImage.hide();
-                $video.show();
-                $captureButton.show();
-                $retakeButton.hide();
-                $imageDataInput.val('');
-                startCamera();
-            });
         });
     </script>
     <script>
@@ -415,8 +528,13 @@
     </script>
     <script>
         $('#imageData').on('change', function() {
-            const fileName = $(this).val().split('\\').pop();
-            $('#file-name').text(fileName || 'ยังไม่ได้เลือกไฟล์');
+
+            const fileName = this.files.length ?
+                this.files[0].name :
+                "ยังไม่ได้เลือกไฟล์";
+
+            $('#file-name').text(fileName);
+
         });
     </script>
 </body>

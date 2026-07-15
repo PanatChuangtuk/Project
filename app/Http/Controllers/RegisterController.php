@@ -22,6 +22,11 @@ class RegisterController extends MainController
     public function submit(RegisterMemberRequest  $request)
     {
         // dd($request->all());
+        if ($request->hasFile('imageData')) {
+            $image = $request->file('imageData');
+            $fileName = 'captured_' . time() . '.' . $image->getClientOriginalExtension();
+            Storage::disk('public')->putFileAs('images/', $image, $fileName);
+        }
         $fileName = '';
         if ($request->student_id) {
             $student = Student::find($request->student_id);
@@ -37,14 +42,6 @@ class RegisterController extends MainController
             'created_at' => Carbon::now(),
             'created_by' => Auth::check() ? Auth::user()->id : null
         ]);
-
-        if ($request->has('imageData')) {
-            $imageData = $request->input('imageData');
-            $imageData = str_replace('data:image/png;base64,', '', $imageData);
-            $imageData = base64_decode($imageData);
-            $fileName = 'captured_' . time() . '.png';
-            Storage::disk('public')->put('images/' . $fileName, $imageData);
-        }
 
         MemberInfo::create([
             'member_id' => $user->id,
