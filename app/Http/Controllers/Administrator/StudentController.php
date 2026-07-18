@@ -86,80 +86,91 @@ class StudentController extends Controller
     {
         ini_set('memory_limit', '512M');
         ini_set('max_execution_time', 180);
+        $request->validate([
+            'file' => [
+                'required',
+                'file',
+                'mimes:csv',
+            ],
+        ]);
         $file = $request->file('file');
-
         $filePath = $file->storeAs('file/student', $file->getClientOriginalName(), 'public');
         $filePath = public_path('upload/' . $filePath);
         (new FastExcel)->import($filePath, function ($line) {
 
-            $line = array_map(function ($value) {
+            // $line = array_map(function ($value) {
 
-        if (!is_string($value)) {
-            return $value;
-        }
+            //     if (!is_string($value)) {
+            //         return $value;
+            //     }
 
-        $encoding = mb_detect_encoding(
-            $value,
-            ['UTF-8', 'Windows-874', 'TIS-620', 'ISO-8859-1'],
-            true
-        );
+            //     $encoding = mb_detect_encoding(
+            //         $value,
+            //         ['UTF-8', 'Windows-874', 'TIS-620', 'ISO-8859-1'],
+            //         true
+            //     );
 
-            return $encoding
-                ? mb_convert_encoding($value, 'UTF-8', $encoding)
-                : $value;
+            //     return $encoding
+            //         ? mb_convert_encoding($value, 'UTF-8', $encoding)
+            //         : $value;
+            // }, $line);
+            // $line = array_change_key_case($line, CASE_LOWER);
+            // $fullName = trim($line['ชื่ออาจารย์ที่ปรึกษา'] ?? '');
+            // $prefixes = [
+            //     'ศาสตราจารย์',
+            //     'รองศาสตราจารย์',
+            //     'ผู้ช่วยศาสตราจารย์',
+            //     'ศ.ดร.',
+            //     'รศ.ดร.',
+            //     'ผศ.ดร.',
+            //     'ศ. ดร.',
+            //     'รศ. ดร.',
+            //     'ผศ. ดร.',
+            //     'ศ.',
+            //     'รศ.',
+            //     'ผศ.',
+            //     'ดร.',
+            //     'อ.',
+            //     'นาย',
+            //     'นางสาว',
+            //     'นาง',
+            //     'Asst. Prof.',
+            //     'Assoc. Prof.',
+            //     'Dr.',
+            //     'Prof.',
+            //     'Mr.',
+            //     'Mrs.',
+            //     'Miss',
+            //     'Ms.',
+            //     'Asst.Prof.',
+            //     'Assoc.Prof.',
+            //     'Dr',
+            //     'Prof',
+            //     'Mr',
+            //     'Mrs',
+            //     'Ms'
+            // ];
+            // usort($prefixes, fn($a, $b) => strlen($b) - strlen($a));
 
-        }, $line);
-            $line = array_change_key_case($line, CASE_LOWER);
-            $fullName = trim($line['ชื่ออาจารย์ที่ปรึกษา'] ?? '');
-            $prefixes = [
-                'ศาสตราจารย์',
-                'รองศาสตราจารย์',
-                'ผู้ช่วยศาสตราจารย์',
-                'ศ.ดร.',
-                'รศ.ดร.',
-                'ผศ.ดร.',
-                'ศ. ดร.',
-                'รศ. ดร.',
-                'ผศ. ดร.',
-                'ศ.',
-                'รศ.',
-                'ผศ.',
-                'ดร.',
-                'อ.',
-                'นาย',
-                'นางสาว',
-                'นาง',
-                'Asst. Prof.',
-                'Assoc. Prof.',
-                'Dr.',
-                'Prof.',
-                'Mr.',
-                'Mrs.',
-                'Miss',
-                'Ms.',
-                'Asst.Prof.',
-                'Assoc.Prof.',
-                'Dr',
-                'Prof',
-                'Mr',
-                'Mrs',
-                'Ms'
-            ];
-            usort($prefixes, fn($a, $b) => strlen($b) - strlen($a));
+            // $pattern = '/^(' . implode('|', array_map('preg_quote', $prefixes)) . ')\s+/iu';
+            // $fullName = preg_replace($pattern, '', $fullName);
 
-            $pattern = '/^(' . implode('|', array_map('preg_quote', $prefixes)) . ')\s+/iu';
-            $fullName = preg_replace($pattern, '', $fullName);
+            // $parts = explode(' ', $fullName, 2);
 
-            $parts = explode(' ', $fullName, 2);
-
-            $firstName = $parts[0] ?? null;
-            $lastName = $parts[1] ?? null;
-            $adviser = Adviser::firstOrCreate(
-                [
-                    'first_name' => $firstName,
-                    'last_name' => $lastName,
-                ]
-            );
+            // $firstName = $parts[0] ?? null;
+            // $lastName = $parts[1] ?? null;
+            if (!empty($line['คำนำหน้าชื่อ']) || !empty($line['ชื่ออาจารย์ที่ปรึกษา']) || !empty($line['นามสกุลอาจารย์ที่ปรึกษา'])) {
+                $adviser = Adviser::firstOrCreate(
+                    [
+                        'titles_name' => $line['คำนำหน้าชื่อ'] ?? null,
+                        'first_name' => $line['ชื่ออาจารย์ที่ปรึกษา'] ?? null,
+                        'last_name' => $line['นามสกุลอาจารย์ที่ปรึกษา'] ?? null,
+                    ]
+                );
+            } else {
+                return redirect()->back()
+                    ->with('error', 'ข้อมูลอาจารย์ที่ปรึกษาไม่ครบถ้วน');
+            }
             return Student::updateOrCreate(
                 ['student_number' => $line['รหัสนักศึกษา'] ?? null],
                 [

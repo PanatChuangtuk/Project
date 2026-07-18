@@ -27,7 +27,7 @@ class RegisterController extends MainController
             $fileName = 'captured_' . time() . '.' . $image->getClientOriginalExtension();
             Storage::disk('public')->putFileAs('images/', $image, $fileName);
         }
-        $fileName = '';
+
         if ($request->student_id) {
             $student = Student::find($request->student_id);
         } else {

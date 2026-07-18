@@ -26,6 +26,7 @@ class AdviserUpdateRequest extends FormRequest
     {
         // dd($request->all());
         return [
+            'titles_name' => 'required',
             'first_name' => 'required',
             'last_name' => 'required'
         ];
@@ -38,6 +39,10 @@ class AdviserUpdateRequest extends FormRequest
      */
     public function messages()
     {
-        return ['first_name.required' => 'กรุณากรอกชื่อ', 'last_name.required' => 'กรุณากรอกนามสกุล'];
+        return [
+            'titles_name.required' => 'กรุณาเลือกคำนำหน้าชื่ออาจารย์ที่ปรึกษา',
+            'first_name.required' => 'กรุณากรอกชื่อ',
+            'last_name.required' => 'กรุณากรอกนามสกุล'
+        ];
     }
 }

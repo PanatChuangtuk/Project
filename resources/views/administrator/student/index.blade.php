@@ -178,5 +178,16 @@
                 window.location.href = '{{ route('administrator.student') }}';
             });
         </script>
+    @elseif (session('error'))
+        <script>
+            Swal.fire({
+                title: 'เกิดข้อผิดพลาด!',
+                text: "{{ session('error') }}",
+                icon: 'error',
+                confirmButtonText: 'ตกลง'
+            }).then(function() {
+                window.location.href = '{{ route('administrator.student') }}';
+            });
+        </script>
     @endif
 @endsection

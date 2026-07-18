@@ -12,6 +12,7 @@ class Adviser extends Model
 
     protected $table = 'adviser';
     protected $fillable = [
+        'titles_name',
         'first_name',
         'last_name',
         'avatar',

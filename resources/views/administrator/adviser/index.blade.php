@@ -46,6 +46,7 @@
                                         </div>
                                     </th>
                                     <th>ลำดับ</th>
+                                    <th class="text-center">คำนำหน้าชื่อ</th>
                                     <th class="text-center">ชื่อ</th>
                                     <th class="text-center">นามสกุล</th>
                                     <th class="text-center">สถานะเปิดใช้งาน</th>
@@ -62,10 +63,12 @@
                                                     value="{{ $item->id }}">
                                             </div>
                                         </td>
-                                        <td>{{$adviser->firstItem() + $loop->index  }}</td>
+                                        <td>{{ $adviser->firstItem() + $loop->index }}</td>
+                                        <td class="text-center">
+                                            {{ $item->titles_name ?? null }}
+                                        </td>
                                         <td>
                                             <div class="text-center">
-
                                                 {{ $item->first_name ?? null }}
 
                                             </div>

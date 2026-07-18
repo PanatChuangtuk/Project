@@ -11,7 +11,21 @@ use App\Http\Requests\{AdviserCreateRequest, AdviserUpdateRequest};
 class AdviserController extends Controller
 {
     private $main_menu = 'admin';
-
+    private $titles = [
+        'ศาสตราจารย์',
+        'รองศาสตราจารย์',
+        'ผู้ช่วยศาสตราจารย์',
+        'ดร.',
+        'ผศ.',
+        'รศ.',
+        'อ.',
+        'นพ.',
+        'น.สพ.',
+        'น.ส.',
+        'นาย',
+        'นางสาว',
+        'นาง',
+    ];
     public function index(Request $request)
     {
         $query = $request->input('query');
@@ -32,14 +46,16 @@ class AdviserController extends Controller
     public function add()
     {
         $main_menu = $this->main_menu;
-        return view('administrator.adviser.add', compact('main_menu'));
+        $titles = $this->titles;
+        return view('administrator.adviser.add', compact('main_menu', 'titles'));
     }
 
     public function edit($id)
     {
         $main_menu = $this->main_menu;
         $adviser = Adviser::find($id);
-        return view('administrator.adviser.edit', compact('adviser', 'main_menu'));
+        $titles = $this->titles;
+        return view('administrator.adviser.edit', compact('adviser', 'main_menu', 'titles'));
     }
 
     public function submit(AdviserCreateRequest $request)
@@ -50,6 +66,7 @@ class AdviserController extends Controller
             $filename = $this->uploadsImage($request->file('image'), 'adviser');
         }
         Adviser::create([
+            'titles_name' => $request->titles_name,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'status' =>  $request->input('status', 0),
@@ -70,6 +87,7 @@ class AdviserController extends Controller
         }
         $adviser = Adviser::find($id);
         $adviser->update([
+            'titles_name' => $request->titles_name,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'avatar' => $filename ?? $adviser->avatar,

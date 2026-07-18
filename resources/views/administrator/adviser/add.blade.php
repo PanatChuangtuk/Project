@@ -20,6 +20,21 @@
                 <div class="row g-4">
                     <!-- ชื่อ -->
                     <div class="col-md-6">
+                        <label for="titles_name" class="form-label fw-semibold">คำนำหน้าชื่ออาจารย์ที่ปรึกษา</label>
+                        <div class="input-group shadow-sm">
+                            <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
+                            <select id="titles_name" name="titles_name" class="form-control border-0 shadow-sm">
+                                <option value="">เลือกคำนำหน้าชื่อ</option>
+                                @foreach ($titles as $title)
+                                    <option value="{{ $title }}">{{ $title }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @error('titles_name')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-6">
                         <label for="first_name" class="form-label fw-semibold">ชื่อ</label>
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
@@ -56,7 +71,8 @@
                     <!-- สถานะ -->
                     <div class="col-md-12 mt-3">
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="status" value="1" name="status" checked/>
+                            <input class="form-check-input" type="checkbox" id="status" value="1" name="status"
+                                checked />
                             <label class="form-check-label fw-semibold" for="status">สถานะเปิดใช้งาน</label>
                         </div>
                     </div>

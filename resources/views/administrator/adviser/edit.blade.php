@@ -24,6 +24,23 @@
 
                     <!-- ชื่อ -->
                     <div class="col-md-6">
+                        <label for="titles_name" class="form-label fw-semibold">คำนำหน้าชื่ออาจารย์ที่ปรึกษา</label>
+                        <div class="input-group shadow-sm">
+                            <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
+                            <select id="titles_name" name="titles_name" class="form-control border-0 shadow-sm">
+                                <option value="">เลือกคำนำหน้าชื่อ</option>
+                                @foreach ($titles as $title)
+                                    <option value="{{ $title }}"
+                                        {{ old('titles_name', $adviser->titles_name) == $title ? 'selected' : '' }}>
+                                        {{ $title }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @error('titles_name')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-6">
                         <label for="first_name" class="form-label fw-semibold">ชื่อ</label>
                         <div class="input-group shadow-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
