@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Administrator;
 
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\{Validator, Log};
+use Illuminate\Support\Facades\{Validator, Log, DB};
 use Illuminate\Http\Request;
 use App\Models\{Student, Adviser, Member, MemberInfo};
 use Rap2hpoutre\FastExcel\FastExcel;
@@ -86,106 +87,118 @@ class StudentController extends Controller
     {
         ini_set('memory_limit', '512M');
         ini_set('max_execution_time', 180);
-        $request->validate([
-            'file' => [
-                'required',
-                'file',
-                'mimes:csv',
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'file' => [
+                    'required',
+                    'file',
+                    'mimetypes:text/plain,text/csv,application/vnd.ms-excel',
+                ],
             ],
-        ]);
-        $file = $request->file('file');
-        $filePath = $file->storeAs('file/student', $file->getClientOriginalName(), 'public');
-        $filePath = public_path('upload/' . $filePath);
-        (new FastExcel)->import($filePath, function ($line) {
+            [
+                'file.required' => 'กรุณาเลือกไฟล์มา Import',
+                'file.file'     => 'ไฟล์ที่เลือกไม่ถูกต้อง',
+                'file.mimes'    => 'กรุณาอัปโหลดไฟล์ CSV เท่านั้น',
+            ]
+        );
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->with('error', $validator->errors()->first())
+                ->withErrors($validator);
+        }
 
-            // $line = array_map(function ($value) {
+        try {
+            $file = $request->file('file');
 
-            //     if (!is_string($value)) {
-            //         return $value;
-            //     }
+            // อ่านไฟล์
+            $content = file_get_contents($file->getRealPath());
 
-            //     $encoding = mb_detect_encoding(
-            //         $value,
-            //         ['UTF-8', 'Windows-874', 'TIS-620', 'ISO-8859-1'],
-            //         true
-            //     );
+            // ตรวจว่าเป็น UTF-8 หรือไม่
+            if (!mb_check_encoding($content, 'UTF-8')) {
 
-            //     return $encoding
-            //         ? mb_convert_encoding($value, 'UTF-8', $encoding)
-            //         : $value;
-            // }, $line);
-            // $line = array_change_key_case($line, CASE_LOWER);
-            // $fullName = trim($line['ชื่ออาจารย์ที่ปรึกษา'] ?? '');
-            // $prefixes = [
-            //     'ศาสตราจารย์',
-            //     'รองศาสตราจารย์',
-            //     'ผู้ช่วยศาสตราจารย์',
-            //     'ศ.ดร.',
-            //     'รศ.ดร.',
-            //     'ผศ.ดร.',
-            //     'ศ. ดร.',
-            //     'รศ. ดร.',
-            //     'ผศ. ดร.',
-            //     'ศ.',
-            //     'รศ.',
-            //     'ผศ.',
-            //     'ดร.',
-            //     'อ.',
-            //     'นาย',
-            //     'นางสาว',
-            //     'นาง',
-            //     'Asst. Prof.',
-            //     'Assoc. Prof.',
-            //     'Dr.',
-            //     'Prof.',
-            //     'Mr.',
-            //     'Mrs.',
-            //     'Miss',
-            //     'Ms.',
-            //     'Asst.Prof.',
-            //     'Assoc.Prof.',
-            //     'Dr',
-            //     'Prof',
-            //     'Mr',
-            //     'Mrs',
-            //     'Ms'
-            // ];
-            // usort($prefixes, fn($a, $b) => strlen($b) - strlen($a));
+                // แปลงจาก TIS-620 เป็น UTF-8
+                $content = iconv(
+                    'TIS-620',
+                    'UTF-8//IGNORE',
+                    $content
+                );
+            }
 
-            // $pattern = '/^(' . implode('|', array_map('preg_quote', $prefixes)) . ')\s+/iu';
-            // $fullName = preg_replace($pattern, '', $fullName);
+            // ลบ BOM UTF-8
+            $content = preg_replace('/^\xEF\xBB\xBF/', '', $content);
 
-            // $parts = explode(' ', $fullName, 2);
+            // ชื่อไฟล์
+            $fileName = 'import_student_' . now()->format('Ymd_His') . '.csv';
 
-            // $firstName = $parts[0] ?? null;
-            // $lastName = $parts[1] ?? null;
-            if (!empty($line['คำนำหน้าชื่อ']) || !empty($line['ชื่ออาจารย์ที่ปรึกษา']) || !empty($line['นามสกุลอาจารย์ที่ปรึกษา'])) {
-                $adviser = Adviser::firstOrCreate(
+            // Path ที่ต้องการบันทึก
+            $uploadPath = public_path('upload/file/student');
+
+            // สร้าง Folder ถ้ายังไม่มี
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+
+            // Path เต็มของไฟล์
+            $tempFile = $uploadPath . '/' . $fileName;
+
+            // บันทึกไฟล์ UTF-8
+            file_put_contents($tempFile, $content);
+            DB::beginTransaction();
+
+            (new FastExcel)->import($tempFile, function ($line) {
+
+                if (
+                    empty($line['คำนำหน้าชื่ออาจารย์ที่ปรึกษา']) ||
+                    empty($line['ชื่ออาจารย์ที่ปรึกษา']) ||
+                    empty($line['นามสกุลอาจารย์ที่ปรึกษา'])
+                ) {
+                    throw new \Exception('ข้อมูลอาจารย์ที่ปรึกษาไม่ครบถ้วน');
+                }
+
+                $adviser = Adviser::firstOrCreate([
+                    'titles_name' => trim($line['คำนำหน้าชื่ออาจารย์ที่ปรึกษา']),
+                    'first_name'  => trim($line['ชื่ออาจารย์ที่ปรึกษา']),
+                    'last_name'   => trim($line['นามสกุลอาจารย์ที่ปรึกษา']),
+                ]);
+
+                Student::updateOrCreate(
                     [
-                        'titles_name' => $line['คำนำหน้าชื่อ'] ?? null,
-                        'first_name' => $line['ชื่ออาจารย์ที่ปรึกษา'] ?? null,
-                        'last_name' => $line['นามสกุลอาจารย์ที่ปรึกษา'] ?? null,
+                        'student_number' => trim($line['รหัสนักศึกษา']),
+                    ],
+                    [
+                        'first_name'   => trim($line['ชื่อ'] ?? ''),
+                        'last_name'    => trim($line['นามสกุล'] ?? ''),
+                        'mobile_phone' => trim($line['เบอร์โทรศัพท์'] ?? ''),
+                        'email'        => trim($line['อีเมล'] ?? ''),
+                        'adviser_id'   => $adviser->id,
+                        'status'       => 1,
                     ]
                 );
-            } else {
-                return redirect()->back()
-                    ->with('error', 'ข้อมูลอาจารย์ที่ปรึกษาไม่ครบถ้วน');
+            });
+
+            DB::commit();
+
+            // ลบไฟล์ชั่วคราว
+            @unlink($tempFile);
+
+            return redirect()->back()
+                ->with('success', 'ข้อมูลถูกอัปเดตเรียบร้อยแล้ว');
+        } catch (\Throwable $e) {
+
+            DB::rollBack();
+
+            // ลบไฟล์ชั่วคราวถ้ามี
+            if (isset($tempFile) && file_exists($tempFile)) {
+                @unlink($tempFile);
             }
-            return Student::updateOrCreate(
-                ['student_number' => $line['รหัสนักศึกษา'] ?? null],
-                [
-                    'first_name'   => $line['ชื่อ'] ?? null,
-                    'last_name'    => $line['นามสุกล'] ?? null,
-                    'mobile_phone' => $line['เบอร์โทรศัพท์'] ?? null,
-                    'email'        => $line['อีเมล'] ?? null,
-                    'adviser_id'   => $adviser->id,
-                    'status'       => 1,
-                    'created_at'   => now(),
-                ]
-            );
-        });
-        return redirect()->back()
-            ->with('success', 'ข้อมูลถูกอัพเดตเรียบร้อยแล้ว');
+
+            Log::error($e);
+
+            return redirect()->back()
+                ->with('error', $e->getMessage());
+        }
     }
     public function destroy($id, Request $request)
     {
