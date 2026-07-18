@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\{Validator, Log};
 use Illuminate\Http\Request;
-use App\Models\{Student, Adviser};
+use App\Models\{Student, Adviser, Member, MemberInfo};
 use Rap2hpoutre\FastExcel\FastExcel;
 use App\Http\Requests\{StudentUpdateRequest, StudentCreatRequest};
 
@@ -191,6 +191,8 @@ class StudentController extends Controller
     {
         $about = Student::findOrFail($id);
         $about->delete();
+        $member_id = MemberInfo::where('student_id', $id)->delete();
+        Member::where('member_id', $member_id)->delete();
 
         $currentPage = $request->query('page', 1);
 
@@ -206,7 +208,8 @@ class StudentController extends Controller
 
         if (is_array($ids) && count($ids) > 0) {
             Student::whereIn('id', $ids)->delete();
-
+            $member_ids = MemberInfo::whereIn('student_id', $ids)->pluck('member_id');
+            Member::whereIn('member_id', $member_ids)->forceDelete();
             return response()->json([
                 'status' => 'success',
                 'message' => 'ข้อมูลที่เลือกถูกลบเรียบร้อยแล้ว',

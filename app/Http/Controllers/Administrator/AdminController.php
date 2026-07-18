@@ -105,7 +105,7 @@ class AdminController extends Controller
     {
         $about = Member::findOrFail($id);
         $about->forceDelete();
-
+        MemberInfo::where('member_id', $id)->forceDelete();
         $currentPage = $request->query('page', 1);
 
         return redirect()->route('administrator.admin', ['page' => $currentPage])->with([
@@ -120,7 +120,7 @@ class AdminController extends Controller
 
         if (is_array($ids) && count($ids) > 0) {
             Member::whereIn('id', $ids)->forceDelete();
-
+            MemberInfo::whereIn('member_id', $ids)->forceDelete();
             return response()->json([
                 'status' => 'success',
                 'message' => 'ข้อมูลที่เลือกถูกลบเรียบร้อยแล้ว',
