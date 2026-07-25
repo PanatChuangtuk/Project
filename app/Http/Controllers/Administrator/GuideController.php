@@ -39,6 +39,21 @@ class GuideController extends Controller
         if ($admin_id->role !== 'admin') {
             return redirect()->route('administrator.guide.add')->with('error', 'คุณไม่มีสิทธิ์ในการเพิ่มคู่มือการใช้งาน');
         }
+        $request->validate([
+            'name' => 'required',
+            'link_video' => [
+                'required',
+                'url',
+                'regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/'
+            ],
+        ], [
+            'name.required' => 'กรุณากรอกชื่อคู่มือการใช้งาน',
+            'link_video.required' => 'กรุณากรอกลิงก์วิดีโอ',
+            'link_video.url' => 'กรุณากรอกลิงก์วิดีโอที่ถูกต้อง',
+            'link_video.regex' => 'กรุณากรอกเฉพาะลิงก์ที่มาจาก YouTube เท่านั้น',
+        ]);
+
+
         // dd($admin_id);
         Guide::create([
             'video_name' => $request->input('name'),
@@ -61,7 +76,19 @@ class GuideController extends Controller
         if ($admin_id->role !== 'admin') {
             return redirect()->route('administrator.guide.index')->with('error', 'คุณไม่มีสิทธิ์ในการแก้ไขคู่มือการใช้งาน');
         }
-
+        $request->validate([
+            'name' => 'required',
+            'link_video' => [
+                'required',
+                'url',
+                'regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/'
+            ],
+        ], [
+            'name.required' => 'กรุณากรอกชื่อคู่มือการใช้งาน',
+            'link_video.required' => 'กรุณากรอกลิงก์วิดีโอ',
+            'link_video.url' => 'กรุณากรอกลิงก์วิดีโอที่ถูกต้อง',
+            'link_video.regex' => 'กรุณากรอกเฉพาะลิงก์ที่มาจาก YouTube เท่านั้น',
+        ]);
         $guide = Guide::find($id);
         $guide->update([
             'video_name' => $request->input('name'),
