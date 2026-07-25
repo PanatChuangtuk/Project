@@ -168,6 +168,18 @@
 
             </ul>
         </li>
-    </ul>
+
+        <li class="menu-item {{ $main_menu == 'guide' ? 'open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='menu-icon fas fa-user-tie'></i>
+                <div class="text-truncate" data-i18n="Layouts">คู่มือการใช้งาน</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ Route::is('administrator.guide*') ? 'active' : '' }}">
+                    <a href="{{ route('administrator.guide') }}" class="menu-link">
+                        <div class="menu-text">วิดีโอแนะนำการใช้งานระบบ</div>
+                    </a>
+                </li>
+            </ul>
 </aside>
 <!-- / Menu -->

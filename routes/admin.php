@@ -14,7 +14,8 @@ use App\Http\Controllers\Administrator\{
     EquipmentItemController,
     ApproveEquipmentController,
     ReturnEquipmentController,
-    AdviserController
+    AdviserController,
+    GuideController
 };
 
 Route::prefix('administrator')->group(function () {
@@ -125,6 +126,16 @@ Route::prefix('administrator')->group(function () {
             Route::delete('/{id}', [AdviserController::class, 'destroy'])->name('adviser.destroy');
             Route::post('/bulk-delete', [AdviserController::class, 'bulkDelete'])->name('adviser.bulk.delete');
             Route::post('image/{id}', [AdviserController::class, 'deleteImage'])->name('adviser.delete.image');
+        });
+        Route::group(['prefix' => 'guide', 'as' => 'administrator.'], function () {
+            Route::get('/', [GuideController::class, 'index'])->name('guide');
+            Route::get('/add', [GuideController::class, 'add'])->name('guide.add');
+            Route::post('/submit', [GuideController::class, 'submit'])->name('guide.submit');
+            Route::get('/edit/{id}', [GuideController::class, 'edit'])->name('guide.edit');
+            Route::post('/update/{id}', [GuideController::class, 'update'])->name('guide.update');
+            Route::delete('/{id}', [GuideController::class, 'destroy'])->name('guide.destroy');
+            Route::post('/bulk-delete', [GuideController::class, 'bulkDelete'])->name('guide.bulk.delete');
+            Route::post('image/{id}', [GuideController::class, 'deleteImage'])->name('guide.delete.image');
         });
     });
 });
