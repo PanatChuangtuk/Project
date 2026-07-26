@@ -202,10 +202,14 @@ class StudentController extends Controller
     }
     public function destroy($id, Request $request)
     {
-        $about = Student::findOrFail($id);
-        $about->delete();
-        $member_id = MemberInfo::where('student_id', $id)->delete();
-        Member::where('member_id', $member_id)->delete();
+        $student = Student::findOrFail($id);
+
+        if ($memberInfo = MemberInfo::where('student_id', $id)->first()) {
+            optional(Member::where('member_id', $memberInfo->member_id)->first())->delete();
+            $memberInfo->delete();
+        }
+
+        $student->delete();
 
         $currentPage = $request->query('page', 1);
 
@@ -219,20 +223,35 @@ class StudentController extends Controller
     {
         $ids = $request->input('ids');
 
-        if (is_array($ids) && count($ids) > 0) {
-            Student::whereIn('id', $ids)->delete();
-            $member_ids = MemberInfo::whereIn('student_id', $ids)->pluck('member_id');
-            Member::whereIn('member_id', $member_ids)->forceDelete();
+        if (!is_array($ids) || empty($ids)) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'ข้อมูลที่เลือกถูกลบเรียบร้อยแล้ว',
-                'deleted_ids' => $ids
-            ]);
+                'status' => 'error',
+                'message' => 'ไม่มีข้อมูลที่เลือกสำหรับการลบ'
+            ], 400);
         }
 
+        DB::transaction(function () use ($ids) {
+
+            // ดึง member_id ของนักศึกษาที่มีบัญชีสมาชิก
+            $memberIds = MemberInfo::whereIn('student_id', $ids)
+                ->pluck('member_id');
+
+            // ลบ Member ก่อน (ถ้ามี)
+            if ($memberIds->isNotEmpty()) {
+                Member::whereIn('id', $memberIds)->delete();
+            }
+
+            // ลบ MemberInfo (ถ้ามี)
+            MemberInfo::whereIn('student_id', $ids)->delete();
+
+            // ลบ Student
+            Student::whereIn('id', $ids)->delete();
+        });
+
         return response()->json([
-            'status' => 'error',
-            'message' => 'ไม่มีข้อมูลที่เลือกสำหรับการลบ'
-        ], 400);
+            'status' => 'success',
+            'message' => 'ข้อมูลที่เลือกถูกลบเรียบร้อยแล้ว',
+            'deleted_ids' => $ids
+        ]);
     }
 }

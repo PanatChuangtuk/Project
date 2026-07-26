@@ -57,9 +57,12 @@
                     <div class="col-md-6">
                         <label for="mobile_phone" class="form-label fw-semibold">เบอร์โทรศัพท์</label>
                         <div class="input-group shadow-sm">
-                            <span class="input-group-text bg-light"><i class="fas fa-phone"></i></span>
+                            <span class="input-group-text bg-light">
+                                <i class="fas fa-phone"></i>
+                            </span>
                             <input type="text" id="mobile_phone" name="mobile_phone"
-                                class="form-control border-0 shadow-sm" />
+                                class="form-control border-0 shadow-sm" maxlength="10" inputmode="numeric"
+                                pattern="[0-9]{10}" autocomplete="tel" />
                         </div>
                         @error('mobile_phone')
                             <div class="text-danger small mt-1">{{ $message }}</div>
@@ -91,7 +94,8 @@
 
                     <div class="col-md-12 mt-3">
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="status" value="1" name="status" checked>
+                            <input class="form-check-input" type="checkbox" id="status" value="1" name="status"
+                                checked>
                             <label class="form-check-label fw-semibold" for="status">สถานะเปิดใช้งาน</label>
                         </div>
                     </div>

@@ -98,11 +98,9 @@ $("#bulk-delete-button").click(function () {
                         );
                     },
                     error: function (xhr) {
-                        console.log(xhr.responseText);
                         Swal.fire(
                             "เกิดข้อผิดพลาด!",
-                            "เกิดข้อผิดพลาดระหว่างการลบ: " +
-                                xhr.responseText,
+                            "เกิดข้อผิดพลาดระหว่างการลบ " ,
                             "error"
                         );
                     },
