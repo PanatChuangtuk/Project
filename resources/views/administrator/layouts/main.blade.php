@@ -63,6 +63,10 @@ data-template="vertical-menu-template-free"
     <!-- Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/libs/select2/select2.css" />
+   <link
+    href="https://releases.transloadit.com/uppy/v4.13.0/uppy.min.css"
+    rel="stylesheet"
+>
 
     <!-- File Input -->
     <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
@@ -252,7 +256,7 @@ data-template="vertical-menu-template-free"
                         </div>
                       </div>
                       <div class="flex-grow-1">
-                        <h6 class="mb-0">{{Auth::user()->info->first_name . ' '. Auth::user()->info->last_name}}</h6>
+                        <h6 class="mb-0">{{ Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name }}</h6>
                         <small class="text-muted">แอดมิน</small>
                       </div>
                     </div>
@@ -302,7 +306,7 @@ data-template="vertical-menu-template-free"
             <footer class="content-footer footer bg-footer-theme">
                 <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
                     <div class="mb-2 mb-md-0">
-                        © {{now()->year + 543}}
+                        © {{ now()->year + 543 }}
                     
                          มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ ภาควิชาคอมพิวเตอร์ศึกษา
                          {{-- Powered by --}}
@@ -341,7 +345,8 @@ data-template="vertical-menu-template-free"
     <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <!-- / Layout wrapper -->
-   
+
+    <script src="https://releases.transloadit.com/uppy/v4.13.0/uppy.min.js"></script>
  
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/jquery/jquery.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
@@ -389,9 +394,12 @@ data-template="vertical-menu-template-free"
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/moment/moment.js"></script>
     
     <!-- Form Validation -->
-    <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js"></script>
-    <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js"></script>
-    <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js"></script>
+    <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js">
+    </script>
+    <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js">
+    </script>
+    <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js">
+    </script>
 
     <!-- Select2 -->
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/select2/select2.js"></script>
@@ -405,7 +413,7 @@ data-template="vertical-menu-template-free"
     <script src="{{ URL::asset('administrator') }}/assets/js/dashboards-analytics.js"></script>
 
     <!-- Custom JS -->
-    <script src="{{ URL::asset('administrator') }}/js/function.js?{{ <?= time(); ?> }}"></script>
+    <script src="{{ URL::asset('administrator') }}/js/function.js?{{ <?= time() ?> }}"></script>
     <script src="{{ URL::asset('administrator') }}/js/custom-alert.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
@@ -413,25 +421,25 @@ data-template="vertical-menu-template-free"
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/th.js"></script>
     @yield('script')
 <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const logoutButton = document.querySelector('.logout-btn');
-            logoutButton.addEventListener('click', function() {
-                const logoutUrl = this.dataset.logoutUrl;
-                Swal.fire({
-                    title: 'คุณต้องการออกจากระบบหรือไม่?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'โอเค',
-                    cancelButtonText: 'ยกเลิก',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = logoutUrl;
-                    }
-                });
+    document.addEventListener('DOMContentLoaded', function() {
+        const logoutButton = document.querySelector('.logout-btn');
+        logoutButton.addEventListener('click', function() {
+            const logoutUrl = this.dataset.logoutUrl;
+            Swal.fire({
+                title: 'คุณต้องการออกจากระบบหรือไม่?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'โอเค',
+                cancelButtonText: 'ยกเลิก',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = logoutUrl;
+                }
             });
         });
-    </script>
+    });
+</script>
 </body>
 </html>

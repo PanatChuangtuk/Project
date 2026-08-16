@@ -1,127 +1,44 @@
 import {
     ClassicEditor,
-    Essentials,
-    Paragraph,
-    Heading,
-    Bold,
-    Italic,
-    Underline,
-    Strikethrough,
-    BlockQuote,
-    Link,
-    Image,
-    ImageUpload,
-    ImageInsert,
-    ImageResize,
-    ImageToolbar,
-    ImageCaption,
-    ImageStyle,
-    Table,
-    TableToolbar,
-    List,
-    Indent,
-    IndentBlock,
-    Alignment,
-    FontColor,
-    FontBackgroundColor,
-    FontFamily,
-    FontSize,
-    Highlight,
-    MediaEmbed,
-    SelectAll,
-    HorizontalLine,
-    RemoveFormat,
-    SpecialCharacters,
-    SpecialCharactersEssentials,
     SimpleUploadAdapter,
-    CodeBlock,
+    MediaEmbed,
 } from "ckeditor5";
+
 document.addEventListener("DOMContentLoaded", function () {
-    const textareas = document.querySelectorAll(".areaEditor");
+
+    const textareas = document.querySelectorAll(".upload-ckeditor");
+
     textareas.forEach((textarea) => {
+
         ClassicEditor.create(textarea, {
+
             toolbar: [
-                "undo",
-                "redo",
-                "heading",
-                "bold",
-                "italic",
-                "underline",
-                "strikethrough",
-                "removeFormat",
-                "|",
-                "fontColor",
-                "fontBackgroundColor",
-                "fontFamily",
-                "fontSize",
-                "highlight",
-                "|",
-                "alignment",
-                "outdent",
-                "indent",
-                "|",
-                "numberedList",
-                "bulletedList",
-                "blockQuote",
-                "|",
-                "insertTable",
-                "mediaEmbed",
-                "link",
-                "imageUpload",
-                "toggleImageCaption",
-                "imageTextAlternative",
-                "|",
-                "horizontalLine",
-                "specialCharacters",
-                "selectAll",
-                "codeBlock",
+                "mediaEmbed"
             ],
+
             plugins: [
-                Essentials,
-                CodeBlock,
                 SimpleUploadAdapter,
-                Paragraph,
-                Heading,
-                Bold,
-                Italic,
-                Underline,
-                Strikethrough,
-                RemoveFormat,
-                BlockQuote,
-                Link,
-                Image,
-                ImageUpload,
-                ImageInsert,
-                ImageResize,
-                ImageToolbar,
-                ImageCaption,
-                ImageStyle,
-                Table,
-                TableToolbar,
-                List,
-                Indent,
-                IndentBlock,
-                Alignment,
-                FontColor,
-                FontBackgroundColor,
-                FontFamily,
-                FontSize,
-                Highlight,
-                MediaEmbed,
-                SelectAll,
-                HorizontalLine,
-                SpecialCharacters,
-                SpecialCharactersEssentials,
+                
             ],
+
             simpleUpload: {
                 uploadUrl: `${window.location.origin}/administrator/ckeditor/upload?_token=${window.csrfToken}`,
             },
+
         })
-            .then((editor) => {
-                textarea.contentInstance = editor;
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+
+        .then((editor) => {
+
+            textarea.contentInstance = editor;
+
+        })
+
+        .catch((error) => {
+
+            console.error(error);
+
+        });
+
     });
+
 });

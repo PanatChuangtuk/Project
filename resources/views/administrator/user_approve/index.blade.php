@@ -293,11 +293,11 @@
                                                 data-bs-target=".disapproveBtn" data-id="{{ $item->id }}"
                                                 {{-- data-student-new="{{ $item->info->student->student_number ?? null }}" --}}
                                                 data-avatar-old="{{ asset('upload/images/' . $item->info->avatar) ?? asset('upload/ไม่มีรูป.jpg') }}"
-                                                data-name-old="{{ $item->info->student->first_name ?? '' }} {{ $item->info->student->last_name ?? '' }}"
-                                                data-email-old="{{ $item->info->student->email ?? '' }}"
-                                                data-phone-old="{{ $item->info->student->mobile_phone ?? '' }}"
+                                                data-name-old="{{ $item->info->first_name ?? '' }} {{ $item->info->last_name ?? '' }}"
+                                                data-email-old="{{ $item->email ?? '' }}"
+                                                data-phone-old="{{ $item->info->mobile_phone ?? '' }}"
                                                 data-student-old="{{ $item->info->student->student_number ?? '' }}"
-                                                data-adviser-old="{{ $item->info->student->adviser->first_name ?? '' }} {{ $item->info->student->adviser->last_name ?? '' }} ">
+                                                data-adviser-old="{{ $item->info->adviser->first_name ?? '' }} {{ $item->info->adviser->last_name ?? '' }} ">
                                                 <i class='bx bx-user'></i>
                                             </button>
                                         </td>

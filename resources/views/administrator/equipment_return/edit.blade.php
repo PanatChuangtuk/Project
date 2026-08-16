@@ -130,7 +130,7 @@
         </div>
 
         <div class="mb-4 row">
-            <label for="member_id" class="col-md-2 fw-bold">รหัสนักศึกษา :</label>
+            <label for="member_id" class="col-md-2 fw-bold">อีเมลนักศึกษา :</label>
             <div class="col-md-10">
                 {{ $borrow->member->email ?? null }}
             </div>
