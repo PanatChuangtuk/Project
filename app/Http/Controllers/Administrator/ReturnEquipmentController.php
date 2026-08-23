@@ -101,11 +101,12 @@ class ReturnEquipmentController extends Controller
         $exportRows = [];
 
         foreach ($loans as $loan) {
+
             foreach ($loan->loanEquipments as $equipment) {
                 $exportRows[] = [
                     'รายการที่' => $loan->id,
-                    'รหัสนักศึกษา' => optional($loan->member->info)->student->student_number,
-                    'ชื่อ-นามสกุล' => optional($loan->member->info)->first_name . ' ' . optional($loan->member->info)->last_name,
+                    'รหัสนักศึกษา' => (string) $loan->member->info?->student->student_number,
+                    'ชื่อ-นามสกุล' => (string)$loan->member->info?->first_name . ' ' . $loan->member->info?->last_name,
                     'สถานะการยืม-คืน' => match ($loan->status_type) {
                         'borrowed' => 'ยืมอุปกรณ์',
                         'returned' => 'คืนอุปกรณ์',
