@@ -26,7 +26,7 @@ class AdviserUpdateRequest extends FormRequest
     {
         // dd($request->all());
         return [
-            'titles_name' => 'required',
+            'titles_name' => 'required|string|max:255',
             'first_name' => 'required',
             'last_name' => 'required'
         ];

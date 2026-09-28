@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{CkeditorController,VideoStreamController};
+use App\Http\Controllers\{CkeditorController, VideoStreamController};
 use App\Http\Controllers\Administrator\{
     ApproveUserController,
     AuthController,
@@ -18,11 +18,6 @@ use App\Http\Controllers\Administrator\{
     GuideController
 };
 
-
-Route::get(
-    '/video/stream/{id}',
-    [VideoStreamController::class, 'stream']
-)->name('video.stream');
 Route::prefix('administrator')->group(function () {
     // Route::group(['middleware' => 'guest'], function () {
     //     Route::get('/login', [AuthController::class, 'login'])->name('administrator.login');
@@ -33,8 +28,7 @@ Route::prefix('administrator')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('administrator.dashboard');
         Route::get('/logout', [AuthController::class, 'logout'])->name('administrator.logout');
         Route::post('ckeditor/upload', [CkeditorController::class, 'upload'])->name('administrator.ckeditor.upload');
-       
-
+        Route::get('/video/stream/{id}', [VideoStreamController::class, 'stream'])->name('video.stream');
 
         Route::group(['prefix' => 'admin', 'as' => 'administrator.'], function () {
             Route::get('/', [AdminController::class, 'index'])->name('admin');
@@ -140,7 +134,6 @@ Route::prefix('administrator')->group(function () {
             Route::post('/update/{id}', [GuideController::class, 'update'])->name('guide.update');
             Route::delete('/{id}', [GuideController::class, 'destroy'])->name('guide.destroy');
             Route::post('/bulk-delete', [GuideController::class, 'bulkDelete'])->name('guide.bulk.delete');
-            Route::post('image/{id}', [GuideController::class, 'deleteImage'])->name('guide.delete.image');
         });
     });
 });

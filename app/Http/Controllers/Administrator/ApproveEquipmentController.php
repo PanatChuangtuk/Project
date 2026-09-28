@@ -16,7 +16,6 @@ class ApproveEquipmentController extends Controller
 
         $userQuery = LoanTransaction::where('status',  'in_process')
             ->orderBy('created_at')
-            ->orderBy('updated_at')
             ->with(['member.info', 'loanEquipments.equipment']);
 
         if ($query) {

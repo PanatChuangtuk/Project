@@ -44,7 +44,6 @@ data-template="vertical-menu-template-free"
     <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.3.1/ckeditor5.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" crossorigin="anonymous">
@@ -61,7 +60,6 @@ data-template="vertical-menu-template-free"
     <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/css/demo.css" />
 
     <!-- Select2 -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ URL::asset('administrator') }}/assets/vendor/libs/select2/select2.css" />
    <link
     href="https://releases.transloadit.com/uppy/v4.13.0/uppy.min.css"
@@ -348,14 +346,12 @@ data-template="vertical-menu-template-free"
 
     <script src="https://releases.transloadit.com/uppy/v4.13.0/uppy.min.js"></script>
  
-    <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/jquery/jquery.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/popper/popper.js"></script>
     <script src="{{ URL::asset('administrator') }}/assets/vendor/js/bootstrap.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
     <script src="{{ URL::asset('administrator') }}/assets/vendor/js/menu.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Vendors JS -->
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/apex-charts/apexcharts.js"></script>
     <script src="{{ URL::asset('administrator') }}/assets/vendor/libs/datatables/datatables.min.js"></script>
@@ -367,7 +363,6 @@ data-template="vertical-menu-template-free"
     <script src="{{ URL::asset('administrator') }}/vendor-admin/bootstrap-fileinput/js/fileinput.min.js"></script>
     <script src="{{ URL::asset('administrator') }}/vendor-admin/bootstrap-fileinput/themes/fas/theme.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/js/fileinput.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/js/locales/LANG.js"></script>
 
     <!-- Resumable.js (optional) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/resumable.js/1.0.3/resumable.min.js"></script>

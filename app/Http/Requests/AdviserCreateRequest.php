@@ -25,7 +25,7 @@ class AdviserCreateRequest extends FormRequest
     public function rules(Request $request)
     {
         return [
-            'titles_name' => 'nullable|string|max:255',
+            'titles_name' => 'required|string|max:255',
             'first_name' => 'required',
             'last_name' => 'required'
         ];

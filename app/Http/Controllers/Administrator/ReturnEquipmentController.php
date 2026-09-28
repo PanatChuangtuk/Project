@@ -105,17 +105,19 @@ class ReturnEquipmentController extends Controller
             foreach ($loan->loanEquipments as $equipment) {
                 $exportRows[] = [
                     'รายการที่' => $loan->id,
-                    'รหัสนักศึกษา' => (string) $loan->member->info?->student->student_number,
-                    'ชื่อ-นามสกุล' => (string)$loan->member->info?->first_name . ' ' . $loan->member->info?->last_name,
+                    'รหัสนักศึกษา' => (string) $loan->member?->info?->student?->student_number,
+                    'ชื่อ-นามสกุล' => trim($loan->member?->info?->first_name . ' ' . $loan->member?->info?->last_name),
                     'สถานะการยืม-คืน' => match ($loan->status_type) {
                         'borrowed' => 'ยืมอุปกรณ์',
                         'returned' => 'คืนอุปกรณ์',
                         'overdue' => 'เกินกำหนด',
+                        default => '-',
                     },
                     'สถานะการอนุมัติ' => match ($loan->status) {
                         'completed' => 'อนุมัติ',
                         'cancel' => 'ไม่อนุมัติ',
                         'in_process' => 'รอดำเนินการ',
+                        default => '-',
                     },
                     'ชื่ออุปกรณ์' => $equipment->equipment_names,
                     'จำนวน' => $equipment->total_qty,

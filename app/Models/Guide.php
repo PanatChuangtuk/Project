@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
-class Guide extends Authenticatable
+class Guide extends Model
 {
-    use SoftDeletes, Notifiable;
+    use SoftDeletes;
 
     protected $table = 'guide';
 
@@ -25,12 +23,6 @@ class Guide extends Authenticatable
         'updated_by',
         'deleted_by'
     ];
-
-    protected $hidden = [
-        'password',
-    ];
-
-    protected $dates = ['deleted_at'];
 
     public function creator()
     {

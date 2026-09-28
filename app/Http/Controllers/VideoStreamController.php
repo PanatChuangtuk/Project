@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Contrclsoller;
 use App\Models\Guide;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class VideoStreamController extends Controller
 {
+    private const CHUNK_SIZE = 1024 * 1024;
+
     public function stream(Request $request, $id)
     {
         /*
         |--------------------------------------------------------------------------
-        | หา Guide
+        | หา Guide และไฟล์จริง
         |--------------------------------------------------------------------------
         */
 
@@ -23,12 +24,6 @@ class VideoStreamController extends Controller
             abort(404, 'ไม่พบวิดีโอ');
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | หาไฟล์จริง
-        |--------------------------------------------------------------------------
-        */
-
         $disk = Storage::disk('public');
 
         if (!$disk->exists($guide->link_video)) {
@@ -36,299 +31,103 @@ class VideoStreamController extends Controller
         }
 
         $path = $disk->path($guide->link_video);
+        $size = is_file($path) ? filesize($path) : false;
 
-        if (!is_file($path)) {
-            abort(404, 'ไม่พบไฟล์วิดีโอ');
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | File information
-        |--------------------------------------------------------------------------
-        */
-
-        $size = filesize($path);
-
-        if ($size === false || $size <= 0) {
+        if (!$size) {
             abort(404, 'ไฟล์วิดีโอไม่ถูกต้อง');
         }
 
-        $mime = mime_content_type($path);
-
-        if (!$mime) {
-            $mime = 'video/mp4';
-        }
+        $mime = mime_content_type($path) ?: 'video/mp4';
 
         /*
         |--------------------------------------------------------------------------
-        | Range Request
+        | คำนวณช่วง byte (ไม่มี Range = ส่งทั้งไฟล์)
         |--------------------------------------------------------------------------
         */
 
         $range = $request->header('Range');
+        $start = 0;
+        $end = $size - 1;
 
-        /*
-        |--------------------------------------------------------------------------
-        | ไม่มี Range
-        |--------------------------------------------------------------------------
-        */
-
-        if (!$range) {
-
-            $stream = fopen($path, 'rb');
-
-            if (!$stream) {
-                abort(500, 'ไม่สามารถเปิดไฟล์วิดีโอได้');
+        if ($range) {
+            if (!preg_match('/bytes=(\d*)-(\d*)/', $range, $matches) || ($matches[1] === '' && $matches[2] === '')) {
+                return $this->rangeNotSatisfiable($size);
             }
 
-            return response()->stream(
-                function () use ($stream) {
+            [, $rangeStart, $rangeEnd] = $matches;
 
-                    while (!feof($stream)) {
+            if ($rangeStart === '') {
+                // bytes=-500000 (suffix)
+                $suffixLength = min((int) $rangeEnd, $size);
 
-                        $buffer = fread(
-                            $stream,
-                            1024 * 1024
-                        );
+                if ($suffixLength <= 0) {
+                    return $this->rangeNotSatisfiable($size);
+                }
 
-                        if ($buffer === false) {
-                            break;
-                        }
+                $start = $size - $suffixLength;
+            } else {
+                // bytes=500000- หรือ bytes=500000-1000000
+                $start = (int) $rangeStart;
 
-                        echo $buffer;
-
-                        flush();
-                    }
-
-                    fclose($stream);
-                },
-                200,
-                [
-                    'Content-Type' => $mime,
-
-                    'Content-Length' => $size,
-
-                    'Accept-Ranges' => 'bytes',
-
-                    'Content-Disposition' => 'inline',
-
-                    'Cache-Control' => 'public, max-age=3600',
-
-                    'X-Content-Type-Options' => 'nosniff',
-
-                    'X-Accel-Buffering' => 'no',
-                ]
-            );
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | ตรวจสอบ Range
-        |--------------------------------------------------------------------------
-        */
-
-        if (!preg_match(
-            '/bytes=(\d*)-(\d*)/',
-            $range,
-            $matches
-        )) {
-
-            return response('', 416, [
-                'Content-Range' => "bytes */{$size}",
-                'Accept-Ranges' => 'bytes',
-            ]);
-        }
-
-        $rangeStart = $matches[1];
-        $rangeEnd   = $matches[2];
-
-        /*
-        |--------------------------------------------------------------------------
-        | bytes=-500000
-        |--------------------------------------------------------------------------
-        */
-
-        if ($rangeStart === '' && $rangeEnd !== '') {
-
-            $suffixLength = (int) $rangeEnd;
-
-            if ($suffixLength <= 0) {
-
-                return response('', 416, [
-                    'Content-Range' => "bytes */{$size}",
-                    'Accept-Ranges' => 'bytes',
-                ]);
+                if ($rangeEnd !== '') {
+                    $end = min((int) $rangeEnd, $size - 1);
+                }
             }
 
-            if ($suffixLength > $size) {
-                $suffixLength = $size;
+            if ($start >= $size || $start > $end) {
+                return $this->rangeNotSatisfiable($size);
             }
-
-            $start = $size - $suffixLength;
-            $end = $size - 1;
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | bytes=500000-
-        |--------------------------------------------------------------------------
-        */
-
-        elseif ($rangeStart !== '' && $rangeEnd === '') {
-
-            $start = (int) $rangeStart;
-            $end = $size - 1;
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | bytes=500000-1000000
-        |--------------------------------------------------------------------------
-        */
-
-        elseif (
-            $rangeStart !== '' &&
-            $rangeEnd !== ''
-        ) {
-
-            $start = (int) $rangeStart;
-            $end = (int) $rangeEnd;
-        }
-
-        else {
-
-            return response('', 416, [
-                'Content-Range' => "bytes */{$size}",
-                'Accept-Ranges' => 'bytes',
-            ]);
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | ป้องกัน Range ผิด
-        |--------------------------------------------------------------------------
-        */
-
-        if (
-            $start < 0 ||
-            $start >= $size ||
-            $start > $end
-        ) {
-
-            return response('', 416, [
-                'Content-Range' => "bytes */{$size}",
-                'Accept-Ranges' => 'bytes',
-            ]);
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | ป้องกัน End เกินไฟล์
-        |--------------------------------------------------------------------------
-        */
-
-        if ($end >= $size) {
-            $end = $size - 1;
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | จำนวน Byte
-        |--------------------------------------------------------------------------
-        */
 
         $length = $end - $start + 1;
-
-        /*
-        |--------------------------------------------------------------------------
-        | เปิดไฟล์
-        |--------------------------------------------------------------------------
-        */
 
         $stream = fopen($path, 'rb');
 
         if (!$stream) {
-            abort(
-                500,
-                'ไม่สามารถเปิดไฟล์วิดีโอได้'
-            );
+            abort(500, 'ไม่สามารถเปิดไฟล์วิดีโอได้');
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | กระโดดไปยังตำแหน่งที่ Browser ขอ
-        |--------------------------------------------------------------------------
-        */
 
         fseek($stream, $start);
 
-        /*
-        |--------------------------------------------------------------------------
-        | HTTP 206 Partial Content
-        |--------------------------------------------------------------------------
-        */
+        $headers = [
+            'Content-Type' => $mime,
+            'Content-Length' => $length,
+            'Accept-Ranges' => 'bytes',
+            'Content-Disposition' => 'inline',
+            'Cache-Control' => 'private, max-age=3600',
+            'X-Content-Type-Options' => 'nosniff',
+            'X-Accel-Buffering' => 'no',
+        ];
 
-        return response()->stream(
-            function () use (
-                $stream,
-                $length
-            ) {
+        if ($range) {
+            $headers['Content-Range'] = "bytes {$start}-{$end}/{$size}";
+        }
 
-                $remaining = $length;
+        return response()->stream(function () use ($stream, $length) {
+            $remaining = $length;
 
-                while (
-                    $remaining > 0 &&
-                    !feof($stream)
-                ) {
+            while ($remaining > 0 && !feof($stream)) {
+                $buffer = fread($stream, min(self::CHUNK_SIZE, $remaining));
 
-                    $chunkSize = min(
-                        1024 * 1024,
-                        $remaining
-                    );
-
-                    $buffer = fread(
-                        $stream,
-                        $chunkSize
-                    );
-
-                    if ($buffer === false) {
-                        break;
-                    }
-
-                    $bufferLength = strlen($buffer);
-
-                    if ($bufferLength === 0) {
-                        break;
-                    }
-
-                    echo $buffer;
-
-                    flush();
-
-                    $remaining -= $bufferLength;
+                if ($buffer === false || $buffer === '') {
+                    break;
                 }
 
-                fclose($stream);
-            },
-            206,
-            [
-                'Content-Type' => $mime,
+                echo $buffer;
+                flush();
 
-                'Content-Length' => $length,
+                $remaining -= strlen($buffer);
+            }
 
-                'Content-Range' =>
-                    "bytes {$start}-{$end}/{$size}",
+            fclose($stream);
+        }, $range ? 206 : 200, $headers);
+    }
 
-                'Accept-Ranges' => 'bytes',
-
-                'Content-Disposition' => 'inline',
-
-                'Cache-Control' => 'public, max-age=3600',
-
-                'X-Content-Type-Options' => 'nosniff',
-
-                'X-Accel-Buffering' => 'no',
-            ]
-        );
+    private function rangeNotSatisfiable(int $size)
+    {
+        return response('', 416, [
+            'Content-Range' => "bytes */{$size}",
+            'Accept-Ranges' => 'bytes',
+        ]);
     }
 }

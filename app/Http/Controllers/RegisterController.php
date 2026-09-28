@@ -22,6 +22,7 @@ class RegisterController extends MainController
     public function submit(RegisterMemberRequest  $request)
     {
         // dd($request->all());
+        $fileName = null;
         if ($request->hasFile('imageData')) {
             $image = $request->file('imageData');
             $fileName = 'captured_' . time() . '.' . $image->getClientOriginalExtension();

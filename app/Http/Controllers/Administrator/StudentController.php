@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Administrator;
 
-use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\{Validator, Log, DB};
@@ -100,7 +99,7 @@ class StudentController extends Controller
             [
                 'file.required' => 'กรุณาเลือกไฟล์มา Import',
                 'file.file'     => 'ไฟล์ที่เลือกไม่ถูกต้อง',
-                'file.mimes'    => 'กรุณาอัปโหลดไฟล์ CSV เท่านั้น',
+                'file.mimetypes' => 'กรุณาอัปโหลดไฟล์ CSV เท่านั้น',
             ]
         );
         if ($validator->fails()) {
@@ -132,8 +131,8 @@ class StudentController extends Controller
             // ชื่อไฟล์
             $fileName = 'import_student_' . now()->format('Ymd_His') . '.csv';
 
-            // Path ที่ต้องการบันทึก
-            $uploadPath = public_path('upload/file/student');
+            // เก็บไฟล์ชั่วคราวไว้นอก public เพื่อไม่ให้เข้าถึงผ่านเว็บได้
+            $uploadPath = storage_path('app/tmp/student-import');
 
             // สร้าง Folder ถ้ายังไม่มี
             if (!file_exists($uploadPath)) {
@@ -157,15 +156,26 @@ class StudentController extends Controller
                     throw new \Exception('ข้อมูลอาจารย์ที่ปรึกษาไม่ครบถ้วน');
                 }
 
-                $adviser = Adviser::firstOrCreate([
-                    'titles_name' => trim($line['คำนำหน้าชื่ออาจารย์ที่ปรึกษา']),
-                    'first_name'  => trim($line['ชื่ออาจารย์ที่ปรึกษา']),
-                    'last_name'   => trim($line['นามสกุลอาจารย์ที่ปรึกษา']),
-                ]);
+                $studentNumber = trim($line['รหัสนักศึกษา'] ?? '');
+
+                if ($studentNumber === '') {
+                    throw new \Exception('พบข้อมูลที่ไม่มีรหัสนักศึกษา');
+                }
+
+                // ค้นจากชื่อ-นามสกุล เพื่อไม่สร้างอาจารย์ซ้ำกับข้อมูลเดิมที่ยังไม่มีคำนำหน้า
+                $adviser = Adviser::updateOrCreate(
+                    [
+                        'first_name' => trim($line['ชื่ออาจารย์ที่ปรึกษา']),
+                        'last_name'  => trim($line['นามสกุลอาจารย์ที่ปรึกษา']),
+                    ],
+                    [
+                        'titles_name' => trim($line['คำนำหน้าชื่ออาจารย์ที่ปรึกษา']),
+                    ]
+                );
 
                 Student::updateOrCreate(
                     [
-                        'student_number' => trim($line['รหัสนักศึกษา']),
+                        'student_number' => $studentNumber,
                     ],
                     [
                         'first_name'   => trim($line['ชื่อ'] ?? ''),
@@ -204,12 +214,15 @@ class StudentController extends Controller
     {
         $student = Student::findOrFail($id);
 
-        if ($memberInfo = MemberInfo::where('student_id', $id)->first()) {
-            optional(Member::where('member_id', $memberInfo->member_id)->first())->delete();
-            $memberInfo->delete();
-        }
+        DB::transaction(function () use ($student) {
+            // ลบบัญชีสมาชิกแบบถาวร ให้ตรงกับ AdminController/UserController
+            $memberIds = MemberInfo::where('student_id', $student->id)->pluck('member_id');
 
-        $student->delete();
+            Member::whereIn('id', $memberIds)->forceDelete();
+            MemberInfo::where('student_id', $student->id)->forceDelete();
+
+            $student->delete();
+        });
 
         $currentPage = $request->query('page', 1);
 
@@ -236,13 +249,9 @@ class StudentController extends Controller
             $memberIds = MemberInfo::whereIn('student_id', $ids)
                 ->pluck('member_id');
 
-            // ลบ Member ก่อน (ถ้ามี)
-            if ($memberIds->isNotEmpty()) {
-                Member::whereIn('id', $memberIds)->delete();
-            }
-
-            // ลบ MemberInfo (ถ้ามี)
-            MemberInfo::whereIn('student_id', $ids)->delete();
+            // ลบบัญชีสมาชิกแบบถาวร ให้ตรงกับ AdminController/UserController
+            Member::whereIn('id', $memberIds)->forceDelete();
+            MemberInfo::whereIn('student_id', $ids)->forceDelete();
 
             // ลบ Student
             Student::whereIn('id', $ids)->delete();

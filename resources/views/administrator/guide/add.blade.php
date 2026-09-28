@@ -132,7 +132,7 @@
                                     type="file"
                                     name="video"
                                     id="video"
-                                    accept="video/mp4,video/webm,video/ogg"
+                                    accept="video/mp4,video/webm,video/ogg,video/quicktime,video/x-ms-wmv"
                                 >
 
 
@@ -309,7 +309,9 @@
         allowedFileExtensions: [
             "mp4",
             "webm",
-            "ogg"
+            "ogg",
+            "mov",
+            "wmv"
         ],
 
         maxFileSize: 512000,
