@@ -22,16 +22,22 @@ class ProfileController extends MainController
     {
 
         $userId = Auth::guard('member')->user()->id;
+        // อีเมลเป็น readonly ในฟอร์ม จึงตรวจเฉพาะฟิลด์ที่แก้ไขได้ (ไม่รับค่า email จากฟอร์ม)
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string|max:255',
-            'email' => 'required|email|unique:member,email,' . $userId,
-            // 'mobile_phone' => 'required|digits:10|unique:member_infomation,mobile_phone,' . $userId,
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'mobile_phone' => 'nullable|digits_between:9,10',
         ], [
-            'email.email' => __('messages.invalid_email_format'),
-            'email.unique' => __('messages.email_already_in_use'),
-            // 'mobile_phone.unique' =>  __('messages.phone_exists'),
-            // 'mobile_phone.digits' =>  __('messages.mobile_number_must_be_10_digits'),
+            'first_name.required' => 'กรุณากรอกชื่อ',
+            'first_name.max' => 'ชื่อต้องไม่เกิน 255 ตัวอักษร',
+            'last_name.required' => 'กรุณากรอกนามสกุล',
+            'last_name.max' => 'นามสกุลต้องไม่เกิน 255 ตัวอักษร',
+            'mobile_phone.digits_between' => 'เบอร์โทรศัพท์ต้องเป็นตัวเลข 9-10 หลัก',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         DB::table('member_infomation')
             ->where('member_id', $userId)

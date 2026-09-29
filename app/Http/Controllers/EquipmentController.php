@@ -17,29 +17,23 @@ class EquipmentController extends MainController
     }
     public function update(Request $request)
     {
-        $id = $request->id;
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer',
+            'action' => 'required|in:increase,decrease,remove',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'ข้อมูลไม่ถูกต้อง'
+            ], 422);
+        }
+
+        $id = (int) $request->id;
         $action = $request->action;
         $cart = session()->get('cart', []);
 
-        $item = EquipmentItem::withCount('equipment')->findOrFail($id);
-        $totalStock = $item->equipment_count;
-
-        $borrowedItems = LoanTransaction::whereIn('status_type', ['borrowed', 'overdue'])->whereIn('status', ['in_process', 'completed'])
-            ->with('loanEquipments')
-            ->get();
-        $borrowedCounts = [];
-        foreach ($borrowedItems as $borrow) {
-            foreach ($borrow->loanEquipments as $loanEquipment) {
-                $equipmentId = $loanEquipment->equipment_item_id;
-
-                if (!isset($borrowedCounts[$equipmentId])) {
-                    $borrowedCounts[$equipmentId] = 0;
-                }
-                $borrowedCounts[$equipmentId]++;
-            }
-        }
-        $borrowedCount = isset($borrowedCounts[$id]) ? $borrowedCounts[$id] : 0;
-        $available = max($totalStock - $borrowedCount, 0);
+        $item = EquipmentItem::where('status', 1)->findOrFail($id);
+        $available = $this->availableStock($item);
         $current = $cart[$id]['quantity'] ?? 0;
         if (!isset($cart[$id])) {
             $cart[$id] = [

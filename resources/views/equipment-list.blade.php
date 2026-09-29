@@ -245,10 +245,11 @@
                         }
                     },
                     error: function(xhr) {
+                        const message = xhr.responseJSON && xhr.responseJSON.message;
                         Swal.fire({
                             icon: 'error',
-                            title: 'เชื่อมต่อล้มเหลว',
-                            text: 'เกิดข้อผิดพลาดในการเชื่อมต่อ',
+                            title: message ? 'เกิดข้อผิดพลาด' : 'เชื่อมต่อล้มเหลว',
+                            text: message || 'เกิดข้อผิดพลาดในการเชื่อมต่อ',
                             confirmButtonText: 'ตกลง'
                         });
                         console.error(xhr.responseText);

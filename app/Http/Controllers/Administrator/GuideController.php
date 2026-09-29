@@ -60,6 +60,7 @@ class GuideController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'video' => ['required', ...self::VIDEO_RULES],
+            'status' => 'nullable|boolean',
         ], self::VIDEO_MESSAGES);
 
         try {
@@ -113,6 +114,7 @@ class GuideController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'video' => ['nullable', ...self::VIDEO_RULES],
+            'status' => 'nullable|boolean',
         ], self::VIDEO_MESSAGES);
 
         $guide = Guide::findOrFail($id);

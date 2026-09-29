@@ -45,7 +45,7 @@ class AdminController extends Controller
     public function edit($id)
     {
         $main_menu = $this->main_menu;
-        $admin = Member::find($id);
+        $admin = Member::where('role', 'admin')->findOrFail($id);
         return view('administrator.admin.edit', compact('admin', 'main_menu'));
     }
 
@@ -56,7 +56,7 @@ class AdminController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 'admin',
-            'status' => $request->status ?? 0,
+            'status' => $request->input('status', 0),
         ]);
         $filename = null;
         if ($request->hasFile('image')) {
@@ -77,20 +77,20 @@ class AdminController extends Controller
 
     public function update(MemberUpdateRequest $request, $id)
     {
-        $member = Member::find($id);
+        $member = Member::where('role', 'admin')->findOrFail($id);
         $member->update([
             'email' => $request->email,
             'password' => $request->filled('password') ? Hash::make($request->password) : $member->password,
             'role' => 'admin',
-            'status' => $request->status ?? 0,
+            'status' => $request->input('status', 0),
         ]);
 
-        $filename = $member->info->avatar;
+        $filename = $member->info?->avatar;
         if ($request->hasFile('image')) {
             $filename = $this->uploadsImage($request->file('image'), 'admin');
         }
 
-        $member->info->update([
+        $member->info()->updateOrCreate(['member_id' => $member->id], [
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'mobile_phone' => $request->mobile_phone,
@@ -103,7 +103,7 @@ class AdminController extends Controller
 
     public function destroy($id, Request $request)
     {
-        $about = Member::findOrFail($id);
+        $about = Member::where('role', 'admin')->findOrFail($id);
         $about->forceDelete();
         MemberInfo::where('member_id', $id)->forceDelete();
         $currentPage = $request->query('page', 1);

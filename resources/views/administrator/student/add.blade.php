@@ -62,7 +62,7 @@
                             </span>
                             <input type="text" id="mobile_phone" name="mobile_phone"
                                 class="form-control border-0 shadow-sm" maxlength="10" inputmode="numeric"
-                                pattern="[0-9]{10}" autocomplete="tel" />
+                                pattern="[0-9]{9,10}" autocomplete="tel" />
                         </div>
                         @error('mobile_phone')
                             <div class="text-danger small mt-1">{{ $message }}</div>

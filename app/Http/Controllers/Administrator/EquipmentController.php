@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\{Auth, Storage, Validator, Hash};
 use Illuminate\Http\Request;
 use App\Models\{EquipmentItem, Equipment};
+use App\Http\Requests\{EquipmentCreateRequest, EquipmentUpdateRequest};
 
 class EquipmentController extends Controller
 {
@@ -14,8 +15,9 @@ class EquipmentController extends Controller
     public function index(Request $request)
     {
         $query = $request->input('query');
-        $statuses = $request->input('status', []);
-        $categories = $request->input('category', []);
+        // บังคับเป็น array เผื่อส่งมาเป็นค่าเดี่ยว เช่น ?status=1 ซึ่งจะทำให้ whereIn error
+        $statuses = array_filter((array) $request->input('status', []), 'is_scalar');
+        $categories = array_filter((array) $request->input('category', []), 'is_scalar');
 
         $userQuery = Equipment::query();
 
@@ -49,11 +51,11 @@ class EquipmentController extends Controller
     public function edit($id)
     {
         $main_menu = $this->main_menu;
-        $equipment = Equipment::find($id);
+        $equipment = Equipment::findOrFail($id);
         return view('administrator.equipment.edit', compact('equipment', 'main_menu'));
     }
 
-    public function submit(Request $request)
+    public function submit(EquipmentCreateRequest $request)
     {
         // dd($request->all());
         $filename = null;
@@ -84,13 +86,13 @@ class EquipmentController extends Controller
         return redirect()->back()
             ->with('success', 'ข้อมูลถูกบันทึกเรียบร้อยแล้ว');
     }
-    public function update(Request $request, $id)
+    public function update(EquipmentUpdateRequest $request, $id)
     {
+        $equipment = Equipment::findOrFail($id);
         $filename = null;
         if ($request->hasFile('image')) {
             $filename = $this->uploadsImage($request->file('image'), 'qr_code');
         }
-        $equipment = Equipment::findOrFail($id);
         $equipment->update([
             'item_id' => $request->item_id ?? $equipment->item_id,
             'equipment_number' => $request->equipment_number,

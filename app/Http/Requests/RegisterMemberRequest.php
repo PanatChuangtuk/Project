@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\{Member, Student};
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\{Rule, Validator};
 
 class RegisterMemberRequest extends FormRequest
 {
@@ -19,25 +21,38 @@ class RegisterMemberRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('id');
         return [
-            // 'username' => 'required|string|max:255',
-            // 'email' =>  'required',
-            // 'string',
-            // 'email',
-            // 'max:255',
-            // 'regex:/^s[0-9a-zA-Z._%+-]*@email\.kmutnb\.ac\.th$/',
-            // 'unique:member,email,' . $id,
             'password' => 'required|string|min:8|confirmed',
-            // 'first_name' => 'required|string|max:255',
-            // 'last_name' => 'required|string|max:255',
-            'imageData' => 'required',
-            'student_id' => 'required|integer',
-            /* The lines you provided in the code snippet are commented out. This means that these lines are not
-currently active or being used in the validation rules for the `RegisterMemberRequest` form request
-class. */
-            // 'adviser_id' => 'required|integer',
-            // 'mobile_phone' => 'required|string|min:10|max:15|regex:/^[0-9]+$/',
+            'imageData' => 'required|file|image|mimes:jpeg,png,jpg,webp|max:10240',
+            'student_id' => [
+                'required',
+                'integer',
+                // ต้องเป็นนักศึกษาที่เปิดใช้งาน ตรงกับที่ /api/get-user แสดงให้เลือก
+                Rule::exists('student', 'id')->whereNull('deleted_at')->where('status', 1),
+                Rule::unique('member_infomation', 'student_id')->whereNull('deleted_at'),
+            ],
+        ];
+    }
+
+    /**
+     * อีเมลของบัญชีมาจากข้อมูลนักศึกษา จึงต้องตรวจว่ามีอีเมลและยังไม่ถูกใช้
+     */
+    public function after(): array
+    {
+        return [
+            function (Validator $validator) {
+                if ($validator->errors()->has('student_id')) {
+                    return;
+                }
+
+                $email = Student::whereKey($this->input('student_id'))->value('email');
+
+                if (!$email) {
+                    $validator->errors()->add('student_id', 'นักศึกษานี้ยังไม่มีอีเมลในระบบ กรุณาติดต่อเจ้าหน้าที่');
+                } elseif (Member::where('email', $email)->exists()) {
+                    $validator->errors()->add('student_id', 'อีเมลของนักศึกษานี้ถูกใช้สมัครสมาชิกแล้ว');
+                }
+            },
         ];
     }
 
@@ -47,24 +62,18 @@ class. */
     public function messages(): array
     {
         return [
-            // 'username.required' => 'กรุณากรอกชื่อผู้ใช้',
-            // 'username.max' => 'ชื่อผู้ใช้ต้องไม่เกิน 255 ตัวอักษร',
-            // 'email.required' => 'กรุณากรอกอีเมล',
-            // 'email.email' => 'กรุณากรอกอีเมลที่ถูกต้อง',
-            // 'email.unique' => 'อีเมลนี้มีผู้ใช้งานแล้ว',
             'password.required' => 'กรุณากรอกรหัสผ่าน',
             'password.min' => 'รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร',
             'password.confirmed' => 'รหัสผ่านไม่ตรงกัน',
-            // 'first_name.required' => 'กรุณากรอกชื่อจริง',
-            // 'last_name.required' => 'กรุณากรอกนามสกุล',
             'student_id.required' => 'กรุณาเลือกรหัสนักศึกษา',
-            // 'adviser_id.required' => 'กรุณาเลือกอาจารย์ที่ปรึกษา',
-            // 'mobile_phone.required' => 'กรุณากรอกเบอร์โทรศัพท์',
-            // 'mobile_phone.min' => 'เบอร์โทรศัพท์ต้องมีอย่างน้อย 10 หลัก',
-            // 'mobile_phone.max' => 'เบอร์โทรศัพท์ต้องไม่เกิน 15 หลัก',
-            // 'mobile_phone.regex' => 'เบอร์โทรศัพท์ต้องเป็นตัวเลขเท่านั้น',
+            'student_id.integer' => 'รหัสนักศึกษาไม่ถูกต้อง',
+            'student_id.exists' => 'ไม่พบรหัสนักศึกษานี้ หรือยังไม่เปิดใช้งาน',
+            'student_id.unique' => 'รหัสนักศึกษานี้ได้สมัครสมาชิกแล้ว',
             'imageData.required' => '*กรุณาถ่ายภาพ หรือ อัปโหลดรูปภาพ*',
-            // 'email.regex' => 'รูปแบบอีเมลไม่ถูกต้อง ต้องขึ้นต้นด้วย s และตามด้วย @email.kmutnb.ac.th',
+            'imageData.file' => '*กรุณาถ่ายภาพ หรือ อัปโหลดรูปภาพ*',
+            'imageData.image' => 'ไฟล์ที่อัปโหลดต้องเป็นรูปภาพ',
+            'imageData.mimes' => 'รูปภาพต้องเป็นไฟล์ประเภท jpeg, png, jpg, webp',
+            'imageData.max' => 'ขนาดไฟล์รูปภาพต้องไม่เกิน 10MB',
         ];
     }
 }

@@ -552,6 +552,15 @@
                 window.location.href = '{{ route('return.index') }}';
             });
         </script>
+    @elseif (session('error'))
+        <script>
+            Swal.fire({
+                title: 'ไม่สามารถยืมอุปกรณ์ได้',
+                text: "{{ session('error') }}",
+                icon: 'error',
+                confirmButtonText: 'ตกลง'
+            });
+        </script>
     @endif
     <script>
         $(document).ready(function() {

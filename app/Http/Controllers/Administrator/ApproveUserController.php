@@ -34,10 +34,13 @@ class ApproveUserController extends Controller
     }
     public function updateApprove(Request $request)
     {
-        // dd($request->all());
-        $query = $request->get('query');
+        $request->validate([
+            'query' => 'required|integer|exists:member,id',
+        ]);
+
         $student =  DB::table('member')
-            ->where('id', $query)
+            ->where('id', $request->input('query'))
+            ->where('role', 'user')
             ->update([
                 'status' => 1,
             ]);

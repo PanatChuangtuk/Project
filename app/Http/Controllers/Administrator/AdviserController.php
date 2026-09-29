@@ -53,7 +53,7 @@ class AdviserController extends Controller
     public function edit($id)
     {
         $main_menu = $this->main_menu;
-        $adviser = Adviser::find($id);
+        $adviser = Adviser::findOrFail($id);
         $titles = $this->titles;
         return view('administrator.adviser.edit', compact('adviser', 'main_menu', 'titles'));
     }
@@ -80,12 +80,11 @@ class AdviserController extends Controller
 
     public function update(AdviserUpdateRequest $request, $id)
     {
-        // dd($request->all());
+        $adviser = Adviser::findOrFail($id);
         $filename = null;
         if ($request->hasFile('image')) {
             $filename = $this->uploadsImage($request->file('image'), 'adviser');
         }
-        $adviser = Adviser::find($id);
         $adviser->update([
             'titles_name' => $request->titles_name,
             'first_name' => $request->first_name,

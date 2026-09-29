@@ -57,9 +57,9 @@
                                         enctype="multipart/form-data">
                                         @csrf
                                         <div class="mb-3">
-                                            <label for="file" class="form-label">เลือกไฟล์ Excel เพื่ออัปโหลด</label>
+                                            <label for="file" class="form-label">เลือกไฟล์ CSV เพื่ออัปโหลด</label>
                                             <input type="file" name="file" id="file" class="form-control"
-                                                accept=".xlsx, .xls, .csv">
+                                                accept=".csv">
                                             <i class="fas fa-exclamation-circle"> <span
                                                     class="text-danger">กรุณาใช้รูปแบบไฟล์ที่กำหนดเท่านั้น</span></i>
                                         </div>

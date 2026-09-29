@@ -45,7 +45,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $main_menu = $this->main_menu;
-        $admin = Member::find($id);
+        $admin = Member::where('role', 'user')->findOrFail($id);
         return view('administrator.user.edit', compact('admin', 'main_menu'));
     }
 
@@ -57,11 +57,12 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 'user',
-            'status' => $request->status ?? 0,
+            'status' => $request->input('status', 0),
         ]);
         $filename = null;
         if ($request->hasFile('image')) {
-            $filename = $this->uploadsImage($request->file('image'), 'admin');
+            // รูปของผู้ใช้ทั่วไปอยู่ใน upload/images เหมือนตอนสมัครและตอนแก้ไข
+            $filename = $this->uploadsImageUser($request->file('image'));
         }
         MemberInfo::create([
             'member_id' => $member->id,
@@ -79,25 +80,25 @@ class UserController extends Controller
     public function update(MemberUpdateRequest $request, $id)
     {
         // dd($request->all());
-        $member = Member::find($id);
+        $member = Member::where('role', 'user')->findOrFail($id);
         $member->update([
             // 'username' => $request->username,
             'email' => $request->email,
             'password' => $request->filled('password') ? Hash::make($request->password) : $member->password,
             'role' => 'user',
-            'status' => $request->status ?? 0,
+            'status' => $request->input('status', 0),
         ]);
 
-        $filename = $member->info->avatar;
+        $filename = $member->info?->avatar;
         if ($request->hasFile('image')) {
             $filename = $this->uploadsImageUser($request->file('image'));
         }
         if ($request->filled('adviser_id')) {
-            Student::where('id', $request->student_id ?? $member->info->student_id)->update(['adviser_id' => $request->adviser_id]);
+            Student::where('id', $request->student_id ?? $member->info?->student_id)->update(['adviser_id' => $request->adviser_id]);
         }
-        $member->info->update([
-            'adviser_id' => $request->adviser_id ?? $member->info->adviser_id,
-            'student_id' => $request->student_id ?? $member->info->student_id,
+        $member->info()->updateOrCreate(['member_id' => $member->id], [
+            'adviser_id' => $request->adviser_id ?? $member->info?->adviser_id,
+            'student_id' => $request->student_id ?? $member->info?->student_id,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'mobile_phone' => $request->mobile_phone,
@@ -110,7 +111,7 @@ class UserController extends Controller
 
     public function destroy($id, Request $request)
     {
-        $about = Member::findOrFail($id);
+        $about = Member::where('role', 'user')->findOrFail($id);
         $about->forceDelete();
         MemberInfo::where('member_id', $id)->forceDelete();
         $currentPage = $request->query('page', 1);

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\{Validator, Log, DB};
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Models\{Student, Adviser, Member, MemberInfo};
 use Rap2hpoutre\FastExcel\FastExcel;
 use App\Http\Requests\{StudentUpdateRequest, StudentCreatRequest};
@@ -42,7 +43,7 @@ class StudentController extends Controller
     public function edit($id)
     {
         $main_menu = $this->main_menu;
-        $student = Student::find($id);
+        $student = Student::findOrFail($id);
         return view('administrator.student.edit', compact('student', 'main_menu'));
     }
 
@@ -68,7 +69,7 @@ class StudentController extends Controller
     {
         // dd($request->all());
         $status = $request->input('status', 0);
-        $student = Student::find($id);
+        $student = Student::findOrFail($id);
         $student->update([
             'name' => $request->name,
             'email' => $request->email,
@@ -146,42 +147,89 @@ class StudentController extends Controller
             file_put_contents($tempFile, $content);
             DB::beginTransaction();
 
-            (new FastExcel)->import($tempFile, function ($line) {
+            $rowNumber = 1; // แถวที่ 1 คือหัวตาราง
+            $seenStudentNumbers = [];
+            $seenEmails = [];
 
-                if (
-                    empty($line['คำนำหน้าชื่ออาจารย์ที่ปรึกษา']) ||
-                    empty($line['ชื่ออาจารย์ที่ปรึกษา']) ||
-                    empty($line['นามสกุลอาจารย์ที่ปรึกษา'])
-                ) {
-                    throw new \Exception('ข้อมูลอาจารย์ที่ปรึกษาไม่ครบถ้วน');
+            (new FastExcel)->import($tempFile, function ($line) use (&$rowNumber, &$seenStudentNumbers, &$seenEmails) {
+                $rowNumber++;
+
+                $row = [
+                    'student_number' => trim((string) ($line['รหัสนักศึกษา'] ?? '')),
+                    'first_name'     => trim((string) ($line['ชื่อ'] ?? '')),
+                    'last_name'      => trim((string) ($line['นามสกุล'] ?? '')),
+                    'mobile_phone'   => trim((string) ($line['เบอร์โทรศัพท์'] ?? '')),
+                    'email'          => trim((string) ($line['อีเมล'] ?? '')),
+                    'adviser_title'  => trim((string) ($line['คำนำหน้าชื่ออาจารย์ที่ปรึกษา'] ?? '')),
+                    'adviser_first'  => trim((string) ($line['ชื่ออาจารย์ที่ปรึกษา'] ?? '')),
+                    'adviser_last'   => trim((string) ($line['นามสกุลอาจารย์ที่ปรึกษา'] ?? '')),
+                ];
+
+                // ใช้เงื่อนไขเดียวกับ StudentCreatRequest / AdviserCreateRequest
+                $validator = Validator::make($row, [
+                    'student_number' => 'required|string|max:20',
+                    'first_name'     => 'required|string|max:255',
+                    'last_name'      => 'required|string|max:255',
+                    'mobile_phone'   => 'nullable|digits_between:9,10',
+                    'email'          => [
+                        'required',
+                        'email',
+                        'max:255',
+                        // อีเมลห้ามซ้ำกับนักศึกษาคนอื่น (คนเดิมที่ถูกอัปเดตได้)
+                        Rule::unique('student', 'email')->ignore($row['student_number'], 'student_number'),
+                    ],
+                    'adviser_title'  => 'required|string|max:255',
+                    'adviser_first'  => 'required|string|max:255',
+                    'adviser_last'   => 'required|string|max:255',
+                ], [
+                    'student_number.required' => 'ไม่มีรหัสนักศึกษา',
+                    'student_number.max'      => 'รหัสนักศึกษาต้องไม่เกิน 20 ตัวอักษร',
+                    'first_name.required'     => 'ไม่มีชื่อนักศึกษา',
+                    'last_name.required'      => 'ไม่มีนามสกุลนักศึกษา',
+                    'mobile_phone.digits_between' => 'เบอร์โทรศัพท์ต้องเป็นตัวเลข 9-10 หลัก',
+                    'email.required'          => 'ไม่มีอีเมล',
+                    'email.email'             => 'รูปแบบอีเมลไม่ถูกต้อง',
+                    'email.unique'            => 'อีเมลนี้ถูกใช้โดยนักศึกษาคนอื่นแล้ว',
+                    'adviser_title.required'  => 'ข้อมูลอาจารย์ที่ปรึกษาไม่ครบถ้วน',
+                    'adviser_first.required'  => 'ข้อมูลอาจารย์ที่ปรึกษาไม่ครบถ้วน',
+                    'adviser_last.required'   => 'ข้อมูลอาจารย์ที่ปรึกษาไม่ครบถ้วน',
+                    '*.max'                   => 'ข้อมูลยาวเกินกำหนด',
+                ]);
+
+                if ($validator->fails()) {
+                    throw new \Exception("แถวที่ {$rowNumber}: " . $validator->errors()->first());
                 }
 
-                $studentNumber = trim($line['รหัสนักศึกษา'] ?? '');
-
-                if ($studentNumber === '') {
-                    throw new \Exception('พบข้อมูลที่ไม่มีรหัสนักศึกษา');
+                if (isset($seenStudentNumbers[$row['student_number']])) {
+                    throw new \Exception("แถวที่ {$rowNumber}: รหัสนักศึกษาซ้ำกับแถวที่ {$seenStudentNumbers[$row['student_number']]}");
                 }
+                $emailKey = mb_strtolower($row['email']);
+                if (isset($seenEmails[$emailKey])) {
+                    throw new \Exception("แถวที่ {$rowNumber}: อีเมลซ้ำกับแถวที่ {$seenEmails[$emailKey]}");
+                }
+                $seenStudentNumbers[$row['student_number']] = $rowNumber;
+                $seenEmails[$emailKey] = $rowNumber;
 
                 // ค้นจากชื่อ-นามสกุล เพื่อไม่สร้างอาจารย์ซ้ำกับข้อมูลเดิมที่ยังไม่มีคำนำหน้า
                 $adviser = Adviser::updateOrCreate(
                     [
-                        'first_name' => trim($line['ชื่ออาจารย์ที่ปรึกษา']),
-                        'last_name'  => trim($line['นามสกุลอาจารย์ที่ปรึกษา']),
+                        'first_name' => $row['adviser_first'],
+                        'last_name'  => $row['adviser_last'],
                     ],
                     [
-                        'titles_name' => trim($line['คำนำหน้าชื่ออาจารย์ที่ปรึกษา']),
+                        'titles_name' => $row['adviser_title'],
                     ]
                 );
 
                 Student::updateOrCreate(
                     [
-                        'student_number' => $studentNumber,
+                        'student_number' => $row['student_number'],
                     ],
                     [
-                        'first_name'   => trim($line['ชื่อ'] ?? ''),
-                        'last_name'    => trim($line['นามสกุล'] ?? ''),
-                        'mobile_phone' => trim($line['เบอร์โทรศัพท์'] ?? ''),
-                        'email'        => trim($line['อีเมล'] ?? ''),
+                        'first_name'   => $row['first_name'],
+                        'last_name'    => $row['last_name'],
+                        'mobile_phone' => $row['mobile_phone'],
+                        'email'        => $row['email'],
                         'adviser_id'   => $adviser->id,
                         'status'       => 1,
                     ]

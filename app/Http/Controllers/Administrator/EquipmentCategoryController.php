@@ -40,7 +40,7 @@ class EquipmentCategoryController extends Controller
     public function edit($id)
     {
         $main_menu = $this->main_menu;
-        $category_equipment = EquipmentCategory::find($id);
+        $category_equipment = EquipmentCategory::findOrFail($id);
         return view('administrator.category_equipment.edit', compact('category_equipment', 'main_menu'));
     }
 
@@ -59,7 +59,7 @@ class EquipmentCategoryController extends Controller
 
     public function update(EquipmentCategoryUpdateRequest $request, $id)
     {
-        EquipmentCategory::find($id)->update([
+        EquipmentCategory::findOrFail($id)->update([
             'name' => $request->name,
             'status' =>  $request->input('status', 0),
             'updated_at' => now(),

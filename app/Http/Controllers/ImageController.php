@@ -17,15 +17,24 @@ class ImageController extends Controller
 
     public function saveImage(Request $request)
     {
-        if ($request->has('imageData')) {
-            $imageData = $request->input('imageData');
-            $imageData = str_replace('data:image/png;base64,', '', $imageData);
-            $imageData = base64_decode($imageData);
-            $fileName = 'captured_' . time() . '.png';
-            Storage::disk('public')->put('images/' . $fileName, $imageData);
-            return back()->with('message', 'Image saved successfully!');
+        $imageData = $request->input('imageData');
+
+        if (!is_string($imageData) || !str_starts_with($imageData, 'data:image/png;base64,')) {
+            return back()->with('error', 'No image captured!');
         }
 
-        return back()->with('error', 'No image captured!');
+        // ตรวจว่า decode ได้จริง ขนาดไม่เกิน 5MB และเป็นไฟล์ PNG จริง ก่อนบันทึก
+        $imageData = base64_decode(substr($imageData, strlen('data:image/png;base64,')), true);
+        if (
+            $imageData === false ||
+            strlen($imageData) > 5 * 1024 * 1024 ||
+            (@getimagesizefromstring($imageData)['mime'] ?? null) !== 'image/png'
+        ) {
+            return back()->with('error', 'Invalid image!');
+        }
+
+        $fileName = 'captured_' . time() . '.png';
+        Storage::disk('public')->put('images/' . $fileName, $imageData);
+        return back()->with('message', 'Image saved successfully!');
     }
 }

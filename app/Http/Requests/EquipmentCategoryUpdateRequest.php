@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
 class EquipmentCategoryUpdateRequest extends FormRequest
 {
@@ -22,11 +21,11 @@ class EquipmentCategoryUpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules()
     {
-        // dd($request->all());
         return [
-            'name' => 'required',
+            'name' => 'required|string|max:255',
+            'status' => 'nullable|boolean',
         ];
     }
 
@@ -37,6 +36,9 @@ class EquipmentCategoryUpdateRequest extends FormRequest
      */
     public function messages()
     {
-        return ['name.required' => 'กรุณากรอกชื่อหมวดหมู่อุปกรณ์'];
+        return [
+            'name.required' => 'กรุณากรอกชื่อหมวดหมู่อุปกรณ์',
+            'name.max' => 'ชื่อหมวดหมู่อุปกรณ์ต้องไม่เกิน 255 ตัวอักษร',
+        ];
     }
 }

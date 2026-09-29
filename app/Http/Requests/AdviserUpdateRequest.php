@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
 class AdviserUpdateRequest extends FormRequest
 {
@@ -22,13 +21,14 @@ class AdviserUpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules()
     {
-        // dd($request->all());
         return [
             'titles_name' => 'required|string|max:255',
-            'first_name' => 'required',
-            'last_name' => 'required'
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'status' => 'nullable|boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ];
     }
 
@@ -42,7 +42,13 @@ class AdviserUpdateRequest extends FormRequest
         return [
             'titles_name.required' => 'กรุณาเลือกคำนำหน้าชื่ออาจารย์ที่ปรึกษา',
             'first_name.required' => 'กรุณากรอกชื่อ',
-            'last_name.required' => 'กรุณากรอกนามสกุล'
+            'last_name.required' => 'กรุณากรอกนามสกุล',
+            'titles_name.max' => 'คำนำหน้าชื่อต้องไม่เกิน 255 ตัวอักษร',
+            'first_name.max' => 'ชื่อต้องไม่เกิน 255 ตัวอักษร',
+            'last_name.max' => 'นามสกุลต้องไม่เกิน 255 ตัวอักษร',
+            'image.image' => 'ไฟล์ที่อัพโหลดต้องเป็นรูปภาพ',
+            'image.mimes' => 'ภาพที่อัพโหลดต้องเป็นไฟล์ประเภท jpeg, png, jpg, gif, webp',
+            'image.max' => 'ขนาดไฟล์ภาพต้องไม่เกิน 2MB',
         ];
     }
 }

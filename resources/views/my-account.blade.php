@@ -42,8 +42,8 @@
                                 <div class="form-group">
                                     <label class="title">เบอร์โทรศัพท์</label>
                                     <input type="text" class="form-control"name="mobile_phone"
-                                        value="{{ $profile->info->mobile_phone ?? null }}" pattern="[0-9]*"
-                                        maxlength="10" />
+                                        value="{{ old('mobile_phone', $profile->info->mobile_phone ?? null) }}"
+                                        pattern="[0-9]{9,10}" maxlength="10" />
                                     @error('mobile_phone')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -54,7 +54,10 @@
                                 <div class="form-group">
                                     <label class="title">ชื่อ</label>
                                     <input type="text" class="form-control"name="first_name"
-                                        value="{{ $profile->info->first_name ?? null }}" />
+                                        value="{{ old('first_name', $profile->info->first_name ?? null) }}" />
+                                    @error('first_name')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -62,7 +65,10 @@
                                 <div class="form-group">
                                     <label class="title">นามสกุล</label>
                                     <input type="text" class="form-control" name="last_name"
-                                        value="{{ $profile->info->last_name ?? null }}" />
+                                        value="{{ old('last_name', $profile->info->last_name ?? null) }}" />
+                                    @error('last_name')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 

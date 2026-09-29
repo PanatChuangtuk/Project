@@ -59,5 +59,8 @@ class LoginController extends MainController
             Auth::guard('web')->login($user);
             return redirect()->route('administrator.dashboard')->with('success', 'เข้าสู่ระบบสำเร็จ');
         }
+
+        // role อื่นที่ไม่รู้จัก ไม่ให้เข้าสู่ระบบ (เดิมคืนค่า null ทำให้เกิด error)
+        return redirect()->back()->withErrors(['email_or_phone' => 'บัญชีนี้ไม่มีสิทธิ์เข้าใช้งาน'])->withInput();
     }
 }

@@ -25,15 +25,12 @@ class RegisterController extends MainController
         $fileName = null;
         if ($request->hasFile('imageData')) {
             $image = $request->file('imageData');
-            $fileName = 'captured_' . time() . '.' . $image->getClientOriginalExtension();
+            $fileName = 'captured_' . time() . '.' . $image->extension();
             Storage::disk('public')->putFileAs('images/', $image, $fileName);
         }
 
-        if ($request->student_id) {
-            $student = Student::find($request->student_id);
-        } else {
-            exit('ไม่พบรหัสนักศึกษานี้');
-        }
+        // RegisterMemberRequest ตรวจแล้วว่ามีนักศึกษานี้และยังไม่เคยสมัคร
+        $student = Student::findOrFail($request->student_id);
         $user = Member::create([
             // 'username' => $request->username,
             'role' => 'user',

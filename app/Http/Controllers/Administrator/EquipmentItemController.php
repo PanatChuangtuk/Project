@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\{Auth, Validator, Storage};
 use Illuminate\Http\Request;
 use App\Models\{EquipmentItem, EquipmentCategory};
-use App\Http\Requests\{EquipmentCategoryUpdateRequest, EquipmentCategoryCreateRequest};
+use App\Http\Requests\{EquipmentItemCreateRequest, EquipmentItemUpdateRequest};
 
 class EquipmentItemController extends Controller
 {
@@ -55,11 +55,11 @@ class EquipmentItemController extends Controller
     public function edit($id)
     {
         $main_menu = $this->main_menu;
-        $item_equipment = EquipmentItem::find($id);
+        $item_equipment = EquipmentItem::findOrFail($id);
         return view('administrator.item_equipment.edit', compact('item_equipment', 'main_menu'));
     }
 
-    public function submit(EquipmentCategoryCreateRequest $request)
+    public function submit(EquipmentItemCreateRequest $request)
     {
         $filename = null;
         if ($request->hasFile('image')) {
@@ -77,9 +77,9 @@ class EquipmentItemController extends Controller
             ->with('success', 'ข้อมูลถูกบันทึกเรียบร้อยแล้ว');
     }
 
-    public function update(EquipmentCategoryUpdateRequest $request, $id)
+    public function update(EquipmentItemUpdateRequest $request, $id)
     {
-        $item_equipment = EquipmentItem::find($id);
+        $item_equipment = EquipmentItem::findOrFail($id);
         $filename = null;
         if ($request->hasFile('image')) {
             $filename = $this->uploadsImage($request->file('image'), 'equipment_item');

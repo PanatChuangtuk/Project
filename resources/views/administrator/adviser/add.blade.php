@@ -114,7 +114,7 @@
                 showCancel: true,
                 showUpload: false,
                 elErrorContainer: '#kartik-file-errors',
-                allowedFileExtensions: ["jpg", "png", "jpeg", "svg", "raw", "gif", "tif", "webp"],
+                allowedFileExtensions: ["jpg", "png", "jpeg", "gif", "webp"],
                 resumableUploadOptions: {
                     chunkSize: 5,
                 },
