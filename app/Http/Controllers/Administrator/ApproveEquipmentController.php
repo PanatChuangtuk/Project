@@ -82,14 +82,23 @@ class ApproveEquipmentController extends Controller
 
         $itemIds = array_values($request->input('item_id'));
         $equipmentIds = array_values($request->input('equipments_id'));
+        $conditions = array_values((array) $request->input('conditions', []));
+        $conditionNotes = array_values((array) $request->input('condition_notes', []));
 
         // ตรวจซ้ำฝั่ง server ให้ตรงกับที่ /api/get-equipment กรองไว้ (ตรงประเภท และไม่ถูกยืมอยู่)
-        $loanEquipments = LoanEquipment::whereIn('id', $itemIds)->get()->keyBy('id');
+        $loanEquipments = LoanEquipment::with('loanTransaction')->whereIn('id', $itemIds)->get()->keyBy('id');
         // withTrashed: ตอนอนุมัติการคืน อุปกรณ์เดิมอาจถูกลบไปแล้ว
         $equipments = Equipment::withTrashed()->whereIn('id', $equipmentIds)->get()->keyBy('id');
         foreach ($itemIds as $index => $itemId) {
             if ($equipments[$equipmentIds[$index]]->item_id != $loanEquipments[$itemId]->equipment_item_id) {
                 return redirect()->back()->with('error', 'หมายเลขอุปกรณ์ไม่ตรงกับประเภทอุปกรณ์ที่ยืม');
+            }
+            // ตอนตรวจรับคืน ต้องระบุสภาพอุปกรณ์ทุกชิ้น
+            if (
+                $loanEquipments[$itemId]->loanTransaction?->status_type === 'returned'
+                && !array_key_exists($conditions[$index] ?? '', LoanEquipment::CONDITIONS)
+            ) {
+                return redirect()->back()->with('error', 'กรุณาระบุสภาพอุปกรณ์ให้ครบทุกรายการ');
             }
         }
 
@@ -104,7 +113,7 @@ class ApproveEquipmentController extends Controller
             return redirect()->back()->with('error', 'มีหมายเลขอุปกรณ์ที่ถูกยืมอยู่แล้ว กรุณาเลือกใหม่');
         }
 
-        DB::transaction(function () use ($itemIds, $equipmentIds) {
+        DB::transaction(function () use ($itemIds, $equipmentIds, $conditions, $conditionNotes) {
             foreach ($itemIds as $index => $itemId) {
                 $loanEquipment = LoanEquipment::with('loanTransaction')->findOrFail($itemId);
                 if ($loanEquipment->loanTransaction?->status == 'in_process') {
@@ -115,6 +124,18 @@ class ApproveEquipmentController extends Controller
                 $loanEquipment->update([
                     'equipment_id' => $equipmentIds[$index],
                 ]);
+
+                if ($loanEquipment->loanTransaction?->status_type === 'returned') {
+                    $condition = $conditions[$index];
+                    $loanEquipment->update([
+                        'condition' => $condition,
+                        'condition_note' => mb_substr(trim((string) ($conditionNotes[$index] ?? '')), 0, 255) ?: null,
+                    ]);
+                    // ชิ้นที่ชำรุด/สูญหาย ปิดใช้งานไว้ ไม่ให้ถูกนับในสต็อกหรือถูกเลือกให้ยืม จนกว่าแอดมินจะเปิดใหม่
+                    if ($condition !== 'normal') {
+                        Equipment::withTrashed()->whereKey($equipmentIds[$index])->update(['status' => 0]);
+                    }
+                }
             }
         });
 

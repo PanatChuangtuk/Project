@@ -16,8 +16,22 @@ class LoanEquipment extends Model
         'equipment_id',
         'loan_transactions_id',
         'name',
-        'quantity'
+        'quantity',
+        'condition',
+        'condition_note',
     ];
+
+    // สภาพอุปกรณ์ตอนตรวจรับคืน
+    const CONDITIONS = [
+        'normal' => 'ปกติ',
+        'damaged' => 'ชำรุด',
+        'lost' => 'สูญหาย',
+    ];
+
+    public function conditionLabel(): ?string
+    {
+        return self::CONDITIONS[$this->condition] ?? null;
+    }
 
 
     protected $dates = ['deleted_at'];

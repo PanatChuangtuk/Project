@@ -36,6 +36,13 @@ class EquipmentListController extends MainController
     }
     public function equipmentCart(Request $request)
     {
+        if ($this->hasOverdueLoan()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => BorrowController::OVERDUE_MESSAGE,
+            ], 403);
+        }
+
         $validator = Validator::make($request->all(), [
             'equipment_id' => 'required|integer',
             'quantity' => 'required|integer|min:1',

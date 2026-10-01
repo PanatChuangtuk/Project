@@ -219,6 +219,7 @@
                                 <th class="text-center">ชื่ออุปกรณ์</th>
                                 <th class="text-center">จำนวน</th>
                                 <th class="text-center">เลขอุปกรณ์</th>
+                                <th class="text-center">สภาพอุปกรณ์</th>
                             </tr>
                         </thead>
                         <tbody class="table-border-bottom-0" id="orderTableBody">
@@ -237,6 +238,20 @@
                                     </td>
                                     <td class="text-center align-middle">
                                         {{ $item->equipment->number ?? null }}
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        @if ($item->condition === 'normal')
+                                            <span class="badge bg-success">ปกติ</span>
+                                        @elseif ($item->condition === 'damaged')
+                                            <span class="badge bg-warning">ชำรุด</span>
+                                        @elseif ($item->condition === 'lost')
+                                            <span class="badge bg-danger">สูญหาย</span>
+                                        @else
+                                            -
+                                        @endif
+                                        @if ($item->condition_note)
+                                            <div class="small text-muted mt-1">{{ $item->condition_note }}</div>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

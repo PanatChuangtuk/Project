@@ -9,6 +9,8 @@ use App\Models\{LoanTransaction, LoanEquipment, EquipmentItem};
 
 class BorrowController extends MainController
 {
+    const OVERDUE_MESSAGE = 'คุณมีอุปกรณ์ที่ยืมเกินกำหนด กรุณาคืนอุปกรณ์ก่อนจึงจะยืมใหม่ได้';
+
     public function borrow(Request $request)
     {
         $borrowedItems = LoanTransaction::whereIn('status_type', ['borrowed', 'overdue'])
@@ -27,10 +29,15 @@ class BorrowController extends MainController
             }
         }
         $cart = session()->get('cart', []);
-        return view('borrow', compact('cart', 'borrowedCounts'));
+        $hasOverdue = $this->hasOverdueLoan();
+        return view('borrow', compact('cart', 'borrowedCounts', 'hasOverdue'));
     }
     public function submit(Request $request)
     {
+        if ($this->hasOverdueLoan()) {
+            return redirect()->back()->with('error', self::OVERDUE_MESSAGE);
+        }
+
         $validator = Validator::make($request->all(), [
             'items' => 'required|array|min:1',
             'items.*.id' => 'required|integer|distinct',

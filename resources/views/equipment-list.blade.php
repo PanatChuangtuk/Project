@@ -125,7 +125,7 @@
                 @foreach ($equipment as $item)
                     @php
                         $cart = session('cart', []);
-                        $totalStock = $item->equipment->count();
+                        $totalStock = $item->activeEquipment->count();
                         $borroweds = $borrowedCounts[$item->id] ?? 0;
                         $borrowed = isset($cart[$item->id]) ? $cart[$item->id]['quantity'] : 0;
                         $available = max($totalStock - $borrowed - $borroweds, 0);

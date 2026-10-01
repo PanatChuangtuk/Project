@@ -476,11 +476,17 @@
                 <div class="card-body">
                     <div class="equipment-section">
                         <h2 class="section-title ">การยืมอุปกรณ์</h2>
+                        @if ($hasOverdue)
+                            <div class="alert alert-danger mt-3">
+                                คุณมีอุปกรณ์ที่ยืมเกินกำหนด กรุณาคืนอุปกรณ์ก่อนจึงจะยืมใหม่ได้
+                                <a href="{{ route('return.index', ['status' => 'overdue']) }}">ดูรายการ</a>
+                            </div>
+                        @endif
                         @if (count($cart) > 0)
                             @foreach ($cart as $id => $item)
                                 @php
-                                    $product = \App\Models\EquipmentItem::withCount('equipment')->find($id);
-                                    $totalStock = $product ? $product->equipment_count : 0;
+                                    $product = \App\Models\EquipmentItem::withCount('activeEquipment')->find($id);
+                                    $totalStock = $product ? $product->active_equipment_count : 0;
                                     $borroweds = $borrowedCounts[$id] ?? 0;
                                     $borrowed = $item['quantity'];
                                     $available = max($totalStock - $borroweds, 0);
@@ -521,7 +527,7 @@
 
                             <!-- ปุ่มยืนยันการยืม -->
                             <div class="text-end mt-4 py-5">
-                                <button type="submit" class="btn-borrow">
+                                <button type="submit" class="btn-borrow" {{ $hasOverdue ? 'disabled' : '' }}>
                                     <i class="fas fa-check"></i> ยืนยันการยืม
                                 </button>
                             </div>

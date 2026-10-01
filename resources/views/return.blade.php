@@ -35,6 +35,33 @@
             font-weight: 600;
         }
 
+        .condition-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            margin: 4px 4px 0 0;
+            border-radius: 12px;
+            font-size: 13px;
+            color: #fff;
+        }
+
+        .condition-badge.normal {
+            background-color: #27ae60;
+        }
+
+        .condition-badge.damaged {
+            background-color: #f39c12;
+        }
+
+        .condition-badge.lost {
+            background-color: #e74c3c;
+        }
+
+        .condition-note {
+            font-size: 13px;
+            color: #6c757d;
+            margin: 4px 0 0;
+        }
+
         .purchase-status.borrowed {
             background-color: #e6f7ff;
             color: #0088cc;
@@ -422,6 +449,19 @@
                                         <li class="info">
                                             <div class="product-info">
                                                 <h3>{{ $firstEquipment->name }}</h3>
+                                                {{-- สภาพอุปกรณ์ที่เจ้าหน้าที่บันทึกตอนตรวจรับคืน --}}
+                                                @foreach ($equipments->whereNotNull('condition')->groupBy('condition') as $condition => $rows)
+                                                    <span class="condition-badge {{ $condition }}">
+                                                        {{ \App\Models\LoanEquipment::CONDITIONS[$condition] ?? $condition }}
+                                                        {{ $rows->sum('quantity') }} ชิ้น
+                                                    </span>
+                                                @endforeach
+                                                @foreach ($equipments->whereNotNull('condition_note') as $noted)
+                                                    <p class="condition-note">
+                                                        {{ $noted->equipment->number ?? '' }}
+                                                        หมายเหตุ: {{ $noted->condition_note }}
+                                                    </p>
+                                                @endforeach
                                             </div>
                                         </li>
                                         <li class="qty">
@@ -451,6 +491,11 @@
                                     <div class="delivery-info" style="border-left: 3px solid #e74c3c;">
                                         <i class="fas fa-ban me-2" style="color: #e74c3c;"></i>
                                         <span>คำร้องถูกยกเลิก</span>
+                                    </div>
+                                @elseif ($item->status_type == 'returned' && $item->loanEquipments->whereIn('condition', ['damaged', 'lost'])->isNotEmpty())
+                                    <div class="delivery-info" style="border-left: 3px solid #f39c12;">
+                                        <i class="fas fa-exclamation-circle me-2" style="color: #f39c12;"></i>
+                                        <span>ตรวจรับคืนแล้ว พบอุปกรณ์ชำรุด/สูญหาย กรุณาติดต่อเจ้าหน้าที่</span>
                                     </div>
                                 @elseif ($item->status_type == 'returned')
                                     <div class="delivery-info" style="border-left: 3px solid #27ae60;">

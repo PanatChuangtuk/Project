@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Social, Contact, Language, Member, EquipmentItem, LoanEquipment};
+use App\Models\{Social, Contact, Language, Member, EquipmentItem, LoanEquipment, LoanTransaction};
 use Illuminate\Support\Facades\{View, Auth};
 
 class MainController extends Controller
@@ -25,7 +25,7 @@ class MainController extends Controller
      */
     protected function availableStock(EquipmentItem $item): int
     {
-        $total = $item->equipment()->count();
+        $total = $item->activeEquipment()->count();
         $borrowed = LoanEquipment::where('equipment_item_id', $item->id)
             ->whereHas('loanTransaction', function ($query) {
                 $query->whereIn('status_type', ['borrowed', 'overdue'])
@@ -34,5 +34,16 @@ class MainController extends Controller
             ->sum('quantity');
 
         return max($total - (int) $borrowed, 0);
+    }
+
+    /**
+     * สมาชิกมีรายการยืมที่เกินกำหนดและยังไม่คืนหรือไม่ (ถ้ามี จะยืมเพิ่มไม่ได้จนกว่าจะคืน)
+     */
+    protected function hasOverdueLoan(?int $memberId = null): bool
+    {
+        $memberId ??= Auth::guard('member')->id();
+
+        return $memberId !== null
+            && LoanTransaction::where('member_id', $memberId)->overdueUnreturned()->exists();
     }
 }

@@ -140,6 +140,7 @@
 
         <div class="card p-4">
             <h4 class="display-4">อุปกรณ์</h4>
+            @php $isReturn = $borrow->status_type === 'returned'; @endphp
             <form id="approveForm" method="POST" action="{{ route('administrator.approve-equipment.approveEquipment') }}">
                 @csrf
                 <div class="table">
@@ -150,6 +151,9 @@
                                 <th class="text-center">ชื่ออุปกรณ์</th>
                                 <th class="text-center">จำนวน</th>
                                 <th class="text-center">อุปกรณ์ที่ให้ยืม</th>
+                                @if ($isReturn)
+                                    <th class="text-center">สภาพอุปกรณ์ที่ได้รับคืน</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody class="table-border-bottom-dark" id="orderTableBody">
@@ -182,6 +186,20 @@
                                             </select>
                                         @endif
                                     </td>
+                                    @if ($isReturn)
+                                        <td class="align-middle">
+                                            <select name="conditions[]" class="form-select mb-2" required>
+                                                @foreach (\App\Models\LoanEquipment::CONDITIONS as $value => $label)
+                                                    <option value="{{ $value }}"
+                                                        {{ ($item->condition ?? 'normal') === $value ? 'selected' : '' }}>
+                                                        {{ $label }}</option>
+                                                @endforeach
+                                            </select>
+                                            <input type="text" name="condition_notes[]" class="form-control"
+                                                maxlength="255" placeholder="หมายเหตุ (ถ้ามี)"
+                                                value="{{ $item->condition_note }}">
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>
@@ -193,7 +211,7 @@
                         <i class="fas fa-times-circle me-1"></i> ยกเลิกการยืม
                     </button>
                     <button type="submit"id="submitBtn" class="btn btn-primary">
-                        <i class="fas fa-check-circle me-1"></i> ยืนยันการยืม
+                        <i class="fas fa-check-circle me-1"></i> {{ $isReturn ? 'ยืนยันการคืน' : 'ยืนยันการยืม' }}
                     </button>
                 </div>
             </form>
@@ -231,7 +249,7 @@
 
             Swal.fire({
                 title: 'ยืนยันการดำเนินการ',
-                text: 'คุณต้องการยืนยันการยืมอุปกรณ์ใช่หรือไม่?',
+                text: @json($isReturn ? 'คุณต้องการยืนยันการคืนอุปกรณ์ใช่หรือไม่? อุปกรณ์ที่ชำรุด/สูญหายจะถูกปิดใช้งานอัตโนมัติ' : 'คุณต้องการยืนยันการยืมอุปกรณ์ใช่หรือไม่?'),
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: 'ใช่, ยืนยัน',

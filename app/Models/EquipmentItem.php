@@ -26,4 +26,10 @@ class EquipmentItem extends Model
     {
         return $this->hasMany(Equipment::class, 'item_id');
     }
+
+    // เฉพาะชิ้นที่เปิดใช้งาน (ชิ้นที่ชำรุด/สูญหายจะถูกปิด) ใช้นับสต็อกที่ให้ยืมได้
+    public function activeEquipment()
+    {
+        return $this->hasMany(Equipment::class, 'item_id')->where('status', 1);
+    }
 }

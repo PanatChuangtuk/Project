@@ -64,7 +64,7 @@ class ReturnEquipmentController extends Controller
         $loans = LoanTransaction::with([
             'member.info',
             'loanEquipments' => function ($query) {
-                $query->selectRaw('loan_transactions_id, equipment_item_id, GROUP_CONCAT(DISTINCT name) as equipment_names, SUM(quantity) as total_qty')
+                $query->selectRaw("loan_transactions_id, equipment_item_id, GROUP_CONCAT(DISTINCT name) as equipment_names, SUM(quantity) as total_qty, SUM(`condition` = 'normal') as normal_qty, SUM(`condition` = 'damaged') as damaged_qty, SUM(`condition` = 'lost') as lost_qty")
                     ->groupBy('loan_transactions_id', 'equipment_item_id');
             }
         ])
@@ -97,6 +97,7 @@ class ReturnEquipmentController extends Controller
                     'วันที่ยืม' => $loan->borrowed_at ?? '-',
                     'วันที่คืน' => $loan->returned_at ?? '-',
                     'คืนเกินเวลาที่กำหนด' => $loan->is_overdue === 1 ? 'เกินเวลา' : '',
+                    'สภาพอุปกรณ์ที่ได้รับคืน' => self::conditionSummary($equipment),
                 ];
             }
         }
@@ -110,7 +111,7 @@ class ReturnEquipmentController extends Controller
         $loans = LoanTransaction::with([
             'member.info',
             'loanEquipments' => function ($query) {
-                $query->selectRaw('loan_transactions_id, equipment_item_id, GROUP_CONCAT(DISTINCT name) as equipment_names, SUM(quantity) as total_qty')
+                $query->selectRaw("loan_transactions_id, equipment_item_id, GROUP_CONCAT(DISTINCT name) as equipment_names, SUM(quantity) as total_qty, SUM(`condition` = 'normal') as normal_qty, SUM(`condition` = 'damaged') as damaged_qty, SUM(`condition` = 'lost') as lost_qty")
                     ->groupBy('loan_transactions_id', 'equipment_item_id');
             }
         ])
@@ -120,6 +121,20 @@ class ReturnEquipmentController extends Controller
         $startDate =    $this->formatThaiDate($startDate);
         $endDate =  $this->formatThaiDate($endDate);
         return view('reports.loan_report', compact('loans', 'startDate', 'endDate'));
+    }
+
+    /**
+     * สรุปสภาพอุปกรณ์ของแถวที่ group ไว้ เช่น "ปกติ 2, ชำรุด 1" (ว่างถ้ายังไม่ได้ตรวจรับคืน)
+     */
+    public static function conditionSummary($equipment): string
+    {
+        $parts = [];
+        foreach (['normal' => 'normal_qty', 'damaged' => 'damaged_qty', 'lost' => 'lost_qty'] as $condition => $column) {
+            if ((int) $equipment->{$column} > 0) {
+                $parts[] = LoanEquipment::CONDITIONS[$condition] . ' ' . (int) $equipment->{$column};
+            }
+        }
+        return implode(', ', $parts);
     }
 
     /**

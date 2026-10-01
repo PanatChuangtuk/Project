@@ -12,7 +12,9 @@ class TaskController extends Controller
 {
     public function hourlyTask()
     {
+        // เฉพาะรายการที่อนุมัติแล้ว คำขอที่ยังรออนุมัติไม่นับว่าเกินกำหนด
         LoanTransaction::where('status_type', 'borrowed')
+            ->where('status', 'completed')
             ->where('borrowed_at', '<=', Carbon::now()->subDays(6))
             ->chunkById(100, function ($transactions) {
                 foreach ($transactions as $transaction) {
