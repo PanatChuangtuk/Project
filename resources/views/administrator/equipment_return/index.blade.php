@@ -9,6 +9,23 @@
             z-index: 999990 !important;
         }
 
+        /* เส้นคั่นระหว่างใบยืม ให้เห็นว่าแถวยืม/คืนไหนเป็นใบเดียวกัน */
+        .eqm-list tbody.eqm-group {
+            border-top: 2px solid #d9dee3;
+        }
+
+        .eqm-list tbody.eqm-group td {
+            vertical-align: top;
+        }
+
+        .eqm-list tbody.eqm-group:hover {
+            background: #f8f9fa;
+        }
+
+        .eqm-list .loan-cell {
+            min-width: 180px;
+        }
+
         .text-cutome {
             font-size: 16px;
         }
@@ -88,75 +105,111 @@
                     </div>
 
 
+                    {{-- แท็บกรอง --}}
+                    <ul class="nav nav-pills px-3 mb-3 flex-wrap gap-1">
+                        @foreach (\App\Models\EqmHistoryMaster::TABS as $key => $label)
+                            <li class="nav-item">
+                                <a class="nav-link {{ $tab === $key ? 'active' : '' }}"
+                                    href="{{ route('administrator.return-equipment', array_filter(['tab' => $key === 'all' ? null : $key, 'query' => $query])) }}">
+                                    {{ $label }}
+                                    <span class="badge rounded-pill {{ $tab === $key ? 'bg-white text-primary' : 'bg-label-secondary' }} ms-1">{{ $tabCounts[$key] }}</span>
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+
                     {{-- ตาราง --}}
-                    <div class=" text-nowrap">
-                        <table class="table table-hover">
+                    <div class="table-responsive">
+                        <table class="table eqm-list">
                             <thead>
                                 <tr>
-                                    <th style="font-size: 1rem;">
-                                        {{-- <div class="form-check">
-                                            <input class="form-check-input check-item" type="checkbox" id="checkAll" />
-                                        </div> --}}
-                                    </th>
-                                    <th>ลำดับ</th>
-                                    <th class="text-center">ชื่อ-นามสกุล</th>
-                                    <th class="text-center">รหัสนักศึกษา</th>
-                                    <th class="text-center">ชนิดคำร้อง</th>
-                                    <th class="text-center">สถานะคำร้อง</th>
-                                    <th class="text-center">การจัดการ</th>
+                                    <th>ใบยืม / ผู้ยืม</th>
+                                    <th>ขั้นตอน</th>
+                                    <th>อุปกรณ์</th>
+                                    <th>ผล</th>
+                                    <th class="text-center"></th>
                                 </tr>
                             </thead>
 
-                            <tbody class="table-border-bottom-0" id="userTableBody">
-                                @foreach ($users as $item)
-                                    <tr>
-                                        <td>
-                                            {{-- <div class="form-check" style="font-size: 1rem;">
-                                                <input type="checkbox" class="form-check-input check-item"
-                                                    value="{{ $item->id }}">
-                                            </div> --}}
-                                        </td>
-                                        <td>{{ $users->firstItem() + $loop->index }}</td>
-                                        <td>
-                                            <div class="text-center">
-                                                <div class="flex-grow-1">
-                                                    {{ $item->member->info->first_name ?? null }}
-                                                    {{ $item->member->info->last_name ?? null }}
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-center">{{ $item->member->info->student->student_number ?? null }}
-                                        </td>
-                                        <td class="text-center align-middle">
-                                            @if ($item->status_type == 'borrowed')
-                                                <span class="badge bg-warning text-cutome">ยืมอุปกรณ์</span>
-                                            @elseif ($item->status_type == 'returned')
-                                                <span class="badge bg-success text-cutome">คืนอุปกรณ์</span>
-                                            @elseif ($item->status_type == 'overdue')
-                                                <span class="badge bg-danger text-cutome">เกินกำหนด</span>
+                            @php
+                                $statusClass = [
+                                    'รออนุมัติ' => 'bg-warning',
+                                    'อนุมัติ' => 'bg-success',
+                                    'ยกเลิก' => 'bg-secondary',
+                                    'รอตรวจรับ' => 'bg-warning',
+                                    'ตรวจรับแล้ว' => 'bg-success',
+                                ];
+                                $conditionClass = ['normal' => 'text-success', 'damaged' => 'text-warning', 'lost' => 'text-danger'];
+                                $fmt = fn($date) => $date?->setTimezone('Asia/Bangkok')->locale('th')->translatedFormat('d M Y H:i') ?? '-';
+                            @endphp
+                            @forelse ($users as $master)
+                                @php
+                                    $rows = $master->eventRows();
+                                    $info = $master->member?->info;
+                                @endphp
+                                {{-- 1 ใบยืม = 1 กลุ่ม --}}
+                                <tbody class="eqm-group">
+                                    @foreach ($rows as $row)
+                                        <tr>
+                                            @if ($loop->first)
+                                                <td rowspan="{{ $rows->count() }}" class="loan-cell">
+                                                    <div class="fw-semibold">#{{ $master->id }}
+                                                        {{ trim(($info->first_name ?? '') . ' ' . ($info->last_name ?? '')) ?: '-' }}</div>
+                                                    <div class="text-muted small">{{ $info?->student?->student_number ?? '-' }}</div>
+                                                </td>
                                             @endif
-                                        </td>
-                                        <td class="text-center align-middle">
-                                            @if ($item->status == 'completed')
-                                                <span class="badge bg-success text-cutome">อนุมัติ</span>
-                                            @elseif ($item->status == 'cancel')
-                                                <span class="badge bg-danger text-cutome">ยกเลิก</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="d-inline-block text-nowrap">
+                                            <td class="text-nowrap">
+                                                <span class="badge {{ $row->type === 'borrow' ? 'bg-label-primary' : 'bg-label-info' }}">{{ $row->type_label }}</span>
+                                                <div class="small mt-1">{{ $fmt($row->date) }}</div>
+                                                @if ($row->type === 'borrow' && !in_array($master->status, ['pending', 'cancelled']))
+                                                    <div class="small text-muted">กำหนดคืน {{ $fmt($master->due_at) }}</div>
+                                                @endif
+                                            </td>
+                                            <td class="small">
+                                                @if ($row->type === 'borrow')
+                                                    @foreach ($row->details->groupBy('equipment_item_id') as $details)
+                                                        <div>{{ $details->first()->name }} x{{ $details->count() }}</div>
+                                                    @endforeach
+                                                @else
+                                                    {{-- แถวคืน: แสดงสภาพของแต่ละชิ้น --}}
+                                                    @foreach ($row->details as $detail)
+                                                        <div>
+                                                            {{ $detail->name }}
+                                                            @if ($detail->condition)
+                                                                — <span class="{{ $conditionClass[$detail->condition] ?? '' }}">{{ $detail->conditionLabel() }}</span>
+                                                            @endif
+                                                        </div>
+                                                    @endforeach
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <span class="badge {{ $statusClass[$row->status_label] ?? 'bg-secondary' }}">{{ $row->status_label }}</span>
+                                                @if ($row->overdue_days)
+                                                    <span class="badge bg-danger">เกิน {{ $row->overdue_days }} วัน</span>
+                                                @endif
+                                                @if ($row->admin)
+                                                    <div class="small text-muted mt-1">โดย {{ \App\Models\EqmHistoryMaster::personName($row->admin) }}</div>
+                                                @endif
+                                            </td>
+                                            @if ($loop->first)
+                                                <td rowspan="{{ $rows->count() }}" class="text-center">
                                                     <a class="btn btn-icon btn-outline-primary border-0 custom-tooltip"
                                                         data-tooltip="รายละเอียดคำร้อง"
-                                                        href="{{ route('administrator.return-equipment.edit', ['id' => $item->id]) }}">
+                                                        href="{{ route('administrator.return-equipment.edit', ['id' => $master->id]) }}">
                                                         <i class="bi bi-eye-fill"></i>
                                                     </a>
-                                                </div>
-                                            </div>
-                                        </td>
+                                                </td>
+                                            @endif
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            @empty
+                                <tbody>
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted py-4">ไม่มีข้อมูล</td>
                                     </tr>
-                                @endforeach
-                            </tbody>
+                                </tbody>
+                            @endforelse
                         </table>
 
                         {{-- การแบ่งหน้า --}}

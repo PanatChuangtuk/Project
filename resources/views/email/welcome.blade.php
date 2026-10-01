@@ -24,7 +24,7 @@
             <p style="font-size: 16px; margin: 0 0 20px; font-weight: 500;">เรียน
                 {{ $transaction->member->info->first_name . ' ' . $transaction->member->info->last_name }}</p>
             <p style="font-size: 15px; line-height: 1.6; margin: 0 0 20px; color: #4b5563;">
-                @if ($transaction->status_type === 'overdue')
+                @if ($transaction->isPastDue())
                     รายการยืมของท่านเกินกำหนดแล้ว!
                 @else
                     เราได้ตรวจพบว่ารายการยืมต่อไปนี้ของท่านใกล้เกินกำหนดเวลาคืนอุปกรณ์แล้ว
@@ -40,11 +40,13 @@
                         <strong style="color: #3b82f6; font-weight: 600; font-size: 15px;">ชื่อผู้ยืม:</strong>
                         {{ $transaction->member->info->first_name . ' ' . $transaction->member->info->last_name }}<br>
                         <strong style="color: #3b82f6; font-weight: 600; font-size: 15px;">วันที่ยืม:</strong>
-                        {{ $transaction->borrowed_at }}<br>
+                        {{ $transaction->borrowed_at->setTimezone('Asia/Bangkok')->locale('th')->translatedFormat('d M Y H:i') }}<br>
+                        <strong style="color: #3b82f6; font-weight: 600; font-size: 15px;">กำหนดคืน:</strong>
+                        {{ $transaction->due_at->setTimezone('Asia/Bangkok')->locale('th')->translatedFormat('d M Y H:i') }}<br>
                         <strong style="color: #3b82f6; font-weight: 600; font-size: 15px;">สถานะ:</strong>
                         <span
-                            style="color: {{ $transaction->status_type === 'overdue' ? '#ef4444' : '#22c55e' }}; font-weight: bold; font-size: 15px;">
-                            {{ $transaction->status_type === 'overdue' ? 'เกินกำหนด' : 'ปกติ' }}
+                            style="color: {{ $transaction->isPastDue() ? '#ef4444' : '#22c55e' }}; font-weight: bold; font-size: 15px;">
+                            {{ $transaction->isPastDue() ? 'เกินกำหนด' : 'ปกติ' }}
                         </span><br>
                     </div>
 

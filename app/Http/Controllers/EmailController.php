@@ -4,15 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Mail\WelcomeMail;
 use Illuminate\Support\Facades\Mail;
-use App\Models\LoanTransaction;
+use App\Models\EqmHistoryMaster;
 use Carbon\Carbon;
 
 class EmailController extends Controller
 {
     public function sendWelcomeEmail()
     {
-        $transactions = LoanTransaction::where('status_type', 'overdue')
-            ->where('borrowed_at', '<', Carbon::now()->subDays(7))
+        $transactions = EqmHistoryMaster::where('status', 'overdue')
+            ->where('due_at', '<', Carbon::now())
             ->get();
 
         foreach ($transactions as $transaction) {

@@ -142,125 +142,94 @@
                 {{ $borrow->member->info->student->student_number ?? null }}
             </div>
         </div>
+        @php
+            $fmt = fn($date) => $date ? $date->setTimezone('Asia/Bangkok')->locale('th')->translatedFormat('d M Y H:i') : '-';
+            $typeClass = ['ยืมอุปกรณ์' => 'bg-warning', 'คืนอุปกรณ์' => 'bg-success', 'เกินกำหนด' => 'bg-danger'];
+            $overdueDays = $borrow->overdueDays();
+        @endphp
+
         <div class="mb-4 row">
-            <label for="member_id" class="col-md-2 fw-bold">ชนิดคำร้อง :</label>
+            <label class="col-md-2 fw-bold">ชนิดคำร้อง :</label>
             <div class="col-md-10">
-                <td class="text-center  align-middle">
-                    @if ($borrow->status_type == 'borrowed')
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <span class="badge bg-warning px-3 py-2 rounded-pill fw-normal">
-                                    <i class="fas fa-hand-holding me-1"></i> ยืมอุปกรณ์
-                                </span>
-                            </div>
-                        </div>
-                    @elseif ($borrow->status_type == 'returned')
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <span class="badge bg-success px-3 py-2 rounded-pill fw-normal">
-                                    <i class="fas fa-undo-alt me-1"></i> คืนอุปกรณ์
-                                </span>
-                            </div>
-                        </div>
-                    @elseif ($borrow->status_type == 'overdue')
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <span class="badge bg-danger px-3 py-2 rounded-pill fw-normal">
-                                    <i class="fas fa-clock me-1"></i> เกินกำหนด
-                                </span>
-                            </div>
-                        </div>
-                    @endif
-                </td>
+                <span class="badge {{ $typeClass[$borrow->requestTypeLabel()] ?? 'bg-secondary' }} px-3 py-2 rounded-pill fw-normal">
+                    {{ $borrow->requestTypeLabel() }}
+                </span>
             </div>
         </div>
 
         <div class="mb-4 row">
-            <label for="member_id" class="col-md-2 fw-bold">สถานะคำร้อง :</label>
+            <label class="col-md-2 fw-bold">สถานะ :</label>
+            <div class="col-md-10">{{ $borrow->stageLabel() }}</div>
+        </div>
+
+        <div class="mb-4 row">
+            <label class="col-md-2 fw-bold">วันที่ยืม / คืน :</label>
             <div class="col-md-10">
-                @if ($borrow->status == 'completed')
-                    <span class="badge badge-pill badge-success">อนุมัติ</span>
-                @elseif ($borrow->status == 'cancel')
-                    <span class="badge badge-pill badge-danger">ยกเลิก</span>
-                @else
-                    <span class="badge badge-pill badge-warning">รอดำเนินการ</span>
-                @endif
+                ยืม {{ $fmt($borrow->borrowed_at) }}
+                <span class="text-muted ms-3">กำหนดคืน {{ $fmt($borrow->due_at) }}</span>
+                <span class="ms-3">คืน {{ $fmt($borrow->returned_at) }}</span>
             </div>
         </div>
 
         <div class="card p-4">
             <h4 class="display-4">
                 อุปกรณ์
-                @if ($borrow->is_overdue == 1)
+                @if ($overdueDays)
                     <div class="status-row">
                         <div class="status-value">
                             <span class="status-badge status-overdue" id="overdue">
-                                <span class="status-icon">⚠️</span> ยืมอุปกรณ์เกินกำหนด <span class="ms-2 text-danger">
-                                    @if ($borrow->returned_at == null)
-                                        ({{ floor(\Carbon\Carbon::parse($borrow->borrowed_at)->diffInDays(\Carbon\Carbon::now())) }}
-                                        วัน)
-                                    @else
-                                        ({{ floor(\Carbon\Carbon::parse($borrow->borrowed_at)->diffInDays(\Carbon\Carbon::parse($borrow->returned_at), true)) }}
-                                        วัน)
-                                    @endif
-                                </span>
+                                <span class="status-icon">⚠️</span> ยืมอุปกรณ์เกินกำหนด
+                                <span class="ms-2 text-danger">({{ $overdueDays }} วัน)</span>
                             </span>
                         </div>
                     </div>
                 @endif
             </h4>
-            <form method="POST" action="{{ route('administrator.approve-equipment.approveEquipment') }}">
-                @csrf
-                <div class="table">
-                    <table class="table table-bordered custom-table">
-                        <thead>
+            <div class="table">
+                <table class="table table-bordered custom-table">
+                    <thead>
+                        <tr>
+                            <th class="text-center">รูปอุปกรณ์</th>
+                            <th class="text-center">ชื่ออุปกรณ์</th>
+                            <th class="text-center">เลขอุปกรณ์</th>
+                            <th class="text-center">สภาพอุปกรณ์</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0" id="orderTableBody">
+                        @foreach ($borrow->details as $item)
                             <tr>
-                                <th class="text-center">รูปอุปกรณ์</th>
-                                <th class="text-center">ชื่ออุปกรณ์</th>
-                                <th class="text-center">จำนวน</th>
-                                <th class="text-center">เลขอุปกรณ์</th>
-                                <th class="text-center">สภาพอุปกรณ์</th>
+                                <td class="text-center align-middle">
+                                    <img src="{{ $item->equipmentItem?->image ? asset('upload/file/equipment_item/' . $item->equipmentItem->image) : asset('images/default-image.png') }}"
+                                        class="equipment-img">
+                                </td>
+                                <td class="text-center align-middle">
+                                    {{ $item->name ?? null }}
+                                </td>
+                                <td class="text-center align-middle">
+                                    {{ $item->equipment->number ?? '-' }}
+                                </td>
+                                <td class="text-center align-middle">
+                                    @if ($item->condition === 'normal')
+                                        <span class="badge bg-success">ปกติ</span>
+                                    @elseif ($item->condition === 'damaged')
+                                        <span class="badge bg-warning">ชำรุด</span>
+                                    @elseif ($item->condition === 'lost')
+                                        <span class="badge bg-danger">สูญหาย</span>
+                                    @else
+                                        -
+                                    @endif
+                                    @if ($item->condition_note)
+                                        <div class="small text-muted mt-1">{{ $item->condition_note }}</div>
+                                    @endif
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody class="table-border-bottom-0" id="orderTableBody">
-                            @foreach ($borrow->loanEquipments as $key => $item)
-                                <input type="hidden" name="item_id[]" value="{{ $item->id }}">
-                                <tr>
-                                    <td class="text-center align-middle">
-                                        <img src="{{ $item->equipmentItem->image ? asset('upload/file/equipment_item/' . $item->equipmentItem->image) : asset('images/default-image.png') }}"
-                                            class="equipment-img">
-                                    </td>
-                                    <td class="text-center align-middle">
-                                        {{ $item->name ?? null }}
-                                    </td>
-                                    <td class="text-center align-middle">
-                                        {{ $item->quantity ?? null }} ชิ้น
-                                    </td>
-                                    <td class="text-center align-middle">
-                                        {{ $item->equipment->number ?? null }}
-                                    </td>
-                                    <td class="text-center align-middle">
-                                        @if ($item->condition === 'normal')
-                                            <span class="badge bg-success">ปกติ</span>
-                                        @elseif ($item->condition === 'damaged')
-                                            <span class="badge bg-warning">ชำรุด</span>
-                                        @elseif ($item->condition === 'lost')
-                                            <span class="badge bg-danger">สูญหาย</span>
-                                        @else
-                                            -
-                                        @endif
-                                        @if ($item->condition_note)
-                                            <div class="small text-muted mt-1">{{ $item->condition_note }}</div>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-
-            </form>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
+
+        @include('administrator.partials.eqm_timeline', ['borrow' => $borrow])
     </div>
 @endsection
 

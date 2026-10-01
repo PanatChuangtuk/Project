@@ -1,0 +1,117 @@
+รูปอุปกรณ์จาก Wikimedia Commons (ย่อขนาดเป็นกว้างไม่เกิน 640px)
+
+wm-laptop.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:IBM_Thinkpad_R51.jpg
+  ผู้สร้าง: André Karwath aka Aka
+  สัญญาอนุญาต: CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0
+
+wm-tablet.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:Tablet_computer.jpg
+  ผู้สร้าง: KK IN HK
+  สัญญาอนุญาต: CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0
+
+wm-raspberry-pi.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:Raspberry_Pi_4_Model_B_-_Side.jpg
+  ผู้สร้าง: Laserlicht
+  สัญญาอนุญาต: CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0
+
+wm-arduino.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:Arduino_Uno_-_R3.jpg
+  ผู้สร้าง: SparkFun Electronics from Boulder, USA
+  สัญญาอนุญาต: CC BY 2.0 https://creativecommons.org/licenses/by/2.0
+
+wm-monitor.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:Dell_Computer_Monitor.png
+  ผู้สร้าง: IT Photography
+  สัญญาอนุญาต: CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0
+
+wm-keyboard.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:Razer_Ornata_Chroma_keyboard-top_PNr%C2%B00463.jpg
+  ผู้สร้าง: D-Kuru
+  สัญญาอนุญาต: CC BY-SA 3.0 at https://creativecommons.org/licenses/by-sa/3.0/at/deed.en
+
+wm-mouse.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:2023_Mysz_komputerowa_Logitech_M705.jpg
+  ผู้สร้าง: Jacek Halicki
+  สัญญาอนุญาต: CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0
+
+wm-projector.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:InFocus_IN34.jpg
+  ผู้สร้าง: Dave Pape
+  สัญญาอนุญาต: Public domain 
+
+wm-external-hdd.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:SanDisk_Extreme_Portable_SSD_-_1TB,_USB-C_(41036158305).jpg
+  ผู้สร้าง: Tony Webster from Minneapolis, Minnesota, United States
+  สัญญาอนุญาต: CC BY 2.0 https://creativecommons.org/licenses/by/2.0
+
+wm-flash-drive.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:Kingston_Technology_DataTraveler_G4_USB_flash_drive_USB_3.0_32_Gb.jpg
+  ผู้สร้าง: Dmitry Makeev
+  สัญญาอนุญาต: CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0
+
+wm-webcam.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:Webcam_on_computer_screen.jpg
+  ผู้สร้าง: Peterhcharlton
+  สัญญาอนุญาต: CC BY 4.0 https://creativecommons.org/licenses/by/4.0
+
+wm-hdmi-cable.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:HDMI_Cable_1.JPG
+  ผู้สร้าง: Kannan shanmugam,shanmugam studio, Kollam
+  สัญญาอนุญาต: CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0
+
+wm-usbc-hdmi.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:USB-C_Digital_AV_Multiport_Adapter.jpeg
+  ผู้สร้าง: Thefreeencyclopedia1
+  สัญญาอนุญาต: CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0
+
+wm-switch.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:Netgear_Gigabit_Switch_5-port.jpg
+  ผู้สร้าง: Simon A. Eugster
+  สัญญาอนุญาต: CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0
+
+wm-router.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:ASUS_Wi-Fi_ROUTER_TUF_6500.jpg
+  ผู้สร้าง: Dinkun Chen
+  สัญญาอนุญาต: CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0
+
+wm-crimper.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:Crimpt%C3%A5ng_f%C3%B6r_modul%C3%A4r_kontakt_RJ11_och_RJ45_Crimping_pliers.jpg
+  ผู้สร้าง: No machine-readable author provided. Magma assumed (based on copyright claims).
+  สัญญาอนุญาต: CC BY-SA 3.0 http://creativecommons.org/licenses/by-sa/3.0/
+
+wm-cable-tester.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:Network_Cable_Tester_(1).jpg
+  ผู้สร้าง: Reise Reise
+  สัญญาอนุญาต: CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0
+
+wm-dslr.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:2016_Sony_DSLR-A700.jpg
+  ผู้สร้าง: Jacek Halicki
+  สัญญาอนุญาต: CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0
+
+wm-tripod.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:Gitzo_1541T_Traveler_Carbon_Fiber_Tripod_Collage_Horizontal.jpg
+  ผู้สร้าง: Lucasbosch
+  สัญญาอนุญาต: CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0
+
+wm-speaker.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:Bose_Computer_MusicMonitor.jpg
+  ผู้สร้าง: Ben Stassen's
+  สัญญาอนุญาต: CC BY 2.0 https://creativecommons.org/licenses/by/2.0
+
+wm-wireless-mic.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:Shure_PG58_with_PG2_wireless_microphone_-_on.jpg
+  ผู้สร้าง: Christian Dahlqvist
+  สัญญาอนุญาต: CC BY-SA 2.0 https://creativecommons.org/licenses/by-sa/2.0
+
+wm-screwdriver-set.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:Jeweler%27s-screwdriver-set-bright.jpg
+  ผู้สร้าง: edited by Iainf 22:19, 29 July 2006 (UTC)
+  สัญญาอนุญาต: Public domain 
+
+wm-soldering-iron.jpg
+  ที่มา: https://commons.wikimedia.org/wiki/File:Soldering_iron_(UK_Plug).jpg
+  ผู้สร้าง: Soldering_iron_and_accessories.jpg: oomlout
+derivative work: Bomazi
+  สัญญาอนุญาต: CC BY-SA 2.0 https://creativecommons.org/licenses/by-sa/2.0

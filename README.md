@@ -1,66 +1,55 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ระบบยืม-คืนอุปกรณ์ ภาควิชาคอมพิวเตอร์ศึกษา
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Laravel 11 + MySQL/MariaDB
 
-## About Laravel
+## ติดตั้งบนเครื่องใหม่
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+ต้องมี PHP 8.2+, Composer, Node.js และ MySQL/MariaDB
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+```bash
+composer install
+npm install && npm run build
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+cp .env.example .env
+php artisan key:generate
+```
 
-## Learning Laravel
+แก้ `.env` ให้ตรงกับเครื่อง (`APP_URL`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`, ค่า `MAIL_*` สำหรับอีเมลแจ้งเตือนเกินกำหนด)
+แล้วสร้างฐานข้อมูลเปล่า (utf8mb4) และรัน:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```bash
+php artisan migrate --seed
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### ข้อมูลที่ seed
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Seeder | ข้อมูล |
+|---|---|
+| `MemberSeeder` | อาจารย์ที่ปรึกษา, นักศึกษา, สมาชิก (ไม่รวมบัญชีทดสอบ), คู่มือวิดีโอ |
+| `EquipmentSeeder` | หมวด รายการอุปกรณ์ และอุปกรณ์รายชิ้นเดิม |
+| `ComputerEquipmentSeeder` | ครุภัณฑ์คอมพิวเตอร์ที่เพิ่ม 23 รายการ รายการละ 3 ชิ้น พร้อมรูป |
 
-## Laravel Sponsors
+รัน seeder ซ้ำได้ ข้อมูลจะไม่ซ้ำ (`php artisan db:seed`)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+รูปอุปกรณ์อยู่ใน `public/upload/file/` และถูกเก็บใน git ไม่ต้องคัดลอกแยก
+รูปที่เพิ่มใหม่มาจาก Wikimedia Commons ดูที่มาและสัญญาอนุญาตใน `public/upload/file/equipment_item/CREDITS.txt`
 
-### Premium Partners
+### งานตามเวลา
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+ระบบเปลี่ยนสถานะรายการที่เกินกำหนดและส่งอีเมลเตือนผ่านคำสั่ง `app:hourly-task-command`
+(หรือเปิด URL `/run-hourly-task`) ต้องตั้ง cron ให้เรียกเอง เช่นทุกชั่วโมง:
 
-## Contributing
+```
+0 * * * * cd /path/to/project && php artisan app:hourly-task-command >> /dev/null 2>&1
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+> การบล็อกการยืมเมื่อเกินกำหนดตรวจจาก `due_at` โดยตรง จึงทำงานได้แม้ cron ยังไม่ได้ตั้ง
+> แต่สถานะ "เกินกำหนด" และอีเมลเตือนจะอัปเดตเมื่อคำสั่งนี้ทำงานเท่านั้น
 
-## Code of Conduct
+## โครงสร้างข้อมูลการยืม-คืน
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+| ตาราง | เก็บอะไร |
+|---|---|
+| `eqm_history_master` | ใบยืม 1 แถวต่อการยืม 1 ครั้ง และสถานะปัจจุบัน |
+| `eqm_history_detail` | อุปกรณ์แต่ละชิ้นในใบยืม เลขเครื่องที่ได้รับ และสภาพตอนคืน |
+| `eqm_borrow_return_history` | ทุกเหตุการณ์ (ขอยืม, อนุมัติ, เกินกำหนด, แจ้งคืน, ตรวจรับ, ปฏิเสธ, ยกเลิก) ว่าใครทำเมื่อไหร่ |

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Social, Contact, Language, Member, EquipmentItem, LoanEquipment, LoanTransaction};
+use App\Models\{Social, Contact, Language, Member, EquipmentItem, EqmHistoryDetail, EqmHistoryMaster};
 use Illuminate\Support\Facades\{View, Auth};
 
 class MainController extends Controller
@@ -26,14 +26,22 @@ class MainController extends Controller
     protected function availableStock(EquipmentItem $item): int
     {
         $total = $item->activeEquipment()->count();
-        $borrowed = LoanEquipment::where('equipment_item_id', $item->id)
-            ->whereHas('loanTransaction', function ($query) {
-                $query->whereIn('status_type', ['borrowed', 'overdue'])
-                    ->whereIn('status', ['in_process', 'completed']);
-            })
-            ->sum('quantity');
+        $borrowed = $this->borrowedCounts()[$item->id] ?? 0;
 
-        return max($total - (int) $borrowed, 0);
+        return max($total - $borrowed, 0);
+    }
+
+    /**
+     * จำนวนชิ้นที่ยังไม่กลับเข้าคลัง แยกตาม equipment_item_id
+     */
+    protected function borrowedCounts(): array
+    {
+        return EqmHistoryDetail::active()
+            ->selectRaw('equipment_item_id, COUNT(*) as total')
+            ->groupBy('equipment_item_id')
+            ->pluck('total', 'equipment_item_id')
+            ->map(fn($total) => (int) $total)
+            ->all();
     }
 
     /**
@@ -44,6 +52,6 @@ class MainController extends Controller
         $memberId ??= Auth::guard('member')->id();
 
         return $memberId !== null
-            && LoanTransaction::where('member_id', $memberId)->overdueUnreturned()->exists();
+            && EqmHistoryMaster::where('member_id', $memberId)->overdueUnreturned()->exists();
     }
 }

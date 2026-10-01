@@ -363,21 +363,21 @@
                         <div class="tab-item {{ request('status') == 'borrowed' ? 'active' : '' }}">
                             <a href="{{ route('return.index', ['status' => 'borrowed']) }}">
                                 กำลังยืม
-                                <span class="badge">{{ count($statusBorrow->where('status_type', 'borrowed')) }}</span>
+                                <span class="badge">{{ count($statusBorrow->whereIn('status', ['pending', 'borrowed'])) }}</span>
                             </a>
                         </div>
 
                         <div class="tab-item {{ request('status') == 'returned' ? 'active' : '' }}">
                             <a href="{{ route('return.index', ['status' => 'returned']) }}">
                                 คืนแล้ว
-                                <span class="badge">{{ count($statusBorrow->where('status_type', 'returned')) }}</span>
+                                <span class="badge">{{ count($statusBorrow->whereIn('status', ['return_pending', 'returned'])) }}</span>
                             </a>
                         </div>
 
                         <div class="tab-item {{ request('status') == 'overdue' ? 'active' : '' }}">
                             <a href="{{ route('return.index', ['status' => 'overdue']) }}">
                                 เลยกำหนด
-                                <span class="badge">{{ count($statusBorrow->where('status_type', 'overdue')) }}</span>
+                                <span class="badge">{{ count($statusBorrow->where('status', 'overdue')) }}</span>
                             </a>
                         </div>
                     </div>
@@ -389,41 +389,45 @@
 
                     @foreach ($borrow as $item)
                         <div class="card-info purchase pt-3 px-4 mb-4">
+                            @php
+                                $fmt = fn($date) => $date?->setTimezone('Asia/Bangkok')->locale('th')->translatedFormat('d M Y H:i');
+                                $pastDue = $item->isPastDue();
+                                $cssType = $pastDue ? 'overdue' : (in_array($item->status, ['return_pending', 'returned']) ? 'returned' : 'borrowed');
+                            @endphp
                             <div class="info-row border-bottom-1">
                                 <div>
-                                    @if ($item->status_type == 'borrowed' || $item->status_type == 'overdue')
-                                        @if ($item->status === 'in_process')
-                                            <label class="purchase-status {{ $item->status_type }}">
-                                                อยู่ระหว่างดำเนินการ
-                                            </label>
-                                        @elseif ($item->status === 'completed')
-                                            <p><strong>ยืมวันที่ : </strong>
-                                                {{ \Carbon\Carbon::parse($item->borrowed_at)->setTimezone('Asia/Bangkok')->locale('th')->translatedFormat('d M Y H:i') }}
-                                                น.
-                                            </p>
-                                            <p class="mb-0" style="color: #ff5722;"><strong>กำหนดคืน : </strong>
-                                                {{ \Carbon\Carbon::parse($item->borrowed_at)->setTimezone('Asia/Bangkok')->addDays(7)->locale('th')->translatedFormat('d M Y H:i') }}
-                                                น.
-                                            </p>
-                                        @else<div class="purchase-status canceled">
-                                                <i class="fas fa-times-circle"></i>
-                                                <span>ยกเลิก</span>
-                                            </div>
-                                        @endif
+                                    @if ($item->status === 'pending')
+                                        <label class="purchase-status {{ $cssType }}">
+                                            อยู่ระหว่างดำเนินการ
+                                        </label>
+                                    @elseif ($item->status === 'cancelled')
+                                        <div class="purchase-status canceled">
+                                            <i class="fas fa-times-circle"></i>
+                                            <span>ยกเลิก</span>
+                                        </div>
+                                    @elseif (in_array($item->status, ['borrowed', 'overdue']))
+                                        <p><strong>ยืมวันที่ : </strong>
+                                            {{ $fmt($item->borrowed_at) }}
+                                            น.
+                                        </p>
+                                        <p class="mb-0" style="color: #ff5722;"><strong>กำหนดคืน : </strong>
+                                            {{ $fmt($item->due_at) }}
+                                            น.
+                                        </p>
                                     @else
                                         <p><strong>คืนวันที่ : </strong>
-                                            {{ \Carbon\Carbon::parse($item->returned_at)->setTimezone('Asia/Bangkok')->locale('th')->translatedFormat('d M Y H:i') }}
+                                            {{ $fmt($item->returned_at) }}
                                             น.
                                         </p>
                                     @endif
                                 </div>
 
-                                <label class="purchase-status {{ $item->status_type }}">
-                                    @if ($item->status_type == 'borrowed')
-                                        กำลังยืม
-                                    @elseif ($item->status_type == 'overdue')
+                                <label class="purchase-status {{ $cssType }}">
+                                    @if ($pastDue)
                                         เลยกำหนด
-                                    @elseif ($item->status_type == 'returned')
+                                    @elseif (in_array($item->status, ['pending', 'borrowed']))
+                                        กำลังยืม
+                                    @elseif (in_array($item->status, ['return_pending', 'returned']))
                                         คืนแล้ว
                                     @endif
                                 </label>
@@ -432,13 +436,13 @@
                             <div class="equipment-list">
 
                                 @php
-                                    $groupedEquipments = $item->loanEquipments->groupBy('equipment_item_id');
+                                    $groupedEquipments = $item->details->groupBy('equipment_item_id');
                                 @endphp
 
                                 @foreach ($groupedEquipments as $equipmentItemId => $equipments)
                                     @php
                                         $firstEquipment = $equipments->first();
-                                        $totalQuantity = $equipments->sum('quantity');
+                                        $totalQuantity = $equipments->count();
                                     @endphp
 
                                     <ul class="ul-table ul-table-body infos">
@@ -452,8 +456,8 @@
                                                 {{-- สภาพอุปกรณ์ที่เจ้าหน้าที่บันทึกตอนตรวจรับคืน --}}
                                                 @foreach ($equipments->whereNotNull('condition')->groupBy('condition') as $condition => $rows)
                                                     <span class="condition-badge {{ $condition }}">
-                                                        {{ \App\Models\LoanEquipment::CONDITIONS[$condition] ?? $condition }}
-                                                        {{ $rows->sum('quantity') }} ชิ้น
+                                                        {{ \App\Models\EqmHistoryDetail::CONDITIONS[$condition] ?? $condition }}
+                                                        {{ $rows->count() }} ชิ้น
                                                     </span>
                                                 @endforeach
                                                 @foreach ($equipments->whereNotNull('condition_note') as $noted)
@@ -472,46 +476,46 @@
                             </div>
 
                             <div class="info-row d-flex justify-content-between align-items-center">
-                                @if ($item->status === 'in_process')
+                                @if (in_array($item->status, ['pending', 'return_pending']))
                                     <div class="delivery-info" style="border-left: 3px solid #3f51b5;">
                                         <i class="fas fa-spinner me-2" style="color: #3f51b5;"></i>
                                         <span>อยู่ระหว่างการดำเนินการ กรุณารอการยืนยัน</span>
                                     </div>
-                                @elseif ($item->status_type == 'overdue')
+                                @elseif ($pastDue)
                                     <div class="delivery-info" style="border-left: 3px solid #ff5722;">
                                         <i class="fas fa-exclamation-triangle me-2" style="color: #ff5722;"></i>
                                         <span>อุปกรณ์เลยกำหนดการคืน กรุณาคืนอุปกรณ์โดยเร็วที่สุด</span>
                                     </div>
-                                @elseif ($item->status_type == 'borrowed' && $item->status === 'completed')
+                                @elseif ($item->status === 'borrowed')
                                     <div class="delivery-info">
                                         <i class="fas fa-info-circle me-2"></i>
                                         <span>กรุณาตรวจสอบอุปกรณ์และคืนตามกำหนดเวลา</span>
                                     </div>
-                                @elseif ($item->status === 'cancel')
+                                @elseif ($item->status === 'cancelled')
                                     <div class="delivery-info" style="border-left: 3px solid #e74c3c;">
                                         <i class="fas fa-ban me-2" style="color: #e74c3c;"></i>
                                         <span>คำร้องถูกยกเลิก</span>
                                     </div>
-                                @elseif ($item->status_type == 'returned' && $item->loanEquipments->whereIn('condition', ['damaged', 'lost'])->isNotEmpty())
+                                @elseif ($item->status === 'returned' && $item->details->whereIn('condition', ['damaged', 'lost'])->isNotEmpty())
                                     <div class="delivery-info" style="border-left: 3px solid #f39c12;">
                                         <i class="fas fa-exclamation-circle me-2" style="color: #f39c12;"></i>
                                         <span>ตรวจรับคืนแล้ว พบอุปกรณ์ชำรุด/สูญหาย กรุณาติดต่อเจ้าหน้าที่</span>
                                     </div>
-                                @elseif ($item->status_type == 'returned')
+                                @elseif ($item->status === 'returned')
                                     <div class="delivery-info" style="border-left: 3px solid #27ae60;">
                                         <i class="fas fa-check-circle me-2" style="color: #27ae60;"></i>
                                         <span>คืนอุปกรณ์เรียบร้อยแล้ว</span>
                                     </div>
                                 @endif
 
-                                @if (($item->status_type == 'borrowed' || $item->status_type == 'overdue') && $item->status === 'completed')
+                                @if (in_array($item->status, ['borrowed', 'overdue']))
                                     <a href="javascript:void(0);" class="return-btn" data-id="{{ $item->id }}"
-                                        @if ($item->status_type == 'overdue') style="background-color: #ff5722;" @endif>
+                                        @if ($pastDue) style="background-color: #ff5722;" @endif>
                                         <i class="fas fa-undo-alt me-1"></i> คืนอุปกรณ์
                                     </a>
-                                @elseif($item->status_type == 'borrowed' && $item->status === 'in_process')
+                                @elseif($item->status === 'pending')
                                     <a href="javascript:void(0);" class="cancel-btn" data-id="{{ $item->id }}"
-                                        @if ($item->status == 'in_process') style="background-color: #ff0000;" @endif>
+                                        style="background-color: #ff0000;">
                                         <i class="bi-trash"></i> ยกเลิก
                                     </a>
                                     {{-- @elseif($item->status === 'cancel')

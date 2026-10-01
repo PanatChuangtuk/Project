@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\{Auth, DB, Validator, Hash};
 use Illuminate\Http\Request;
-use App\Models\{EquipmentCategory, EquipmentItem, LoanTransaction};
+use App\Models\{EquipmentCategory, EquipmentItem};
 
 class EquipmentListController extends MainController
 {
@@ -16,21 +16,7 @@ class EquipmentListController extends MainController
         $equipment = EquipmentItem::where('category_id', $typeVaule)
             ->where('status', 1)
             ->get();
-        $borrowedItems = LoanTransaction::whereIn('status_type', ['borrowed', 'overdue'])->whereIn('status', ['in_process', 'completed'])
-            ->with('loanEquipments')
-            ->get();
-        $borrowedCounts = [];
-        foreach ($borrowedItems as $borrow) {
-            foreach ($borrow->loanEquipments as $loanEquipment) {
-                $equipmentId = $loanEquipment->equipment_item_id;
-                $quantity = $loanEquipment->quantity;
-
-                if (!isset($borrowedCounts[$equipmentId])) {
-                    $borrowedCounts[$equipmentId] = 0;
-                }
-                $borrowedCounts[$equipmentId] += $quantity;
-            }
-        }
+        $borrowedCounts = $this->borrowedCounts();
 
         return view('equipment-list', compact('equipment', 'borrowedCounts'));
     }

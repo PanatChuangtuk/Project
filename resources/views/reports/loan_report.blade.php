@@ -60,10 +60,6 @@
             font-size: 0.9rem;
         }
 
-        tr:last-child td {
-            border-bottom: none;
-        }
-
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
@@ -326,6 +322,47 @@
             font-weight: 600;
         }
 
+        .type {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 10.5pt;
+        }
+
+        tr.out-of-range td:not(.loan-cell) {
+            color: #9ca3af;
+        }
+
+        td.loan-cell {
+            min-width: 180px;
+        }
+
+        .cond-normal {
+            color: #047857;
+            font-weight: 600;
+        }
+
+        .cond-damaged {
+            color: #b45309;
+            font-weight: 600;
+        }
+
+        .cond-lost {
+            color: #b91c1c;
+            font-weight: 600;
+        }
+
+        .type-borrow {
+            background: #e0ecff;
+            color: #1d4ed8;
+        }
+
+        .type-return {
+            background: #dcfce7;
+            color: #047857;
+        }
+
         @media print {
             .summary div {
                 border-color: #000;
@@ -341,85 +378,103 @@
 <body>
     @php
         $fmt = fn($date) => $date
-            ? \Carbon\Carbon::parse($date)->setTimezone('Asia/Bangkok')->locale('th')->translatedFormat('d M Y H:i')
+            ? $date->setTimezone('Asia/Bangkok')->locale('th')->translatedFormat('d M Y H:i')
             : '-';
-        $stageClass = [
-            'รออนุมัติการยืม' => 'stage-wait',
-            'กำลังยืม' => 'stage-borrowed',
-            'เกินกำหนด (ยังไม่คืน)' => 'stage-overdue',
-            'รอตรวจรับคืน' => 'stage-wait',
-            'คืนแล้ว' => 'stage-returned',
+        $inRange = fn($row) => $row->date && $row->date->between($rangeStart, $rangeEnd);
+        // สรุปนับเฉพาะเหตุการณ์ที่อยู่ในช่วงรายงาน
+        $rows = $loans->flatMap(fn($loan) => $loan->eventRows())->filter($inRange);
+        $returnRows = $rows->where('type', 'return');
+        $statusClass = [
+            'รออนุมัติ' => 'stage-wait',
+            'อนุมัติ' => 'stage-borrowed',
             'ยกเลิก' => 'stage-cancel',
+            'รอตรวจรับ' => 'stage-wait',
+            'ตรวจรับแล้ว' => 'stage-returned',
         ];
-        $stages = $loans->map(fn($loan) => $loan->stageLabel());
-        $damagedOrLost = $loans->sum(
-            fn($loan) => $loan->loanEquipments->sum(fn($e) => (int) $e->damaged_qty + (int) $e->lost_qty),
-        );
     @endphp
 
     <h2>รายงานการยืม-คืนอุปกรณ์ภาควิชาคอมพิวเตอร์ศึกษา คณะครุศาสตร์อุตสาหกรรม <br>ตั้งแต่วันที่ {{ $startDate }} ถึง
         {{ $endDate }} </h2>
 
     <div class="summary">
-        <div><strong>{{ $loans->count() }}</strong><span>รายการทั้งหมด</span></div>
-        <div><strong>{{ $stages->filter(fn($s) => $s === 'กำลังยืม')->count() }}</strong><span>กำลังยืม</span></div>
-        <div class="text-danger"><strong>{{ $stages->filter(fn($s) => $s === 'เกินกำหนด (ยังไม่คืน)')->count() }}</strong><span>เกินกำหนดยังไม่คืน</span></div>
-        <div class="text-success"><strong>{{ $stages->filter(fn($s) => $s === 'คืนแล้ว')->count() }}</strong><span>คืนแล้ว</span></div>
-        <div class="text-warning"><strong>{{ $damagedOrLost }}</strong><span>อุปกรณ์ชำรุด/สูญหาย (ชิ้น)</span></div>
+        <div><strong>{{ $rows->where('type', 'borrow')->count() }}</strong><span>รายการยืม</span></div>
+        <div class="text-success"><strong>{{ $returnRows->count() }}</strong><span>รายการคืน</span></div>
+        <div class="text-danger">
+            <strong>{{ $returnRows->filter(fn($r) => $r->overdue_days > 0)->count() }}</strong><span>คืนเกินกำหนด</span>
+        </div>
+        <div class="text-warning">
+            <strong>{{ $returnRows->sum(fn($r) => $r->details->whereIn('condition', ['damaged', 'lost'])->count()) }}</strong>
+            <span>อุปกรณ์ชำรุด/สูญหาย (ชิ้น)</span>
+        </div>
     </div>
 
     <table>
         <thead>
             <tr>
-                <th rowspan="2">รายการที่</th>
-                <th rowspan="2">ผู้ยืม</th>
-                <th colspan="2">การยืม</th>
-                <th colspan="2">การคืน</th>
-                <th rowspan="2">สถานะ</th>
-                <th colspan="3">อุปกรณ์</th>
-            </tr>
-            <tr>
-                <th>วันที่ยืม</th>
-                <th>กำหนดคืน</th>
-                <th>วันที่คืน</th>
-                <th>เกินกำหนด</th>
-                <th>ชื่ออุปกรณ์</th>
-                <th>จำนวน</th>
-                <th>สภาพที่ได้รับคืน</th>
+                <th>ใบยืม / ผู้ยืม</th>
+                <th>ขั้นตอน</th>
+                <th>อุปกรณ์</th>
+                <th>ผล</th>
             </tr>
         </thead>
         @forelse ($loans as $loan)
             @php
-                $equipments = $loan->loanEquipments->isEmpty() ? collect([null]) : $loan->loanEquipments->values();
-                $rows = $equipments->count();
-                $stage = $loan->stageLabel();
-                $overdueDays = $loan->overdueDays();
+                $loanRows = $loan->eventRows();
                 $info = $loan->member?->info;
             @endphp
-            {{-- tbody แยกต่อรายการ ให้แถวของรายการเดียวกันอยู่เป็นกลุ่ม และไม่ถูกตัดข้ามหน้าเวลาพิมพ์ --}}
+            {{-- 1 ใบยืม = 1 กลุ่ม ไม่ถูกตัดข้ามหน้าเวลาพิมพ์ --}}
             <tbody class="loan">
-                @foreach ($equipments as $equipment)
-                    <tr>
+                @foreach ($loanRows as $row)
+                    <tr class="{{ $inRange($row) ? '' : 'out-of-range' }}">
                         @if ($loop->first)
-                            <td rowspan="{{ $rows }}">{{ $loan->id }}</td>
-                            <td rowspan="{{ $rows }}" class="text-start">
+                            <td rowspan="{{ $loanRows->count() }}" class="text-start loan-cell">
+                                <strong>#{{ $loan->id }}</strong>
                                 {{ trim(($info->first_name ?? '') . ' ' . ($info->last_name ?? '')) ?: '-' }}
                                 <div class="sub">{{ $info?->student?->student_number ?? '-' }}</div>
                             </td>
-                            <td rowspan="{{ $rows }}">{{ $fmt($loan->borrowed_at) }}</td>
-                            <td rowspan="{{ $rows }}">{{ $fmt($loan->dueAt()) }}</td>
-                            <td rowspan="{{ $rows }}">{{ $fmt($loan->returned_at) }}</td>
-                            <td rowspan="{{ $rows }}" class="{{ $overdueDays ? 'text-danger fw' : '' }}">
-                                {{ $overdueDays ? $overdueDays . ' วัน' : '-' }}
-                            </td>
-                            <td rowspan="{{ $rows }}">
-                                <span class="stage {{ $stageClass[$stage] ?? '' }}">{{ $stage }}</span>
-                            </td>
                         @endif
-                        <td class="text-start wrap">{{ $equipment->equipment_names ?? '-' }}</td>
-                        <td>{{ $equipment->total_qty ?? '-' }}</td>
-                        <td>
-                            {{ $equipment ? \App\Http\Controllers\Administrator\ReturnEquipmentController::conditionSummary($equipment) ?: '-' : '-' }}
+                        <td class="text-start">
+                            <span class="type type-{{ $row->type }}">{{ $row->type_label }}</span>
+                            {{ $fmt($row->date) }}
+                            @if ($row->type === 'borrow' && !in_array($loan->status, ['pending', 'cancelled']))
+                                <div class="sub">กำหนดคืน {{ $fmt($loan->due_at) }}</div>
+                            @endif
+                            @unless ($inRange($row))
+                                <div class="sub">(นอกช่วงรายงาน)</div>
+                            @endunless
+                        </td>
+                        <td class="text-start wrap">
+                            @if ($row->type === 'borrow')
+                                @foreach ($row->details->groupBy('equipment_item_id') as $group)
+                                    <div>
+                                        {{ $group->first()->name }} x{{ $group->count() }}
+                                        @if ($numbers = $group->map(fn($d) => $d->equipment?->number)->filter()->implode(', '))
+                                            <span class="sub">({{ $numbers }})</span>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            @else
+                                @foreach ($row->details as $detail)
+                                    <div>
+                                        {{ $detail->name }}
+                                        @if ($detail->condition)
+                                            — <span
+                                                class="cond-{{ $detail->condition }}">{{ $detail->conditionLabel() }}</span>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            @endif
+                        </td>
+                        <td class="text-start">
+                            <span
+                                class="stage {{ $statusClass[$row->status_label] ?? '' }}">{{ $row->status_label }}</span>
+                            @if ($row->overdue_days)
+                                <span class="text-danger fw">เกิน {{ $row->overdue_days }} วัน</span>
+                            @endif
+                            @if ($row->admin)
+                                <div class="sub">โดย {{ \App\Models\EqmHistoryMaster::personName($row->admin) }}
+                                </div>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
@@ -427,7 +482,7 @@
         @empty
             <tbody>
                 <tr>
-                    <td colspan="10">ไม่มีข้อมูลในช่วงวันที่ที่เลือก</td>
+                    <td colspan="4">ไม่มีข้อมูลในช่วงวันที่ที่เลือก</td>
                 </tr>
             </tbody>
         @endforelse

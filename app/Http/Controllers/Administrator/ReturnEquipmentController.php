@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Administrator;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\{Hash, DB};
-use App\Models\{LoanEquipment, LoanTransaction, Equipment};
+use Illuminate\Support\Facades\DB;
+use App\Models\{EqmHistoryMaster, EqmHistoryDetail};
 use Illuminate\Http\Request;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Carbon\Carbon;
@@ -15,35 +15,47 @@ class ReturnEquipmentController extends Controller
     public function index(Request $request)
     {
         $query = $request->input('query');
+        $tab = array_key_exists($request->input('tab'), EqmHistoryMaster::TABS) ? $request->input('tab') : 'all';
 
-        $userQuery = LoanTransaction::whereIn('status',  ['completed', 'cancel']);
+        $search = function ($userQuery) use ($query) {
+            if ($query) {
+                $userQuery->where(function ($queryBuilder) use ($query) {
+                    $queryBuilder->whereHas('member.info', function ($infoQuery) use ($query) {
+                        $infoQuery->where('first_name', 'LIKE', "%{$query}%")
+                            ->orWhere('last_name', 'LIKE', "%{$query}%");
+                    })
+                        ->orWhereHas('member.info.student', function ($studentQuery) use ($query) {
+                            $studentQuery->where('student_number', 'LIKE', "%{$query}%");
+                        });
+                });
+            }
+            return $userQuery;
+        };
 
-        if ($query) {
-            $userQuery->where(function ($queryBuilder) use ($query) {
-                $queryBuilder->whereHas('member.info', function ($infoQuery) use ($query) {
-                    $infoQuery->where('first_name', 'LIKE', "%{$query}%")
-                        ->orWhere('last_name', 'LIKE', "%{$query}%");
-                })
-                    ->orWhereHas('member.info.student', function ($studentQuery) use ($query) {
-                        $studentQuery->where('student_number', 'LIKE', "%{$query}%");
-                    });
-            });
-        }
-        $users = $userQuery->paginate(10)->appends([
-            'query' => $query,
-        ]);
-        $years = DB::table('loan_transactions')
+        // จำนวนในแต่ละแท็บ (ตามคำค้นหาเดียวกัน)
+        $tabCounts = collect(EqmHistoryMaster::TABS)
+            ->map(fn($label, $key) => $search(EqmHistoryMaster::query())->tab($key)->count());
+
+        // 1 ใบยืม = 1 กลุ่ม (แถวยืม + แถวคืน) เรียงจากใบที่มีความเคลื่อนไหวล่าสุด
+        $users = $search(EqmHistoryMaster::with(['member.info.student', 'details.equipment', 'histories.admin.info']))
+            ->tab($tab)
+            ->orderByDesc('updated_at')
+            ->orderByDesc('id')
+            ->paginate(10)
+            ->appends(['query' => $query, 'tab' => $tab]);
+        $years = DB::table('eqm_history_master')
             ->selectRaw('YEAR(created_at) as year')
             ->distinct()
             ->orderBy('year', 'desc')
             ->pluck('year');
 
         $main_menu = $this->main_menu;
-        return view('administrator.equipment_return.index', compact('users', 'query', 'main_menu', 'years'));
+        return view('administrator.equipment_return.index', compact('users', 'query', 'main_menu', 'years', 'tab', 'tabCounts'));
     }
     public function edit(Request $request, $id)
     {
-        $borrow = LoanTransaction::findOrFail($id);
+        $borrow = EqmHistoryMaster::with(['details.equipmentItem', 'details.equipment', 'histories.admin.info', 'histories.member.info', 'histories.detail', 'histories.equipment'])
+            ->findOrFail($id);
         $main_menu = $this->main_menu;
 
         return view('administrator.equipment_return.edit', compact('main_menu', 'borrow'));
@@ -61,43 +73,24 @@ class ReturnEquipmentController extends Controller
     {
         [$startDate, $endDate] = $this->validateDateRange($request);
 
-        $loans = LoanTransaction::with([
-            'member.info',
-            'loanEquipments' => function ($query) {
-                $query->selectRaw("loan_transactions_id, equipment_item_id, GROUP_CONCAT(DISTINCT name) as equipment_names, SUM(quantity) as total_qty, SUM(`condition` = 'normal') as normal_qty, SUM(`condition` = 'damaged') as damaged_qty, SUM(`condition` = 'lost') as lost_qty")
-                    ->groupBy('loan_transactions_id', 'equipment_item_id');
-            }
-        ])
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->get();
-
         $exportRows = [];
-
-        foreach ($loans as $loan) {
-
-            foreach ($loan->loanEquipments as $equipment) {
+        foreach ($this->reportRows($startDate, $endDate) as $row) {
+            $loan = $row->master;
+            foreach ($row->details->groupBy('equipment_item_id') as $details) {
                 $exportRows[] = [
+                    'วันที่' => $row->date?->format('Y-m-d H:i') ?? '-',
+                    'ชนิด' => $row->type_label,
                     'รายการที่' => $loan->id,
                     'รหัสนักศึกษา' => (string) $loan->member?->info?->student?->student_number,
                     'ชื่อ-นามสกุล' => trim($loan->member?->info?->first_name . ' ' . $loan->member?->info?->last_name),
-                    'สถานะการยืม-คืน' => match ($loan->status_type) {
-                        'borrowed' => 'ยืมอุปกรณ์',
-                        'returned' => 'คืนอุปกรณ์',
-                        'overdue' => 'เกินกำหนด',
-                        default => '-',
-                    },
-                    'สถานะการอนุมัติ' => match ($loan->status) {
-                        'completed' => 'อนุมัติ',
-                        'cancel' => 'ไม่อนุมัติ',
-                        'in_process' => 'รอดำเนินการ',
-                        default => '-',
-                    },
-                    'ชื่ออุปกรณ์' => $equipment->equipment_names,
-                    'จำนวน' => $equipment->total_qty,
-                    'วันที่ยืม' => $loan->borrowed_at ?? '-',
-                    'วันที่คืน' => $loan->returned_at ?? '-',
-                    'คืนเกินเวลาที่กำหนด' => $loan->is_overdue === 1 ? 'เกินเวลา' : '',
-                    'สภาพอุปกรณ์ที่ได้รับคืน' => self::conditionSummary($equipment),
+                    'ชื่ออุปกรณ์' => $details->first()->name,
+                    'จำนวน' => $details->count(),
+                    'เลขอุปกรณ์' => $details->map(fn($d) => $d->equipment?->number)->filter()->implode(', '),
+                    'ผู้ดำเนินการ' => EqmHistoryMaster::personName($row->admin),
+                    'สถานะ' => $row->status_label,
+                    'กำหนดคืน' => $row->type === 'borrow' ? ($loan->due_at?->format('Y-m-d H:i') ?? '-') : '',
+                    'เกินกำหนด (วัน)' => $row->overdue_days ?: '',
+                    'สภาพอุปกรณ์ที่ได้รับคืน' => $row->type === 'return' ? EqmHistoryDetail::conditionSummary($details) : '',
                 ];
             }
         }
@@ -108,33 +101,37 @@ class ReturnEquipmentController extends Controller
     {
         [$startDate, $endDate] = $this->validateDateRange($request);
 
-        $loans = LoanTransaction::with([
-            'member.info',
-            'loanEquipments' => function ($query) {
-                $query->selectRaw("loan_transactions_id, equipment_item_id, GROUP_CONCAT(DISTINCT name) as equipment_names, SUM(quantity) as total_qty, SUM(`condition` = 'normal') as normal_qty, SUM(`condition` = 'damaged') as damaged_qty, SUM(`condition` = 'lost') as lost_qty")
-                    ->groupBy('loan_transactions_id', 'equipment_item_id');
-            }
-        ])
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->get();
+        // จัดกลุ่มตามใบยืม: แสดงทั้งแถวยืมและแถวคืนของใบ แถวที่อยู่นอกช่วงจะแสดงจางไว้ให้เห็นคู่กัน
+        $loans = $this->reportLoans($startDate, $endDate)->sortBy('borrowed_at')->values();
+        $rangeStart = $startDate;
+        $rangeEnd = $endDate;
 
         $startDate =    $this->formatThaiDate($startDate);
         $endDate =  $this->formatThaiDate($endDate);
-        return view('reports.loan_report', compact('loans', 'startDate', 'endDate'));
+        return view('reports.loan_report', compact('loans', 'rangeStart', 'rangeEnd', 'startDate', 'endDate'));
+    }
+
+    // ใบยืมที่มีการยืมหรือการคืนอยู่ในช่วงวันที่
+    private function reportLoans(Carbon $startDate, Carbon $endDate)
+    {
+        return EqmHistoryMaster::with(['member.info.student', 'details.equipment', 'histories.admin.info'])
+            ->where(function ($q) use ($startDate, $endDate) {
+                $q->whereBetween('borrowed_at', [$startDate, $endDate])
+                    ->orWhereBetween('returned_at', [$startDate, $endDate]);
+            })
+            ->get();
     }
 
     /**
-     * สรุปสภาพอุปกรณ์ของแถวที่ group ไว้ เช่น "ปกติ 2, ชำรุด 1" (ว่างถ้ายังไม่ได้ตรวจรับคืน)
+     * แถวยืม/คืนที่วันที่ของเหตุการณ์อยู่ในช่วง (ยืมวันที่ X => แถวยืม, คืนวันที่ Y => แถวคืน)
      */
-    public static function conditionSummary($equipment): string
+    private function reportRows(Carbon $startDate, Carbon $endDate)
     {
-        $parts = [];
-        foreach (['normal' => 'normal_qty', 'damaged' => 'damaged_qty', 'lost' => 'lost_qty'] as $condition => $column) {
-            if ((int) $equipment->{$column} > 0) {
-                $parts[] = LoanEquipment::CONDITIONS[$condition] . ' ' . (int) $equipment->{$column};
-            }
-        }
-        return implode(', ', $parts);
+        return $this->reportLoans($startDate, $endDate)
+            ->flatMap(fn($master) => $master->eventRows())
+            ->filter(fn($row) => $row->date && $row->date->between($startDate, $endDate))
+            ->sortBy(fn($row) => $row->date->timestamp)
+            ->values();
     }
 
     /**

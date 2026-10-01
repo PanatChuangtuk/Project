@@ -18,13 +18,11 @@ class WelcomeMail extends Mailable
 
     public function build()
     {
-        $grouped = $this->transaction->loanEquipments->groupBy(function ($item) {
-            return $item->equipmentItem->name;
-        })->map(function ($items, $name) {
+        $grouped = $this->transaction->details->groupBy('equipment_item_id')->map(function ($items) {
             return [
-                'image' => $items->first()->equipmentItem->image,
-                'name' => $name,
-                'total_quantity' => $items->sum('quantity'),
+                'image' => $items->first()->equipmentItem?->image,
+                'name' => $items->first()->name,
+                'total_quantity' => $items->count(),
             ];
         });
 

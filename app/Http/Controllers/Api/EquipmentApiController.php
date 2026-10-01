@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\{EquipmentType, LoanTransaction, LoanEquipment};
+use App\Models\{EquipmentType, EqmHistoryDetail};
 use Illuminate\Support\Facades\{Auth, DB, Http};
 
 class EquipmentApiController extends Controller
@@ -45,12 +45,12 @@ class EquipmentApiController extends Controller
     }
     public function getEquipment(Request $request)
     {
-        $borrowedItems = LoanTransaction::whereIn('status_type', ['borrowed', 'overdue'])->whereIn('status', ['in_process', 'completed'])
-            ->with('loanEquipments')
-            ->get();
-        $borrowedEquipmentIds = $borrowedItems->flatMap(function ($transaction) {
-            return $transaction->loanEquipments->pluck('equipment_id');
-        })->filter()->unique()->values()->toArray();
+        // ชิ้นที่อยู่ในใบยืมที่ยังไม่จบ เลือกให้ยืมซ้ำไม่ได้
+        $borrowedEquipmentIds = EqmHistoryDetail::active()
+            ->whereNotNull('equipment_id')
+            ->distinct()
+            ->pluck('equipment_id')
+            ->toArray();
         $query = $request->get('query');
         $item_id = $request->get('item_id');
         $types = DB::table('equipment')

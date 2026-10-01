@@ -72,18 +72,14 @@
                                         <td class="text-center">{{ $item->member->info->student->student_number ?? null }}
                                         </td>
                                         <td class="text-center">
-                                            @if ($item->status_type == 'borrowed')
-                                                <span class="badge bg-warning text-cutome">ยืมอุปกรณ์</span>
-                                            @elseif ($item->status_type == 'returned')
-                                                <span class="badge bg-success text-cutome">คืนอุปกรณ์</span>
-                                            @elseif ($item->status_type == 'overdue')
-                                                <span class="badge bg-danger text-cutome">เกินกำหนด</span>
-                                            @endif
+                                            @php
+                                                $typeClass = ['ยืมอุปกรณ์' => 'bg-warning', 'คืนอุปกรณ์' => 'bg-success', 'เกินกำหนด' => 'bg-danger'];
+                                                $approvalClass = ['รอดำเนินการ' => 'bg-warning', 'อนุมัติ' => 'bg-success', 'ยกเลิก' => 'bg-danger'];
+                                            @endphp
+                                            <span class="badge {{ $typeClass[$item->requestTypeLabel()] ?? 'bg-secondary' }} text-cutome">{{ $item->requestTypeLabel() }}</span>
                                         </td>
                                         <td class="text-center">
-                                            @if ($item->status == 'in_process')
-                                                <span class="badge bg-warning text-cutome">รอดำเนินการ</span>
-                                            @endif
+                                            <span class="badge {{ $approvalClass[$item->approvalLabel()] ?? 'bg-secondary' }} text-cutome">{{ $item->approvalLabel() }}</span>
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-center">

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{LoanTransaction, LoanEquipment};
+use App\Models\EqmHistoryMaster;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\{Log, Mail};
+use Illuminate\Support\Facades\{DB, Log, Mail};
 use App\Mail\WelcomeMail;
 
 class TaskController extends Controller
@@ -13,21 +13,22 @@ class TaskController extends Controller
     public function hourlyTask()
     {
         // เฉพาะรายการที่อนุมัติแล้ว คำขอที่ยังรออนุมัติไม่นับว่าเกินกำหนด
-        LoanTransaction::where('status_type', 'borrowed')
-            ->where('status', 'completed')
-            ->where('borrowed_at', '<=', Carbon::now()->subDays(6))
-            ->chunkById(100, function ($transactions) {
-                foreach ($transactions as $transaction) {
-                    if ($transaction->borrowed_at <= Carbon::now()->subDays(7)) {
-                        $transaction->update([
-                            'status_type' => 'overdue',
-                            'is_overdue' => 1,
-                            'status' => 'completed'
-                        ]);
+        EqmHistoryMaster::where('status', 'borrowed')
+            ->where('due_at', '<=', Carbon::now()->addDay())
+            ->chunkById(100, function ($masters) {
+                foreach ($masters as $master) {
+                    if ($master->due_at->isPast()) {
+                        DB::transaction(function () use ($master) {
+                            $master->update([
+                                'status' => 'overdue',
+                                'is_overdue' => true,
+                            ]);
+                            $master->logEvent('overdue');
+                        });
                     }
-                    $memberEmail = $transaction->member->email;
+                    $memberEmail = $master->member->email;
                     if ($memberEmail) {
-                        Mail::to($memberEmail)->send(new WelcomeMail($transaction));
+                        Mail::to($memberEmail)->send(new WelcomeMail($master));
                     }
                 }
             });

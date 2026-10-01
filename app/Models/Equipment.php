@@ -22,8 +22,8 @@ class Equipment extends Model
     {
         return $this->belongsTo(EquipmentItem::class, 'item_id');
     }
-    public function loanEquipments()
+    public function historyDetails()
     {
-        return $this->hasMany(LoanEquipment::class, 'equipment_id');
+        return $this->hasMany(EqmHistoryDetail::class, 'equipment_id');
     }
 }

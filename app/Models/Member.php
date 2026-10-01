@@ -33,8 +33,8 @@ class Member extends Authenticatable
     {
         return $this->hasOne(MemberInfo::class, 'member_id', 'id');
     }
-    public function loanTransactions()
+    public function eqmHistories()
     {
-        return $this->hasMany(LoanTransaction::class, 'member_id');
+        return $this->hasMany(EqmHistoryMaster::class, 'member_id');
     }
 }

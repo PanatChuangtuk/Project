@@ -90,66 +90,50 @@
             </div>
         </div>
 
+        @php
+            $isPending = $borrow->status === 'pending';
+            $isReturn = $borrow->status === 'return_pending';
+            $canAct = $isPending || $isReturn;
+            $fmt = fn($date) => $date ? $date->setTimezone('Asia/Bangkok')->locale('th')->translatedFormat('d M Y H:i') : '-';
+            $typeClass = ['ยืมอุปกรณ์' => 'bg-warning', 'คืนอุปกรณ์' => 'bg-success', 'เกินกำหนด' => 'bg-danger'];
+        @endphp
+
         <div class="mb-4 row">
-            <label for="member_id" class="col-md-2 fw-bold">ชนิดคำร้อง :</label>
+            <label class="col-md-2 fw-bold">ชนิดคำร้อง :</label>
             <div class="col-md-10">
-                <td class="text-center  align-middle">
-                    @if ($borrow->status_type == 'borrowed')
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <span class="badge bg-warning px-3 py-2 rounded-pill fw-normal">
-                                    <i class="fas fa-hand-holding me-1"></i> ยืมอุปกรณ์
-                                </span>
-                            </div>
-                        </div>
-                    @elseif ($borrow->status_type == 'returned')
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <span class="badge bg-success px-3 py-2 rounded-pill fw-normal">
-                                    <i class="fas fa-undo-alt me-1"></i> คืนอุปกรณ์
-                                </span>
-                            </div>
-                        </div>
-                    @elseif ($borrow->status_type == 'overdue')
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <span class="badge bg-danger px-3 py-2 rounded-pill fw-normal">
-                                    <i class="fas fa-clock me-1"></i> เกินกำหนด
-                                </span>
-                            </div>
-                        </div>
-                    @endif
-                </td>
+                <span class="badge {{ $typeClass[$borrow->requestTypeLabel()] ?? 'bg-secondary' }} px-3 py-2 rounded-pill fw-normal">
+                    {{ $borrow->requestTypeLabel() }}
+                </span>
             </div>
         </div>
 
         <div class="mb-4 row">
-            <label for="member_id" class="col-md-2 fw-bold">สถานะคำร้อง :</label>
+            <label class="col-md-2 fw-bold">สถานะ :</label>
+            <div class="col-md-10">{{ $borrow->stageLabel() }}</div>
+        </div>
+
+        <div class="mb-4 row">
+            <label class="col-md-2 fw-bold">วันที่ยืม :</label>
             <div class="col-md-10">
-
-                @if ($borrow->status == 'completed')
-                    <span class="badge badge-pill badge-success">อนุมัติ</span>
-                @elseif ($borrow->status == 'cancel')
-                    <span class="badge badge-pill badge-danger">ยกเลิก</span>
-                @else
-                    <span class="badge badge-pill badge-warning">รอดำเนินการ</span>
+                {{ $fmt($borrow->borrowed_at) }}
+                <span class="text-muted ms-3">กำหนดคืน {{ $fmt($borrow->due_at) }}</span>
+                @if ($borrow->overdueDays())
+                    <span class="text-danger ms-3">เกินกำหนด {{ $borrow->overdueDays() }} วัน</span>
                 @endif
-
             </div>
         </div>
 
         <div class="card p-4">
             <h4 class="display-4">อุปกรณ์</h4>
-            @php $isReturn = $borrow->status_type === 'returned'; @endphp
             <form id="approveForm" method="POST" action="{{ route('administrator.approve-equipment.approveEquipment') }}">
                 @csrf
+                <input type="hidden" name="master_id" value="{{ $borrow->id }}">
                 <div class="table">
                     <table class="table table-bordered  custom-table">
                         <thead>
                             <tr>
                                 <th class="text-center">รูปอุปกรณ์</th>
                                 <th class="text-center">ชื่ออุปกรณ์</th>
-                                <th class="text-center">จำนวน</th>
                                 <th class="text-center">อุปกรณ์ที่ให้ยืม</th>
                                 @if ($isReturn)
                                     <th class="text-center">สภาพอุปกรณ์ที่ได้รับคืน</th>
@@ -157,39 +141,31 @@
                             </tr>
                         </thead>
                         <tbody class="table-border-bottom-dark" id="orderTableBody">
-                            @foreach ($borrow->loanEquipments as $key => $item)
+                            @foreach ($borrow->details as $key => $item)
                                 <input type="hidden" name="item_id[]" value="{{ $item->id }}">
                                 <tr>
                                     <td class="text-center align-middle">
-                                        <img src="{{ $item->equipmentItem->image ? asset('upload/file/equipment_item/' . $item->equipmentItem->image) : asset('images/default-image.png') }}"
+                                        <img src="{{ $item->equipmentItem?->image ? asset('upload/file/equipment_item/' . $item->equipmentItem->image) : asset('images/default-image.png') }}"
                                             class="equipment-img">
                                     </td>
                                     <td class="text-center align-middle">
                                         {{ $item->name ?? null }}
                                     </td>
                                     <td class="text-center align-middle">
-                                        {{ $item->quantity ?? null }} ชิ้น
-                                    </td>
-                                    <td class="text-center align-middle">
-
-                                        @if ($item->loanTransaction->status_type !== 'borrowed')
-                                            <span class="badge bg-success">
-                                                <input type="hidden"name="equipments_id[]"
-                                                    value="{{ $item->equipment_id }}">
-                                                {{ $item->equipment->number ?? null }}
-                                            </span>
-                                        @else
+                                        @if ($isPending)
                                             <select name="equipments_id[]" id="equipmentsSelect{{ $key }}"
                                                 class="form-control adviser-select"
                                                 data-item-id="{{ $item->equipment_item_id ?? '' }}" required>
                                                 <option value="">เลขอุปกรณ์</option>
                                             </select>
+                                        @else
+                                            <span class="badge bg-success">{{ $item->equipment->number ?? '-' }}</span>
                                         @endif
                                     </td>
                                     @if ($isReturn)
                                         <td class="align-middle">
                                             <select name="conditions[]" class="form-select mb-2" required>
-                                                @foreach (\App\Models\LoanEquipment::CONDITIONS as $value => $label)
+                                                @foreach (\App\Models\EqmHistoryDetail::CONDITIONS as $value => $label)
                                                     <option value="{{ $value }}"
                                                         {{ ($item->condition ?? 'normal') === $value ? 'selected' : '' }}>
                                                         {{ $label }}</option>
@@ -205,18 +181,21 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="d-flex justify-content-end mt-4 gap-2">
-                    <button type="button" class="btn btn-outline-danger btn-cancel" data-item="{{ $borrow->id }}"
-                        data-status="cancel">
-                        <i class="fas fa-times-circle me-1"></i> ยกเลิกการยืม
-                    </button>
-                    <button type="submit"id="submitBtn" class="btn btn-primary">
-                        <i class="fas fa-check-circle me-1"></i> {{ $isReturn ? 'ยืนยันการคืน' : 'ยืนยันการยืม' }}
-                    </button>
-                </div>
+                @if ($canAct)
+                    <div class="d-flex justify-content-end mt-4 gap-2">
+                        <button type="button" class="btn btn-outline-danger btn-cancel" data-item="{{ $borrow->id }}"
+                            data-status="cancel">
+                            <i class="fas fa-times-circle me-1"></i> {{ $isReturn ? 'ปฏิเสธการคืน' : 'ยกเลิกการยืม' }}
+                        </button>
+                        <button type="submit"id="submitBtn" class="btn btn-primary">
+                            <i class="fas fa-check-circle me-1"></i> {{ $isReturn ? 'ยืนยันการคืน' : 'ยืนยันการยืม' }}
+                        </button>
+                    </div>
+                @endif
             </form>
         </div>
 
+        @include('administrator.partials.eqm_timeline', ['borrow' => $borrow])
 
     </div>
 @endsection
@@ -268,7 +247,7 @@
 
             Swal.fire({
                 title: 'ยืนยันการดำเนินการ',
-                text: 'คุณต้องการยกเลิกรายการนี้ใช่หรือไม่?',
+                text: @json($isReturn ? 'ปฏิเสธการคืน? รายการจะกลับเป็นกำลังยืม' : 'คุณต้องการยกเลิกรายการนี้ใช่หรือไม่?'),
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'ยืนยัน',
@@ -287,7 +266,7 @@
                             if (response.success) {
                                 Swal.fire({
                                     icon: 'success',
-                                    text: 'อัปเดตสถานะสำเร็จ',
+                                    text: response.message,
                                     confirmButtonText: 'OK'
                                 }).then(function() {
                                     window.location.href =
