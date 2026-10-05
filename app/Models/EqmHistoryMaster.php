@@ -226,6 +226,13 @@ class EqmHistoryMaster extends Model
         return trim(($admin->info?->first_name ?? '') . ' ' . ($admin->info?->last_name ?? '')) ?: ($admin->email ?? '-');
     }
 
+    // ชื่อผู้ยืมพร้อมรหัสนักศึกษา ใช้ในตัวเลือก/ป้ายตัวกรอง
+    public static function borrowerLabel(Member $member): string
+    {
+        $number = $member->info?->student?->student_number;
+        return self::personName($member) . ($number ? " ({$number})" : '');
+    }
+
     // สถานะหลังเจ้าหน้าที่ปฏิเสธการคืน
     public function borrowingStatus(): string
     {

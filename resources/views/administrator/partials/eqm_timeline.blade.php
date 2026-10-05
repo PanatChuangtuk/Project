@@ -1,4 +1,3 @@
-ประวัติเหตุการณ์ของใบยืม: ต้องส่ง $borrow (EqmHistoryMaster)
 @php
     $actionColor = [
         'request' => '#6c757d',

@@ -73,13 +73,23 @@
                                         </td>
                                         <td class="text-center">
                                             @php
-                                                $typeClass = ['ยืมอุปกรณ์' => 'bg-warning', 'คืนอุปกรณ์' => 'bg-success', 'เกินกำหนด' => 'bg-danger'];
-                                                $approvalClass = ['รอดำเนินการ' => 'bg-warning', 'อนุมัติ' => 'bg-success', 'ยกเลิก' => 'bg-danger'];
+                                                $typeClass = [
+                                                    'ยืมอุปกรณ์' => 'bg-warning',
+                                                    'คืนอุปกรณ์' => 'bg-success',
+                                                    'เกินกำหนด' => 'bg-danger',
+                                                ];
+                                                $approvalClass = [
+                                                    'รอดำเนินการ' => 'bg-warning',
+                                                    'อนุมัติ' => 'bg-success',
+                                                    'ยกเลิก' => 'bg-danger',
+                                                ];
                                             @endphp
-                                            <span class="badge {{ $typeClass[$item->requestTypeLabel()] ?? 'bg-secondary' }} text-cutome">{{ $item->requestTypeLabel() }}</span>
+                                            <span
+                                                class="badge {{ $typeClass[$item->requestTypeLabel()] ?? 'bg-secondary' }} text-cutome">{{ $item->requestTypeLabel() }}</span>
                                         </td>
                                         <td class="text-center">
-                                            <span class="badge {{ $approvalClass[$item->approvalLabel()] ?? 'bg-secondary' }} text-cutome">{{ $item->approvalLabel() }}</span>
+                                            <span
+                                                class="badge {{ $approvalClass[$item->approvalLabel()] ?? 'bg-secondary' }} text-cutome">{{ $item->approvalLabel() }}</span>
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-center">
